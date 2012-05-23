@@ -1,0 +1,6 @@
+- Tratar erro no caso de por exemplo faltar um commit.
+- Se vai ser necessário durante uma execução de uma transação adicionar outra ( ou se o modelo proposto por bolado é suficiente )
+- Begin, End e Commit poderão ser adicionados no modelo de execução proposto.
+- Tirar dúvida a respeito de apagar todas as transações após após execução e clicar em add trançasões.
+- Existe um gerenciador controla a tabela de locas….. mas ele faz menção a isso apenas no início do ppt….. ou seja, n se sabe se esse gerenciador e essa tabela tb serão usados no bloqueio de duas fases…
+- Onde fica armazenado o TIMESTAMP.

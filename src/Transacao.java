@@ -10,17 +10,17 @@ import java.util.ArrayList;
  */
 public class Transacao {
 	
-	ArrayList<String> listaOperacoes;
+	ArrayList<Operacao> listaOperacoes;
 	
 	public Transacao (){
 		listaOperacoes = null;
 	}
 
-	public ArrayList<String> getListaOperacoes() {
+	public ArrayList<Operacao> getListaOperacoes() {
 		return listaOperacoes;
 	}
 
-	public void setListaOperacoes(ArrayList<String> listaOperacoes) {
+	public void setListaOperacoes(ArrayList<Operacao> listaOperacoes) {
 		this.listaOperacoes = listaOperacoes;
 	}
 
