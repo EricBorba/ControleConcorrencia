@@ -4,3 +4,4 @@
 - Tirar dúvida a respeito de apagar todas as transações após após execução e clicar em add trançasões.
 - Existe um gerenciador controla a tabela de locas….. mas ele faz menção a isso apenas no início do ppt….. ou seja, n se sabe se esse gerenciador e essa tabela tb serão usados no bloqueio de duas fases…
 - Onde fica armazenado o TIMESTAMP.
+- Precisa realizar tratamento ( Ex: variável e transacoes com o mesmo nome ).
