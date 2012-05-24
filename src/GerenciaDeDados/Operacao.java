@@ -14,7 +14,7 @@ public class Operacao {
 	String nomeOperacao;
 	int valorAntigo;
 	int valorNovo;
-	Transacao transacao;
+	//Transacao transacao;
 	Variavel variavel;
 	
 	public Operacao(String nomeOperacao,int valorAntigo, int valorNovo, Transacao transacao, Variavel variavel){
@@ -22,7 +22,7 @@ public class Operacao {
 		this.nomeOperacao = nomeOperacao;
 		this.valorAntigo = valorAntigo;
 		this.valorNovo = valorNovo;
-		this.transacao = transacao;
+		//this.transacao = transacao;
 		this.variavel = variavel;
 		
 	}
@@ -39,9 +39,9 @@ public class Operacao {
 		return valorNovo;
 	}
 
-	public Transacao getTransacao() {
+/**	public Transacao getTransacao() {
 		return transacao;
-	}
+	}**/
 
 	public Variavel getVariavel() {
 		return variavel;
@@ -59,9 +59,9 @@ public class Operacao {
 		this.valorNovo = valorNovo;
 	}
 
-	public void setTransacao(Transacao transacao) {
+	/**public void setTransacao(Transacao transacao) {
 		this.transacao = transacao;
-	}
+	}**/
 
 	public void setVariavel(Variavel variavel) {
 		this.variavel = variavel;
