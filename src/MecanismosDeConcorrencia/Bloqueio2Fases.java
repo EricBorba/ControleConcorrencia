@@ -7,6 +7,10 @@ public class Bloqueio2Fases {
 		
 	ArrayList<Transacao> listaTransacoesRecebida;
 	ArrayList<Transacao> listaTransacoesAlterada;
+	
+	/**
+	 * Parâmetros utilizados para dizer qual associação será feita.
+	 * **/
 	String tipoDeLock;
 	String tipoTratamentoDeadlock;
 	
