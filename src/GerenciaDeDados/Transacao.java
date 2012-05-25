@@ -15,7 +15,7 @@ public class Transacao {
 	ArrayList<Operacao> listaOperacoes;
 	
 	public Transacao (String nomeTransacao){
-		listaOperacoes = null;
+		this.listaOperacoes = new ArrayList<Operacao>();
 		this.nomeTransacao = nomeTransacao;
 	}
 
@@ -26,5 +26,30 @@ public class Transacao {
 	public void setListaOperacoes(ArrayList<Operacao> listaOperacoes) {
 		this.listaOperacoes = listaOperacoes;
 	}
+	
+	/**Método criado para auxiliar na busca por uma transação quando ela estiver dentro
+	 * de uma lista, e consequentemente na remoção da mesma dessa lista**/
+	public boolean equals(Object o){
+		Transacao t = (Transacao) o;
+		return (t.nomeTransacao.equals(this.nomeTransacao));
+	}
+	
+	/**Insere uma operação dentro da lista de operações contida na transação**/
+	public void inserirOperacaoNaTransacao(Operacao operacao){
+		this.listaOperacoes.add(operacao);
+	}
+	
+	
+	/**OS MÉTODOS A SEGUIR PROVAVELMENTE NÃO SERÃO NECESSÁRIOS, DEVIDO A ISSO ESTÃO COMENTADOS**/
+	
+    /** Para adicionar esse método é necessário a adição de uma ID na estrutura Operação; o mesmo seria capturado através de uma seleção na GUI	 * */
+	
+	/**public Operacao procurarOperacaoNaTransacao(){
+				
+	}
+	
+	public void removerOperacaoDaTransacao(Transacao transacao, Operacao operacao){
+		
+	}**/
 
 }

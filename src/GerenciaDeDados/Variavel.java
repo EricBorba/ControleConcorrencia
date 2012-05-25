@@ -33,6 +33,13 @@ public class Variavel {
 	public void setValor(String valor) {
 		this.valorVariavel = valor;
 	}
+	
+	/**Método criado para auxiliar na busca por uma variavel quando ela estiver dentro
+	 * de uma lista, e consequentemente na remoção da mesma dessa lista**/
+	public boolean equals(Object o){
+		Variavel v = (Variavel) o;
+		return (v.nomeVariavel.equals(this.nomeVariavel));
+	}
 
 
 }

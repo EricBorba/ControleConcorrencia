@@ -22,8 +22,8 @@ public class Repositorio {
 	 */
 	public Repositorio() {
 		
-		listaTransacoes = null;
-		listaVariaveis = null;
+		this.listaTransacoes = new ArrayList<Transacao>();
+		this.listaVariaveis = new ArrayList<Variavel>();
 				
 	}
 	
@@ -45,39 +45,59 @@ public class Repositorio {
 		this.listaTransacoes = transacoes;
 	}
 	
+	/**Retorna a posicao da transacao dentro da lista de transações**/
 	public int procurarTransacaoLista(String nomeTransacao){
 		
-		this.listaTransacoes.
+		int posicao = 0;
+		
+		for(Transacao transacao: this.listaTransacoes){
+			if(nomeTransacao.equals(transacao.nomeTransacao)){
+				posicao = this.listaTransacoes.indexOf(transacao);
+			}
+		}
+		
+		return posicao;
 	}
 	
+	/**Adiciona uma transação dentro do arraylist de transacoes**/
 	public void adicionarTransacaoLista(Transacao transacao){
 		
 		this.listaTransacoes.add(transacao);		
 	}
 	
+	/**Remove uma transacao do arraylist de transacoes**/	
 	public void removerTransacaoLista(String nomeTransacao){
 		
-		int posicaoTransacao = procurarTransacaoLista(nomeTransacao);
-		this.listaTransacoes.remove(posicaoTransacao);	
+		this.listaTransacoes.remove(this.listaTransacoes.indexOf(nomeTransacao));	
 	}
 	
-	public int procurarVariavelLista(String nomevariavel){
+	/**Procura uma variavel dentro do arraylist de variaveis**/
+	public int procurarVariavelLista(String nomeVariavel){
 		
-		this.listaTransacoes.
+		int posicao = 0;
+		
+		for(Variavel variavel: this.listaVariaveis){
+			if(nomeVariavel.equals(variavel.nomeVariavel)){
+				posicao = this.listaVariaveis.indexOf(variavel);
+			}
+		}
+		
+		return posicao;
 	}
 	
+	/**Adiciona uma variavel dentro do arraylist de variaveis**/
 	public void adicionarVariavelLista(Variavel variavel){
 		
 		this.listaVariaveis.add(variavel);		
 	}
 	
+	/**Remove uma variavel dentro do arraylist de variaveis**/
 	public void removerVariavelLista(String nomeVariavel){
 		
-		int posicaoVariavel = procurarVariavelLista(nomeVariavel);
-		this.listaVariaveis.remove(posicaoVariavel);	
+		this.listaVariaveis.remove(this.listaVariaveis.indexOf(nomeVariavel));
 	}
 	
-	/**Setor de criação das estruturas mais primitivas**/
+	/**Setor de criação das estruturas mais primitivas---- talvez n tenha necessidade**/
 	
 	public Operacao criarOperacao(String nomeOperacao, int valorAntigo, int valorNovo, Transacao transacao, Variavel variavel){
 		
@@ -103,19 +123,6 @@ public class Repositorio {
 		
 	}	
 	
-	/**Métodos que envolvem a classe Transacao e operação.... já que uma transação tem uma lista de operações**/
-	public void inserirOperacaoNaTransacao(Transacao transacao, Operacao operacao){
-		transacao.listaOperacoes.add(operacao);
-	}
 	
-    /** Para adicionar esse método é necessário a adição de uma ID na estrutura Operação; o mesmo seria capturado através de uma seleção na GUI	 * */
-	
-	public Operacao procurarOperacaoNaTransacao(){
-		
-	}
-	
-	public void removerOperacaoDaTransacao(Transacao transacao, Operacao operacao){
-		
-	}
 
 }

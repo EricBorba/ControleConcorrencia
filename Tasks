@@ -1,9 +1,4 @@
 - Adicionar tabela de bloqueios na GUI
 
-- iiuhfiuhfsiud
-
-- e agora?
-
-- alterando essa porra
-
-- arruda chamando!
+- Dentro de repositório alterar os 2 métodos de busca para ao invés de retornar a posição
+retornar a transacao e a variavel.

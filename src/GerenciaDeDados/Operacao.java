@@ -2,7 +2,9 @@ package GerenciaDeDados;
 
 
 /** 
- *  Criada com o intuito de termos a estrutura Operacoes, para facilitar o uso da mesma no código e o mesmo ficar modularizado
+ *  Criada com o intuito de termos a estrutura Operacoes, para facilitar o uso da mesma no código e o mesmo ficar modularizado.
+ *  Contém o nome da operacao a ser realizada ( read, write.... ), valor antigo e valor novo caso seja necessário e variável a ser
+ *  lida, modificada, etc....
  */
 
 /**
