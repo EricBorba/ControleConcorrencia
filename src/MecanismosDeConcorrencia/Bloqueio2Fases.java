@@ -1,7 +1,21 @@
+
+
 package MecanismosDeConcorrencia;
 
 import java.util.ArrayList;
 import GerenciaDeDados.Transacao;
+
+/**
+ * Classe criada para realizar o bloqueio de 2 fases fazendo uso também das classes de lock e lock múltiplo bem como o tratamento
+ * de deadlock wait-die e wound-wait...
+ * A classe recebe como parâmetro a lista das transações já criadas bem como o tipo de lock e tratamento de deadlock que devem ser realizados.
+ * **/
+
+
+/**
+ * @author ERB & FAD
+ *
+ */
 
 public class Bloqueio2Fases {
 		
@@ -15,10 +29,10 @@ public class Bloqueio2Fases {
 	String tipoTratamentoDeadlock;
 	
 	
-	public Bloqueio2Fases(ArrayList<Transacao> listaTransacoesRecebida, String tipoDeLock, String tipoTratamentoDeadock){
+	public Bloqueio2Fases(ArrayList<Transacao> listaTransacoesRecebida, String tipoDeLock, String tipoTratamentoDeadLock){
 		this.listaTransacoesRecebida = listaTransacoesRecebida;
 		this.tipoDeLock = tipoDeLock;
-		this.tipoTratamentoDeadlock = tipoTratamentoDeadock;
+		this.tipoTratamentoDeadlock = tipoTratamentoDeadLock;
 	}
 	
 	/**

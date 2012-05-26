@@ -10,11 +10,11 @@
 -------- Eric ---------
 
 - Dentro de repositório alterar os 2 métodos de busca para ao invés de retornar a posição
-retornar a transacao e a variavel.
+retornar a transacao e a variavel. ( Feito: Passando como parâmetro para a busca o nome da transacao/variavel ).
 
 - Verificar um parâmetro a ser passado para o construtor do bloqueio de 2 fases afim de identificar qual tipo de lock usa, e qual tratamento de deadlock utiliza; 
 afim de não ser necessário criar um método dentro da classe Bloqueio2Fases para cada situação, ou seja, todas as possibilidades serão analisadas dentro de um mesmo
-método de acordo com o parâmetro passado.
+método de acordo com o parâmetro passado.   ( Feito: Mas verificar futuramente se está correto e se será necessário )
 
 
 

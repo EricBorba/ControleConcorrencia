@@ -29,9 +29,9 @@ public class Transacao {
 	
 	/**Método criado para auxiliar na busca por uma transação quando ela estiver dentro
 	 * de uma lista, e consequentemente na remoção da mesma dessa lista**/
-	public boolean equals(Object o){
-		Transacao t = (Transacao) o;
-		return (t.nomeTransacao.equals(this.nomeTransacao));
+	public boolean equals(String o){
+		//Transacao t = (Transacao) o;
+		return (o.equals(this.nomeTransacao));
 	}
 	
 	/**Insere uma operação dentro da lista de operações contida na transação**/
