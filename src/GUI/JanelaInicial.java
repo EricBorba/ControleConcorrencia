@@ -24,6 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.BoundedRangeModel;
 import javax.swing.BoxLayout;
 
+import GerenciaDeDados.Repositorio;
+import GerenciaDeDados.Transacao;
+import GerenciaDeDados.Variavel;
+
 
 
 
@@ -34,11 +38,14 @@ public class JanelaInicial extends JFrame{
 	JLabel label1;
 	JLabel label2;
 	JLabel label3;
+	JLabel label4;
 	JTextField textfield1;
 	JTextArea textArea1;
 	JScrollPane jScrollPane1;
 	JTextArea textArea2;
 	JScrollPane jScrollPane2;
+	JTextArea textArea3;
+	JScrollPane jScrollPane3;
 	JRadioButton jRadioButton1;
 	JRadioButton jRadioButton2;
 	JRadioButton jRadioButton3;
@@ -49,11 +56,20 @@ public class JanelaInicial extends JFrame{
 	JButton jButton1;
 	JButton jButton2;
 	JButton jButton3;
-	
-// construindo janela
+	Repositorio rep;
+	JanelaAdicionarTransacoes janela;
+
+	public JanelaInicial(Repositorio repNovo){
+		this.rep = repNovo;
+		
+
+	}
+
+
+	// construindo janela
 	public void setJanelaInicial(){
 		//seta tamanho e posicao
-		this.setBounds(200, 10, 1000, 650);
+		this.setBounds(20, 10, 1300, 650);
 		//Layout null eh pra eu poder colocar componentes onde eu quiser
 		this.setLayout(null);
 		//muda a cor do fundo
@@ -65,262 +81,306 @@ public class JanelaInicial extends JFrame{
 		setResizable(false);
 
 	}
-// componentes da janela
+	// componentes da janela
 	public void setComponentes(){
+		Variavel var1 = new Variavel("a", "13");
+		Variavel var2 = new Variavel("b", "67");
+		Variavel var3 = new Variavel("c", "78");
+		Variavel var4 = new Variavel("d", "12");
+		Variavel var5 = new Variavel("e", "43");
+		Variavel var6 = new Variavel("f", "31");
+
+
+		this.rep.getListaVariaveis().add(var1);
+		this.rep.getListaVariaveis().add(var2);
+		this.rep.getListaVariaveis().add(var3);
+		this.rep.getListaVariaveis().add(var4);
+		this.rep.getListaVariaveis().add(var5);
+		this.rep.getListaVariaveis().add(var6);
+		
+		Transacao t1 = new Transacao("T1");
+		Transacao t2 = new Transacao("T2");
+		Transacao t3 = new Transacao("T3");
+		Transacao t4 = new Transacao("T4");
+		
+		this.rep.getTransacoes().add(t1);
+		this.rep.getTransacoes().add(t2);
+		this.rep.getTransacoes().add(t3);
+		this.rep.getTransacoes().add(t4);
+		
+
 		label1 = new JLabel("Estado do Disco");		
 		label1.setBounds(350, 20, 200, 40);
 		label1.setFont(new Font("Comic Sans MS", 1, 15));
-		
+
 		label2 = new JLabel("Operações a serem Executadas");		
 		label2.setBounds(40, 20, 300, 40);
 		label2.setFont(new Font("Comic Sans MS", 1, 15));
-		
+
 		label3 = new JLabel("LOG");		
 		label3.setBounds(40, 320, 250, 40);
 		label3.setFont(new Font("Comic Sans MS", 1, 15));
+		
+		label4 = new JLabel("Tabela de Bloqueios");		
+		label4.setBounds(510, 320, 250, 40);
+		label4.setFont(new Font("Comic Sans MS", 1, 15));
 
 		textArea1 = new JTextArea(40, 40);
 		jScrollPane1 = new JScrollPane(textArea1);
 		jScrollPane1.setBounds(40, 50, 300, 250);
-				
+
+		///log
 		textArea2 = new JTextArea(40, 40);
 		jScrollPane2 = new JScrollPane(textArea2);
-		jScrollPane2.setBounds(40, 350, 560, 250);
+		jScrollPane2.setBounds(40, 350, 460, 250);
 		
+		/// bloqueios
+		textArea3 = new JTextArea(40, 40);
+		jScrollPane3 = new JScrollPane(textArea3);
+		jScrollPane3.setBounds(510, 350, 460, 250);
+
 
 		this.jRadioButton1 = new JRadioButton();
 		this.jRadioButton1.setBounds(660, 70,200,30);
 		this.jRadioButton1.setText("Lock Binário");
 		this.jRadioButton1.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton1ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton2 = new JRadioButton();
 		this.jRadioButton2.setBounds(660, 100,200,30);
 		this.jRadioButton2.setText("Lock Multiplo");
 		this.jRadioButton2.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton2ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton3 = new JRadioButton();
 		this.jRadioButton3.setBounds(660, 130,300,30);
 		this.jRadioButton3.setText("Bloqueio de 2 fases Básico");
 		this.jRadioButton3.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton3ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton4 = new JRadioButton();
 		this.jRadioButton4.setBounds(660, 160,320,30);
 		this.jRadioButton4.setText("Bloqueio de 2 fases Conservador");
 		this.jRadioButton4.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton4ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton5 = new JRadioButton();
 		this.jRadioButton5.setBounds(660, 190,300,30);
 		this.jRadioButton5.setText("Bloqueio de 2 fases Estrito");
 		this.jRadioButton5.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton5ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton6 = new JRadioButton();
 		this.jRadioButton6.setBounds(660, 220,300,30);
 		this.jRadioButton6.setText("Time Stamping Wait-Die");
 		this.jRadioButton6.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton6ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton6ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton7 = new JRadioButton();
 		this.jRadioButton7.setBounds(660, 250,300,30);
 		this.jRadioButton7.setText("Time Stamping Wound-Wait");
 		this.jRadioButton7.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton7ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton7ActionPerformed(evt);
+			}
+		});
+
 		this.jButton1 = new JButton("Adicionar Operações");
 		this.jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
-		this.jButton1.setBounds(700, 450, 250,40);
+		this.jButton1.setBounds(1000, 450, 250,40);
 
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
 			}
 		});
-		
+
 		this.jButton2 = new JButton("Executar Transações");
 		this.jButton2.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
-		this.jButton2.setBounds(700, 500, 250,40);
+		this.jButton2.setBounds(1000, 500, 250,40);
 
 		jButton2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton2ActionPerformed(evt);
 			}
 		});
-		
+
 		this.jButton3 = new JButton("SAIR");
 		this.jButton3.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
-		this.jButton3.setBounds(700, 550, 250,40);
+		this.jButton3.setBounds(1000, 550, 250,40);
 
 		jButton3.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton3ActionPerformed(evt);
 			}
 
-			});
-			
+		});
+
 	}
-	
-// tabela do estado atual do disco
+
+	// tabela do estado atual do disco
 	public void setEstadoAtual(){
 
-		Arquivo arq = new Arquivo("DadosDisco.txt", "lixo.txt");
-					
-		DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Variável", "Valor"});
-		while(!arq.isEndOfFile()){
-			modelo.addRow(new Object[] {arq.acharIgual(arq), arq.acharQuebra(arq)});
-			
-		}
 	
+		DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Variável", "Valor"});
 		
+		int i = 0;
+		while(i < this.rep.getListaVariaveis().size()){
+
+			modelo.addRow(new Object[] {this.rep.getListaVariaveis().get(i).getVariavel(), this.rep.getListaVariaveis().get(i).getValor()});
+			i++;
+
+		}
+		
+		
+
 		this.EstadoDisco = new JTable(modelo);  
-		//EstadoDisco.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
 		this.scrollDisco = new JScrollPane(EstadoDisco);
 		scrollDisco.setBounds(350, 50, 300, 250);
 		scrollDisco.setBackground(Color.white);
-		System.out.println();
 	
 
+
 	}
-	
-	 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		 JanelaAdicionarTransacoes janela = new JanelaAdicionarTransacoes();
-			janela.SetJanelaAdicionarTransacoes();
-			janela.setComponentes();
-			janela.addComponentes();
-			janela.setVisible(true);
-			this.dispose();
-	    	
-	}
-	 
-	 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-	       //ação radiobutton1  	
-	    	
-	}
-	 
-	 private void jButton3ActionPerformed(ActionEvent evt) {
-			this.dispose();
-			
-		}
-	
-	
-	 private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       jRadioButton6.setSelected(false);
-	       jRadioButton7.setSelected(false);
-	       
+
+	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		
-	    	
-	}
-
-	 private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       jRadioButton6.setSelected(false);
-	       jRadioButton7.setSelected(false); 	
-	    	
-	}
-	 
-	 private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       jRadioButton6.setSelected(false);
-	       jRadioButton7.setSelected(false);   	
-	    	
-	}
+		JanelaAdicionarTransacoes janela = new JanelaAdicionarTransacoes(this.rep,this);
+		janela.SetJanelaAdicionarTransacoes();
+		janela.setComponentes();
+		janela.addComponentes();
+		janela.setVisible(true);
+		this.setVisible(false);
 	
-	 private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       jRadioButton6.setSelected(false);
-	       jRadioButton7.setSelected(false);   	
-	    	
+		
+		
 	}
 
-	 private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton6.setSelected(false);
-	       jRadioButton7.setSelected(false); 	
-	    	
+	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+		//ação radiobutton1  	
+
 	}
-	 
-	 private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       jRadioButton7.setSelected(false);  	
-	    	
+
+	private void jButton3ActionPerformed(ActionEvent evt) {
+		this.dispose();
+
 	}
-	 
-	 private void jRadioButton7ActionPerformed(java.awt.event.ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       jRadioButton6.setSelected(false); 	
-	    	
+
+
+	private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		jRadioButton6.setSelected(false);
+		jRadioButton7.setSelected(false);
+
+
+
 	}
-	 
-	 
+
+	private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton1.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		jRadioButton6.setSelected(false);
+		jRadioButton7.setSelected(false); 	
+
+	}
+
+	private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		jRadioButton6.setSelected(false);
+		jRadioButton7.setSelected(false);   	
+
+	}
+
+	private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton5.setSelected(false);
+		jRadioButton6.setSelected(false);
+		jRadioButton7.setSelected(false);   	
+
+	}
+
+	private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton6.setSelected(false);
+		jRadioButton7.setSelected(false); 	
+
+	}
+
+	private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		jRadioButton7.setSelected(false);  	
+
+	}
+
+	private void jRadioButton7ActionPerformed(java.awt.event.ActionEvent evt) {
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		jRadioButton6.setSelected(false); 	
+
+	}
+
+
 	public void addComponentes(){
 		this.add(this.label1);
 		this.add(this.label2);
 		this.add(this.label3);
+		this.add(this.label4);
 		this.add(this.scrollDisco);
 		this.add(this.jScrollPane1);
 		this.add(this.jScrollPane2);
+		this.add(this.jScrollPane3);
 		this.add(this.jRadioButton1);
 		this.add(this.jRadioButton2);
 		this.add(this.jRadioButton3);
@@ -335,10 +395,11 @@ public class JanelaInicial extends JFrame{
 
 
 	public static void main(String[] args) {
-		JanelaInicial janela = new JanelaInicial();
+		Repositorio reptemp = new Repositorio();	
+		JanelaInicial janela = new JanelaInicial(reptemp);
 		janela.setJanelaInicial();
+		janela.setComponentes();
 		janela.setEstadoAtual();
-		janela.setComponentes();		
 		janela.addComponentes();
 		janela.setVisible(true);
 	}

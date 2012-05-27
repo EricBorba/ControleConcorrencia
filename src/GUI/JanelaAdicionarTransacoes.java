@@ -14,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import GerenciaDeDados.Repositorio;
+import GerenciaDeDados.Transacao;
+
 
 public class JanelaAdicionarTransacoes extends JFrame {
 
@@ -35,7 +38,14 @@ public class JanelaAdicionarTransacoes extends JFrame {
 	JTextArea textArea1;
 	JScrollPane jScrollPane1;
 	JTextField textfield1;
+	Repositorio rep;
+	JanelaInicial janela;
 
+	public JanelaAdicionarTransacoes(Repositorio repNovo, JanelaInicial janelaNova){
+		this.janela = janelaNova;
+		this.rep = repNovo;
+
+	}
 
 	// construindo janela
 	public void SetJanelaAdicionarTransacoes(){
@@ -55,13 +65,13 @@ public class JanelaAdicionarTransacoes extends JFrame {
 	// componentes da janela
 	public void setComponentes(){
 
-		LeitorDeArquivos buscaArquivo = new LeitorDeArquivos();
+		LeitorDeListas buscaArquivo = new LeitorDeListas();
 
 
 		this.jComboBox1 = new JComboBox();
 		this.jComboBox1.setBounds(150,50, 90, 20);
 		this.jComboBox1.setBackground(Color.white);
-		this.jComboBox1.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarVariaveis()));
+		this.jComboBox1.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarVariaveis(this.rep.getListaVariaveis())));
 		jComboBox1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jComboBox1ActionPerformed(evt);
@@ -72,7 +82,7 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		this.jComboBox2 = new JComboBox();
 		this.jComboBox2.setBounds(30,50, 90, 20);
 		this.jComboBox2.setBackground(Color.white);
-		this.jComboBox2.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarTrasacoes()));
+		this.jComboBox2.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarTrasacoes(this.rep.getTransacoes())));
 		jComboBox2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jComboBox2ActionPerformed(evt);
@@ -87,68 +97,68 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		label2 = new JLabel("Variáveis");
 		label2.setBounds(150, 10, 100, 40);
 		label2.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		label3 = new JLabel("Operações");
 		label3.setBounds(260, 10, 100, 40);
 		label3.setFont(new Font("Comic Sans MS", 1, 18));
-		
-		
+
+
 		this.jRadioButton1 = new JRadioButton();
 		this.jRadioButton1.setBounds(260, 45,100,30);
 		this.jRadioButton1.setText("Read");
 		this.jRadioButton1.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
-            }
-			
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton1ActionPerformed(evt);
+			}
+
+		});
+
 		this.jRadioButton2 = new JRadioButton();
 		this.jRadioButton2.setBounds(260, 85,100,30);
 		this.jRadioButton2.setText("Write");
 		this.jRadioButton2.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton2ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton3 = new JRadioButton();
 		this.jRadioButton3.setBounds(260, 125,100,30);
 		this.jRadioButton3.setText("Begin");
 		this.jRadioButton3.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton3ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton4 = new JRadioButton();
 		this.jRadioButton4.setBounds(260, 165,100,30);
 		this.jRadioButton4.setText("End");
 		this.jRadioButton4.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton4ActionPerformed(evt);
+			}
+		});
+
 		this.jRadioButton5 = new JRadioButton();
 		this.jRadioButton5.setBounds(260, 205,100,30);
 		this.jRadioButton5.setText("Commit");
 		this.jRadioButton5.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
-            }
-        });
-		
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jRadioButton5ActionPerformed(evt);
+			}
+		});
+
 		this.jButton1 = new JButton("nova transação");
 		this.jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton1.setBounds(30, 200, 220,40);
@@ -158,8 +168,8 @@ public class JanelaAdicionarTransacoes extends JFrame {
 				jButton1ActionPerformed(evt);
 			}
 
-			});
-		
+		});
+
 		this.jButton2 = new JButton("Adicionar nova operação");
 		this.jButton2.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton2.setBounds(370, 150, 220,40);
@@ -169,8 +179,8 @@ public class JanelaAdicionarTransacoes extends JFrame {
 				jButton2ActionPerformed(evt);
 			}
 
-			});
-		
+		});
+
 		this.jButton3 = new JButton("Voltar a janela Executar");
 		this.jButton3.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton3.setBounds(370, 200, 220,40);
@@ -180,22 +190,22 @@ public class JanelaAdicionarTransacoes extends JFrame {
 				jButton3ActionPerformed(evt);
 			}
 
-			
 
-			});
+
+		});
 
 		label4 = new JLabel("Operações adicionadas");
 		label4.setBounds(600, 10, 300, 40);
 		label4.setFont(new Font("Comic Sans MS", 1, 18));
-		
+
 		textArea1 = new JTextArea(40, 40);
 		jScrollPane1 = new JScrollPane(textArea1);
 		jScrollPane1.setBounds(600, 50, 400, 190);
-		
+
 		label5 = new JLabel("valor");
 		label5.setBounds(370, 60, 100, 40);
 		label5.setFont(new Font("Comic Sans MS", 1, 15));
-		
+
 		textfield1 = new JTextField();
 		textfield1.setBackground(Color.white);
 		textfield1.setBounds(370, 90, 80, 20);
@@ -234,91 +244,91 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private void jRadioButton1ActionPerformed(ActionEvent evt) {
-		   jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       textfield1.setEnabled(false);
-	       textfield1.setText("");
-		
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		textfield1.setEnabled(false);
+		textfield1.setText("");
+
 	}
-	
+
 	private void jRadioButton2ActionPerformed(ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);	       
-	       textfield1.setEnabled(true);
-	       
-	       if(jRadioButton2.isSelected() == false){
-	    	   
-	    	   textfield1.setEnabled(false);
-	       }
-		
+		jRadioButton1.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);	       
+		textfield1.setEnabled(true);
+
+		if(jRadioButton2.isSelected() == false){
+
+			textfield1.setEnabled(false);
+		}
+
 	}
-	
+
 	private void jRadioButton3ActionPerformed(ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       textfield1.setEnabled(false);
-	       textfield1.setText("");
-		
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton4.setSelected(false);
+		jRadioButton5.setSelected(false);
+		textfield1.setEnabled(false);
+		textfield1.setText("");
+
 	}
-	
+
 	private void jRadioButton4ActionPerformed(ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton5.setSelected(false);
-	       textfield1.setEnabled(false);
-	       textfield1.setText("");
-		
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton5.setSelected(false);
+		textfield1.setEnabled(false);
+		textfield1.setText("");
+
 	}
-	
+
 	private void jRadioButton5ActionPerformed(ActionEvent evt) {
-		   jRadioButton1.setSelected(false);
-	       jRadioButton2.setSelected(false);
-	       jRadioButton3.setSelected(false);
-	       jRadioButton4.setSelected(false);
-	       textfield1.setEnabled(false);
-	       textfield1.setText("");
-		
-		
+		jRadioButton1.setSelected(false);
+		jRadioButton2.setSelected(false);
+		jRadioButton3.setSelected(false);
+		jRadioButton4.setSelected(false);
+		textfield1.setEnabled(false);
+		textfield1.setText("");
+
+
 	}
-	
+
 	private void jButton1ActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
+		LeitorDeListas buscaArquivo = new LeitorDeListas();
+		int proxima = (this.rep.getTransacoes().size())+ 1;
+		this.rep.adicionarTransacaoLista(this.rep.criarTransacao("T" + proxima));
+		this.jComboBox2.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarTrasacoes(this.rep.getTransacoes())));
 		
+		
+
 	}
-	
+
 	private void jButton2ActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private void jButton3ActionPerformed(ActionEvent evt) {
-		JanelaInicial janela = new JanelaInicial();
-		janela.setJanelaInicial();
-		janela.setComponentes();
-		janela.setEstadoAtual();
-		janela.addComponentes();
-		janela.setVisible(true);
-		this.dispose();
-		
-	}
-
-	public static void main(String[] args) {
-
-		JanelaAdicionarTransacoes janela = new JanelaAdicionarTransacoes();
-		janela.SetJanelaAdicionarTransacoes();
-		janela.setComponentes();
-		janela.addComponentes();
-		janela.setVisible(true);
+		this.janela.setVisible(true);
+		this.setVisible(false);
 
 	}
+
+	//	public static void main(String[] args) {
+	//
+	//		JanelaAdicionarTransacoes janela = new JanelaAdicionarTransacoes();
+	//		janela.SetJanelaAdicionarTransacoes();
+	//		janela.setComponentes();
+	//		janela.addComponentes();
+	//		janela.setVisible(true);
+	//
+	//	}
 
 }

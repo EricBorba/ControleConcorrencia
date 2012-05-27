@@ -2,7 +2,7 @@ package GerenciaDeDados;
 import java.util.ArrayList;
 
 /** 
- * Classe transações composta pelo nome que identifica a mesma e um ArrayList o qual contém as operaçoes a serem realizadas pela transação.
+ * Classe transacoes composta pelo nome que identifica a mesma e um ArrayList o qual contem as operacoes a serem realizadas pela transacoes.
  */
 
 /**
@@ -18,7 +18,7 @@ public class Transacao {
 		this.listaOperacoes = new ArrayList<Operacao>();
 		this.nomeTransacao = nomeTransacao;
 	}
-
+		
 	public ArrayList<Operacao> getListaOperacoes() {
 		return listaOperacoes;
 	}
@@ -27,22 +27,22 @@ public class Transacao {
 		this.listaOperacoes = listaOperacoes;
 	}
 	
-	/**Método criado para auxiliar na busca por uma transação quando ela estiver dentro
-	 * de uma lista, e consequentemente na remoção da mesma dessa lista**/
+	/**Metodo criado para auxiliar na busca por uma transacao quando ela estiver dentro
+	 * de uma lista, e consequentemente na remocao da mesma dessa lista**/
 	public boolean equals(String o){
 		//Transacao t = (Transacao) o;
 		return (o.equals(this.nomeTransacao));
 	}
 	
-	/**Insere uma operação dentro da lista de operações contida na transação**/
+	/**Insere uma operacao dentro da lista de operacoes contida na transacao**/
 	public void inserirOperacaoNaTransacao(Operacao operacao){
 		this.listaOperacoes.add(operacao);
 	}
 	
 	
-	/**OS MÉTODOS A SEGUIR PROVAVELMENTE NÃO SERÃO NECESSÁRIOS, DEVIDO A ISSO ESTÃO COMENTADOS**/
+	/**OS M…TODOS A SEGUIR PROVAVELMENTE NAO SERAO NECESSARIOS, DEVIDO A ISSO ESTAO COMENTADOS**/
 	
-    /** Para adicionar esse método é necessário a adição de uma ID na estrutura Operação; o mesmo seria capturado através de uma seleção na GUI	 * */
+    /** Para adicionar esse meodo e necessario a adicao de uma ID na estrutura Operacao; o mesmo seria capturado atraves de uma selecao na GUI	 * */
 	
 	/**public Operacao procurarOperacaoNaTransacao(){
 				
@@ -52,4 +52,8 @@ public class Transacao {
 		
 	}**/
 
+	/**retorna o nome da transacao*/
+	public String getnomeTransacao() {
+		return this.nomeTransacao;
+	}
 }
