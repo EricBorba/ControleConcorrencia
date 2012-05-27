@@ -1,27 +1,2 @@
-- Tratar erro no caso de por exemplo faltar um commit.
-
-R - opcional.
-
-- Se vai ser necessário durante uma execução de uma transação adicionar outra ( ou se o modelo proposto por bolado é suficiente )
-
-R - não
-
-- Begin, End e Commit poderão ser adicionados no modelo de execução proposto.
-
-R - sim
-
-- Tirar dúvida a respeito de apagar todas as transações após execução e clicar em add trançasões.
-
-R - pode ser, mas é melhor um botão "clear".
- 
-- Existe um gerenciador controla a tabela de locks….. mas ele faz menção a isso apenas no início do ppt….. ou seja, n se sabe se esse gerenciador e essa tabela tb serão usados no bloqueio de duas fases…
-
-R - 
- 
-- Onde fica armazenado o TIMESTAMP.
-
-R - na transacao
-
-- Precisa realizar tratamento ( Ex: variável e transacoes com o mesmo nome ).
-
-R - nao 
+- Perguntar ao monitor sobre o bloqueio de 2 fases básicos, se quando uma determinada transacao finalmente pode fazer seus unlock se faz todos de uma vez só... 
+( apenas daquela transacao, não o de todas as transacoes... )
