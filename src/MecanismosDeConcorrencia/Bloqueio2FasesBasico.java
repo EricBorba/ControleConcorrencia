@@ -19,7 +19,7 @@ import GerenciaDeDados.Transacao;
  *
  */
 
-public class Bloqueio2Fases {
+public class Bloqueio2FasesBasico {
 		
 	ArrayList<Transacao> listaTransacoesRecebida;
 	ArrayList<Operacao> listaOperacoesFinal;
@@ -31,7 +31,7 @@ public class Bloqueio2Fases {
 	String tipoTratamentoDeadlock;
 	
 	
-	public Bloqueio2Fases(ArrayList<Transacao> listaTransacoesRecebida, String tipoDeLock, String tipoTratamentoDeadLock){
+	public Bloqueio2FasesBasico(ArrayList<Transacao> listaTransacoesRecebida, String tipoDeLock, String tipoTratamentoDeadLock){
 		this.listaTransacoesRecebida = listaTransacoesRecebida;
 		this.tipoDeLock = tipoDeLock;
 		this.tipoTratamentoDeadlock = tipoTratamentoDeadLock;
@@ -45,7 +45,7 @@ public class Bloqueio2Fases {
 	 * variavel), pois depois de realizar um desbloqueio nao podera realizar mais nenhum
 	 * bloqueio.
 	 * **/
-	public ArrayList<Operacao> Bloqueio2FasesBasico(){
+	public ArrayList<Operacao> executar(){
 		
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int quantidadeOperacoesRestantes = quantidadeTotalOperacoes(this.listaTransacoesRecebida);
@@ -126,58 +126,6 @@ public class Bloqueio2Fases {
 		return listaOperacoesFinal;
 		
 	}	
-
-	/**
-	 * Bloqueia todos as variaveis que ira utilizar e vai liberando os bloqueios "exclusivos" aos poucos.
-	 * **/
-	public ArrayList<Operacao> Bloqueio2FasesBasicoConservador(){
-
-		if(tipoDeLock.equals("lock")){
-			if(tipoTratamentoDeadlock.equals(null)){
-				
-			}else if(tipoTratamentoDeadlock.equals("waitdie")){
-				
-			}else if(tipoTratamentoDeadlock.equals("woundwait")){
-				
-			}
-			
-		}else if(tipoDeLock.equals("lockMultiplo")){
-			if(tipoTratamentoDeadlock.equals(null)){
-				
-			}else if(tipoTratamentoDeadlock.equals("waitdie")){
-				
-			}else if(tipoTratamentoDeadlock.equals("woundwait")){
-				
-			}
-		}
-		return listaOperacoesFinal;
-	}
-	
-	/**
-	 * Caracterizado por liberar os bloqueios "exclusivos" apenas apos um commit ou abort.
-	 * **/
-	public ArrayList<Operacao> Bloqueio2FasesEstrito(){
-
-		if(tipoDeLock.equals("lock")){
-			if(tipoTratamentoDeadlock.equals(null)){
-				
-			}else if(tipoTratamentoDeadlock.equals("waitdie")){
-				
-			}else if(tipoTratamentoDeadlock.equals("woundwait")){
-				
-			}
-			
-		}else if(tipoDeLock.equals("lockMultiplo")){
-			if(tipoTratamentoDeadlock.equals(null)){
-				
-			}else if(tipoTratamentoDeadlock.equals("waitdie")){
-				
-			}else if(tipoTratamentoDeadlock.equals("woundwait")){
-				
-			}
-		}
-		return listaOperacoesFinal;
-	}
 	
 	// Verifica se ainda existe alguma operacao de write ou read dentro da lista de operacoes passada como parametro.
 	public boolean existeBloqueiosFuturos(ArrayList<Operacao> listaOperacoes){
