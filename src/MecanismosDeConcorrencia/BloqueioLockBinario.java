@@ -1,16 +1,14 @@
 package MecanismosDeConcorrencia;
 
-public class Bloqueio {
+public class BloqueioLockBinario {
 	String IdTransacao;
-	String bloqueio;
 	String Idvariavel;
 
-	public Bloqueio(String NomeTransacao, String bloqueio, String nomeVariavel){
+	public BloqueioLockBinario(String NomeTransacao,String nomeVariavel){
 
 		this.IdTransacao = nomeVariavel;
 		this.Idvariavel = nomeVariavel;
-		this.bloqueio = bloqueio;
-
+	
 	}
 
 	public String getIdTransacao() {
@@ -21,15 +19,7 @@ public class Bloqueio {
 		IdTransacao = idTransacao;
 	}
 
-	public String getBloqueio() {
-		return bloqueio;
-	}
-
-	public void setBloqueio(String bloqueio) {
-		this.bloqueio = bloqueio;
-	}
-
-	public String getIdvariavel() {
+		public String getIdvariavel() {
 		return Idvariavel;
 	}
 

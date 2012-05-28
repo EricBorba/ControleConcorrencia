@@ -2,11 +2,12 @@
 
 tarefas feitas:
 - tabela de bloqueio adicionada;
--linkagem com as classes de eric feita;
+- linkagem com as classes de eric feita;
+- classe lock binário concluida
 
 tarefas a fazer:
 
-- Criar Classe para lock e lock mœltiplo dentro do package MecanismosDeConcorrencia. 
+- Criar Classe para lock mœltiplo dentro do package MecanismosDeConcorrencia. 
 
 
 

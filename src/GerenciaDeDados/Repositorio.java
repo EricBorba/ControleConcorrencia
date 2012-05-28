@@ -1,7 +1,7 @@
 package GerenciaDeDados;
 import java.util.ArrayList;
 
-import MecanismosDeConcorrencia.Bloqueio;
+import MecanismosDeConcorrencia.BloqueioLockBinario;
 
 
 
@@ -18,7 +18,7 @@ public class Repositorio {
 
 	ArrayList<Transacao> listaTransacoes;
 	ArrayList<Variavel> listaVariaveis;
-	ArrayList<Bloqueio> listaDeBloqueios;
+	ArrayList<BloqueioLockBinario> listaDeBloqueios;
 
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class Repositorio {
 
 		this.listaTransacoes = new ArrayList<Transacao>();
 		this.listaVariaveis = new ArrayList<Variavel>();
-		this.listaDeBloqueios = new ArrayList<Bloqueio>();		
+		this.listaDeBloqueios = new ArrayList<BloqueioLockBinario>();		
 	}
 
 	/**
@@ -124,11 +124,11 @@ public class Repositorio {
 	/**tabela de  bloqueio*/
 
 
-	public ArrayList<Bloqueio> getListaDeBloqueios() {
+	public ArrayList<BloqueioLockBinario> getListaDeBloqueios() {
 		return listaDeBloqueios;
 	}
 
-	public void setListaDeBloqueios(ArrayList<Bloqueio> listaDeBloqueios) {
+	public void setListaDeBloqueios(ArrayList<BloqueioLockBinario> listaDeBloqueios) {
 		this.listaDeBloqueios = listaDeBloqueios;
 	}
 
@@ -146,14 +146,26 @@ public class Repositorio {
 		this.listaDeBloqueios.remove(posicao);
 	}
 
-	/**adiciona um bloqueio dentro do arraylist de bloqueios **/
-	public void adicionarBloqueioLista(String nomeTransacao,String nomeVariavel, String tipoBloqueio){
-		Bloqueio novoBloqueio = new Bloqueio(nomeTransacao, tipoBloqueio, nomeVariavel);
+	/**adiciona um bloqueio dentro do arraylist de bloqueios, o parametro tipobloqueio indica se o 
+	 * bloqueio vai ser do tipo lock binário (0), lock multiplo (1)  **/
+	public void adicionarBloqueioLista(String nomeTransacao, Operacao operacao, int tipoBloqueio){
+		
+		
+		if(tipoBloqueio == 0){
+			
+			BloqueioLockBinario novoBloqueio = new BloqueioLockBinario(nomeTransacao, operacao.getVariavel().getVariavel());
+			this.listaDeBloqueios.add(novoBloqueio);
+			
+			
+		}else if(tipoBloqueio == 1){
+			
+			//lock multiplo
+		}
 
-		this.listaDeBloqueios.add(novoBloqueio);
+		
 	}
-	
-	
+
+
 
 
 }
