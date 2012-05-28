@@ -22,9 +22,9 @@ retornar a transacao e a variavel. ( Feito: Passando como parâmetro para a busca
 afim de não ser necessário criar um método dentro da classe Bloqueio2Fases para cada situacao, ou seja, todas as possibilidades serão analisadas dentro de um mesmo
 método de acordo com o parâmetro passado.   ( Feito: Mas verificar futuramente se está correto e se será necessário )
 
-- implementar métodos: executarOperacao, quantidadetotaloperacoes e executarUnlock dentro da classe bloqueio2fases.
+- implementar métodos: executarOperacao, quantidadetotaloperacoes, executarUnlock, bloquearTudo e existeBloqueiosFuturosVariavelEspecifica dentro da classe bloqueio2fases.
 
-- Corrigir if da linha 75 dentro da classe bloqueio2fases.
+- Verificar o retorno do executarOperacao dos 3 tipos de bloqueios de 2 fases para conectar com os locks de bolado.
 
 
 

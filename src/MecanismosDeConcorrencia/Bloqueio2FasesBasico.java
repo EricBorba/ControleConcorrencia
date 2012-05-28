@@ -52,7 +52,7 @@ public class Bloqueio2FasesBasico {
 		int posicaoTransacaoLista=0;   // Para saber qual transacao está a ser executada no momento
 		ArrayList<Integer> posicaoOperacaoTransacao = criarPosicoesOperacao(this.listaTransacoesRecebida); // Para saber qual operacao será executada dentro da lista de operacoes de uma transacao, a posicao no array é equivalente a posicao da transacao na lista de transacoes.
 		boolean conseguiuExecutar = false;
-		boolean jaDeuUnlock = false;
+	
 		
 		
 		if(tipoDeLock.equals("lock")){
@@ -86,9 +86,9 @@ public class Bloqueio2FasesBasico {
 							posicaoOperacaoTransacao.set(posicaoTransacaoLista, (posicaoOperacaoTransacao.get(posicaoTransacaoLista)+1));//Passar para a proxima operacao dentro da lista de operacoes de uma tranasacao
 							quantidadeOperacoesRestantes = quantidadeOperacoesRestantes - 1;
 							
-							if((!existeBloqueiosFuturos(listaOperacoesAuxiliar)) && !jaDeuUnlock ){
+							if((!existeBloqueiosFuturos(listaOperacoesAuxiliar)) && (!existeBloqueiosFuturosVariavelEspecifica(listaOperacoesAuxiliar)) ){
 								executarUnlock(transacaoTemp, operacaoTemp); //Se não existe bloqueios futuros é passado como parâmetro a mesma operação que foi executada, poisela contém a variável que já pode ser desbloqueada.
-								jaDeuUnlock = true;	
+								
 							}							
 							
 						}															
@@ -115,6 +115,51 @@ public class Bloqueio2FasesBasico {
 			
 		}else if(tipoDeLock.equals("lockMultiplo")){
 			if(tipoTratamentoDeadlock.equals(null)){
+					
+					while(posicaoTransacaoLista <= quantidadeTransacoes){
+					
+					
+					// Porque se fossem iguais iria tentar acessar uma posicao no array que não existe.
+					if(posicaoTransacaoLista < quantidadeTransacoes){
+					 						
+						Transacao transacaoTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista); //Seleciona a transacao que está na vez.
+						Operacao operacaoTemp = transacaoTemp.getListaOperacoes().get(posicaoOperacaoTransacao.get(posicaoTransacaoLista));
+						
+						
+						ArrayList<Operacao> listaOperacoesAuxiliar = new ArrayList<Operacao>(); // Utilizada para auxiliar na verificação das operações restantes, pra ser passado como parametro e verificar se existe algo que necessite de um bloqueio.
+						listaOperacoesAuxiliar = transacaoTemp.getListaOperacoes();
+						
+						
+						conseguiuExecutar = executarOperacao(transacaoTemp, operacaoTemp); // Tenta executar a operacao
+						
+						
+						//Se foi possivel de executar
+						if(conseguiuExecutar){
+							
+							listaOperacoesAuxiliar.remove(operacaoTemp);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+							listaOperacoesFinal.add(operacaoTemp);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+							posicaoOperacaoTransacao.set(posicaoTransacaoLista, (posicaoOperacaoTransacao.get(posicaoTransacaoLista)+1));//Passar para a proxima operacao dentro da lista de operacoes de uma tranasacao
+							quantidadeOperacoesRestantes = quantidadeOperacoesRestantes - 1;
+							
+							if((!existeBloqueiosFuturos(listaOperacoesAuxiliar)) && (!existeBloqueiosFuturosVariavelEspecifica(listaOperacoesAuxiliar)) ){
+								executarUnlock(transacaoTemp, operacaoTemp); //Se não existe bloqueios futuros é passado como parâmetro a mesma operação que foi executada, poisela contém a variável que já pode ser desbloqueada.
+								
+							}							
+							
+						}															
+					
+					}					
+										
+					if(quantidadeOperacoesRestantes == 0){
+						posicaoTransacaoLista = (this.listaTransacoesRecebida.size() + 1); //Para encerrar o while e consequentemente o método.
+					}else if (posicaoTransacaoLista < quantidadeTransacoes){
+						posicaoTransacaoLista++; // Para executar a operação da próxima transação.
+					}else{
+						posicaoTransacaoLista = 0; // Para depois de executa a operacao da ultima transacao retornar para a primeira.
+					}
+				
+				
+				}
 				
 			}else if(tipoTratamentoDeadlock.equals("waitdie")){
 				
@@ -127,6 +172,12 @@ public class Bloqueio2FasesBasico {
 		
 	}	
 	
+	private boolean existeBloqueiosFuturosVariavelEspecifica(
+			ArrayList<Operacao> listaOperacoesAuxiliar) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	// Verifica se ainda existe alguma operacao de write ou read dentro da lista de operacoes passada como parametro.
 	public boolean existeBloqueiosFuturos(ArrayList<Operacao> listaOperacoes){
 		
