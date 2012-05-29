@@ -168,27 +168,22 @@ public class Repositorio {
 		}
 	}
 
-	/**adiciona um bloqueio dentro do arraylist de bloqueios, o parametro tipobloqueio indica se o 
-	 * bloqueio vai ser do tipo lock binário (0), lock multiplo (1)  **/
-	public void adicionarBloqueioLista(String nomeTransacao, Operacao operacao, int tipoBloqueio){
+	/**adiciona um bloqueio dentro do arraylist de bloqueios lockmultiplo*/
+	public void adicionarBloqueioListaLockMultiplo(String nomeTransacao, Operacao operacao, int numeroDeleituras){
 
-
-		if(tipoBloqueio == 0){
-
-			BloqueioLockBinario novoBloqueio = new BloqueioLockBinario(nomeTransacao, operacao.getVariavel().getVariavel());
-			this.listaDeBloqueiosBinario.add(novoBloqueio);
-
-
-		}else if(tipoBloqueio == 1){
 			
-			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getVariavel(), operacao.getNomeOperacao()+"_lock");
+			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getVariavel(), operacao.getNomeOperacao()+"_lock",numeroDeleituras);
 			this.listaDeBloqueioMultiplo.add(novoBloqueio);
-		}
+		
 
 
 	}
 
+	/**adiciona um bloqueio dentro do arraylist de bloqueios lockbinario*/
+	public void adicionarBloqueioListaLockBinario(String nomeTransacao, Operacao operacao){
 
+			BloqueioLockBinario novoBloqueio = new BloqueioLockBinario(nomeTransacao, operacao.getVariavel().getVariavel());
+			this.listaDeBloqueiosBinario.add(novoBloqueio);
 
-
+	}
 }
