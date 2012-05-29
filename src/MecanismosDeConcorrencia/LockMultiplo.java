@@ -36,8 +36,10 @@ public class LockMultiplo {
 							retorno = 1;
 
 						}else if(this.repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio() == "Write_lock"){
+							
 							/////bloqueada por outra com write_lock
 							retorno = 2;
+							i = this.repositorio.getListaDeBloqueioMultiplo().size();
 
 						}else{
 
@@ -52,7 +54,7 @@ public class LockMultiplo {
 
 			}
 
-			if(retorno == 1){
+			if(retorno == 1 || retorno == 0){
 				this.repositorio.adicionarBloqueioLista(transacao,operacao,1);
 			}
 
@@ -66,7 +68,6 @@ public class LockMultiplo {
 					if(this.repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(transacao)){
 						if(this.repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio().equals("Read_lock")&& existeOutroBloqueio < 2){
 							posicaoCrescerBloqueio = i;
-							
 							retorno = 1;
 						}else if(existeOutroBloqueio > 2){
 
@@ -82,10 +83,13 @@ public class LockMultiplo {
 			
 			if(existeOutroBloqueio >= 2){
 				retorno = 2;
-			}else if(retorno == 0 && existeOutroBloqueio < 2){
+			}else if(retorno == 0 && existeOutroBloqueio == 1){
 				retorno = 2;
 			}else if (retorno == 1 && existeOutroBloqueio < 2){
 				this.repositorio.getListaDeBloqueioMultiplo().get(posicaoCrescerBloqueio).setModoBloqueio("Write_lock");
+			}else if(retorno == 0 && existeOutroBloqueio == 0){
+				
+				this.repositorio.adicionarBloqueioLista(transacao,operacao,1);
 			}
 
 		}else{

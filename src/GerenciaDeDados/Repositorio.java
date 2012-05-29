@@ -181,7 +181,7 @@ public class Repositorio {
 
 		}else if(tipoBloqueio == 1){
 			
-			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getVariavel(), operacao.getNomeOperacao());
+			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getVariavel(), operacao.getNomeOperacao()+"_lock");
 			this.listaDeBloqueioMultiplo.add(novoBloqueio);
 		}
 
