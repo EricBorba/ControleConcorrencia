@@ -1,4 +1,4 @@
-package MecanismosDeConcorrencia;
+package GerenciaDeDados;
 
 public class BloqueioLockBinario {
 	String IdTransacao;

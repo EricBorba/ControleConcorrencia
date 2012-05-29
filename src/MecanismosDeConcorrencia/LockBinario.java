@@ -20,12 +20,12 @@ public class LockBinario {
 	}	
 
 	/**verifica a presença de uma variável na tabela de bloqueio, se ela 
-	 * esta presente, o bloqueio não pode ser feito pq ela já está bloqueada*/
+	 * esta presente retorno false pois o bloqueio não pode ser feito pq ela já está bloqueada*/
 	public boolean podeBloquear(){
 
 		boolean bloqueado = false;
-		for(int i = 0; i < this.repositorio.getListaDeBloqueios().size(); i++){
-			if(this.repositorio.getListaDeBloqueios().get(i).getIdvariavel().equals(this.operacao.getVariavel()) == true){
+		for(int i = 0; i < this.repositorio.getListaDeBloqueiosBinarios().size(); i++){
+			if(this.repositorio.getListaDeBloqueiosBinarios().get(i).getIdvariavel().equals(this.operacao.getVariavel()) == true){
 				bloqueado = true;
 			}
 
@@ -36,7 +36,7 @@ public class LockBinario {
 	/**construindo o Lock, se conseguir bloquear retorna 1, se não conseguir bloquear porque a
 	 * variavel estava sendo bloqueada por outra transacao retorna 2, se não bloqueou pq estava sendo bloqueada
 	 * pela mesma transacao retorna 3*/
-	public int efetuarLock(boolean bloqueio){
+	public int efetuarLockBinario(boolean bloqueio){
 		int retorno = 0;
 		String transacaoNaLista = "";
 
@@ -45,10 +45,10 @@ public class LockBinario {
 			retorno = 1;
 		}else{
 			//verifica transacao presente na lista bloqueando a variavel procurada
-			for(int i = 0; i < this.repositorio.getListaDeBloqueios().size(); i++){
-				if(this.repositorio.getListaDeBloqueios().get(i).getIdvariavel().equals(this.operacao.getVariavel()) == true){
+			for(int i = 0; i < this.repositorio.getListaDeBloqueiosBinarios().size(); i++){
+				if(this.repositorio.getListaDeBloqueiosBinarios().get(i).getIdvariavel().equals(this.operacao.getVariavel()) == true){
 
-					transacaoNaLista = this.repositorio.getListaDeBloqueios().get(i).getIdTransacao();
+					transacaoNaLista = this.repositorio.getListaDeBloqueiosBinarios().get(i).getIdTransacao();
 				}
 
 			}

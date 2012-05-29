@@ -1,7 +1,6 @@
 package GerenciaDeDados;
 import java.util.ArrayList;
 
-import MecanismosDeConcorrencia.BloqueioLockBinario;
 
 
 
@@ -18,7 +17,8 @@ public class Repositorio {
 
 	ArrayList<Transacao> listaTransacoes;
 	ArrayList<Variavel> listaVariaveis;
-	ArrayList<BloqueioLockBinario> listaDeBloqueios;
+	ArrayList<BloqueioLockBinario> listaDeBloqueiosBinario;
+	ArrayList<BloqueioLockMultiplo> listaDeBloqueioMultiplo;
 
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class Repositorio {
 
 		this.listaTransacoes = new ArrayList<Transacao>();
 		this.listaVariaveis = new ArrayList<Variavel>();
-		this.listaDeBloqueios = new ArrayList<BloqueioLockBinario>();		
+		this.listaDeBloqueiosBinario = new ArrayList<BloqueioLockBinario>();		
 	}
 
 	/**
@@ -124,45 +124,68 @@ public class Repositorio {
 	/**tabela de  bloqueio*/
 
 
-	public ArrayList<BloqueioLockBinario> getListaDeBloqueios() {
-		return listaDeBloqueios;
+	public ArrayList<BloqueioLockBinario> getListaDeBloqueiosBinarios() {
+		return listaDeBloqueiosBinario;
 	}
 
-	public void setListaDeBloqueios(ArrayList<BloqueioLockBinario> listaDeBloqueios) {
-		this.listaDeBloqueios = listaDeBloqueios;
+	public void setListaDeBloqueiosBinarios(ArrayList<BloqueioLockBinario> listaDeBloqueioBinarios) {
+		this.listaDeBloqueiosBinario = listaDeBloqueioBinarios;
 	}
 
 
-	/**Remove um bloqueio dentro do arraylist de bloqueios **/
-	public void removerBloqueioLista(String nomeTransacao,String nomeVariavel){
-		int posicao = 0;
-		for(int i = 0; i < this.listaDeBloqueios.size(); i++){
-			if(this.listaDeBloqueios.get(i).getIdTransacao().equals(nomeTransacao) == true && this.listaDeBloqueios.get(i).equals(nomeVariavel)== true){
-				posicao = i;
+	public ArrayList<BloqueioLockMultiplo> getListaDeBloqueioMultiplo() {
+		return listaDeBloqueioMultiplo;
+	}
+
+	public void setListaDeBloqueioMultiplo(ArrayList<BloqueioLockMultiplo> listaDeBloqueioMultiplo) {
+		this.listaDeBloqueioMultiplo = listaDeBloqueioMultiplo;
+	}
+
+	/**Remove um bloqueio dentro do arraylist de bloqueios ,o parametro tipobloqueio indica se o 
+	 * bloqueio vai ser do tipo lock binário (0), lock multiplo (1)**/
+	public void removerBloqueioLista(String nomeTransacao,Operacao operacao, int tipoBloqueio){
+
+		if(tipoBloqueio == 0){
+			int posicao = 0;
+			for(int i = 0; i < this.listaDeBloqueiosBinario.size(); i++){
+				if(this.listaDeBloqueiosBinario.get(i).getIdTransacao().equals(nomeTransacao) == true && this.listaDeBloqueiosBinario.get(i).equals(operacao.getVariavel())== true){
+					posicao = i;
+				}
+
 			}
+			this.listaDeBloqueiosBinario.remove(posicao);
 
+		}else if(tipoBloqueio == 1){
+			
+			int posicao = 0;
+			for(int i = 0; i < this.listaDeBloqueioMultiplo.size(); i++){
+				if(this.listaDeBloqueioMultiplo.get(i).getNomeTransacao().equals(nomeTransacao) == true && this.listaDeBloqueioMultiplo.get(i).equals(operacao.getVariavel())== true){
+					posicao = i;
+				}
+
+			}
+			this.listaDeBloqueioMultiplo.remove(posicao);
 		}
-
-		this.listaDeBloqueios.remove(posicao);
 	}
 
 	/**adiciona um bloqueio dentro do arraylist de bloqueios, o parametro tipobloqueio indica se o 
 	 * bloqueio vai ser do tipo lock binário (0), lock multiplo (1)  **/
 	public void adicionarBloqueioLista(String nomeTransacao, Operacao operacao, int tipoBloqueio){
-		
-		
+
+
 		if(tipoBloqueio == 0){
-			
+
 			BloqueioLockBinario novoBloqueio = new BloqueioLockBinario(nomeTransacao, operacao.getVariavel().getVariavel());
-			this.listaDeBloqueios.add(novoBloqueio);
-			
-			
+			this.listaDeBloqueiosBinario.add(novoBloqueio);
+
+
 		}else if(tipoBloqueio == 1){
 			
-			//lock multiplo
+			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getVariavel(), operacao.getNomeOperacao());
+			this.listaDeBloqueioMultiplo.add(novoBloqueio);
 		}
 
-		
+
 	}
 
 
