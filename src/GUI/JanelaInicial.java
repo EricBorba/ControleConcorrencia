@@ -61,6 +61,10 @@ public class JanelaInicial extends JFrame{
 	JButton jButton3;
 	Repositorio rep;
 	JanelaAdicionarTransacoes janela;
+	
+	boolean radio1Selecionado;
+	boolean radio2Selecionado;
+	boolean radio3Selecionado;
 
 	public JanelaInicial(Repositorio repNovo){
 		this.rep = repNovo;
@@ -146,6 +150,7 @@ public class JanelaInicial extends JFrame{
 		label5.setBounds(660, 20, 250, 40);
 		label5.setFont(new Font("Comic Sans MS", 1, 15));
 
+		radio1Selecionado = false;
 		this.jRadioButton1 = new JRadioButton();
 		this.jRadioButton1.setBounds(660, 50,300,30);
 		this.jRadioButton1.setText("Bloqueio de 2 fases Básico");
@@ -158,7 +163,7 @@ public class JanelaInicial extends JFrame{
 		});
 		
 		
-		
+		radio2Selecionado = false;
 		this.jRadioButton2 = new JRadioButton();
 		this.jRadioButton2.setBounds(660, 80,300,30);
 		this.jRadioButton2.setText("Bloqueio de 2 fases Estrito");
@@ -170,6 +175,7 @@ public class JanelaInicial extends JFrame{
 			}
 		});
 
+		radio1Selecionado = false;
 		this.jRadioButton3 = new JRadioButton();
 		this.jRadioButton3.setBounds(660, 110,350,30);
 		this.jRadioButton3.setText("Bloqueio de 2 fases Conservador");
@@ -322,31 +328,64 @@ public class JanelaInicial extends JFrame{
 	private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		jRadioButton2.setSelected(false);
 		jRadioButton3.setSelected(false);
+		if(radio1Selecionado == false){
 		jRadioButton4.setEnabled(true);
 		jRadioButton5.setEnabled(true);
 		jRadioButton6.setEnabled(true);
 		jRadioButton7.setEnabled(true);
+		radio1Selecionado = true;
+		radio3Selecionado = false;
+		radio2Selecionado = false;
+		}else{
+			jRadioButton4.setEnabled(false);
+			jRadioButton5.setEnabled(false);
+			jRadioButton6.setEnabled(false);
+			jRadioButton7.setEnabled(false);
+			radio1Selecionado = false;
+		}
 
 	}
 
 	private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 		jRadioButton1.setSelected(false);
 		jRadioButton3.setSelected(false);
-		jRadioButton4.setEnabled(true);
-		jRadioButton5.setEnabled(true);
-		jRadioButton6.setEnabled(true);
-		jRadioButton7.setEnabled(true);
+		
+		if(radio2Selecionado == false){
+			jRadioButton4.setEnabled(true);
+			jRadioButton5.setEnabled(true);
+			jRadioButton6.setEnabled(true);
+			jRadioButton7.setEnabled(true);
+			radio2Selecionado = true;
+			radio1Selecionado = false;
+			radio3Selecionado = false;
+			}else{
+				jRadioButton4.setEnabled(false);
+				jRadioButton5.setEnabled(false);
+				jRadioButton6.setEnabled(false);
+				jRadioButton7.setEnabled(false);
+				radio2Selecionado = false;
+			}
 
 	}
 
 	private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {
 		jRadioButton1.setSelected(false);
 		jRadioButton2.setSelected(false);
-		jRadioButton4.setEnabled(true);
-		jRadioButton5.setEnabled(true);
-		jRadioButton6.setEnabled(true);
-		jRadioButton7.setEnabled(true);   	
-
+		if(radio3Selecionado == false){
+			jRadioButton4.setEnabled(true);
+			jRadioButton5.setEnabled(true);
+			jRadioButton6.setEnabled(true);
+			jRadioButton7.setEnabled(true);
+			radio3Selecionado = true;
+			radio1Selecionado = false;
+			radio2Selecionado = false;
+			}else{
+				jRadioButton4.setEnabled(false);
+				jRadioButton5.setEnabled(false);
+				jRadioButton6.setEnabled(false);
+				jRadioButton7.setEnabled(false);
+				radio3Selecionado = false;
+			}
 	}
 
 	private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {
