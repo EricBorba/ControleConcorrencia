@@ -131,7 +131,7 @@ public class Bloqueio2FasesBasico {
 		}else if(tipoDeLock.equals("lockMultiplo")){
 			if(tipoTratamentoDeadlock.equals(null)){
 					
-				//Polling criado para ficar alternando entre as transacoes e realizando( se poss’vel ) uma operacao de cada transacao por vez.
+				//Polling criado para ser poss’vel alternar entre as transacoes e realizando( se poss’vel ) uma operacao de cada transacao por vez. 
 				while(!this.listaTransacoesRecebida.isEmpty()){					
 					
 					 						
