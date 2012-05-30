@@ -52,15 +52,16 @@ public class Bloqueio2FasesConservador {
 						Operacao operacaoTemp = transacaoTemp.getListaOperacoes().get(posicaoOperacaoTransacao.get(posicaoTransacaoLista));
 						
 						
-						ArrayList<Operacao> listaOperacoesAuxiliar = new ArrayList<Operacao>(); // Utilizada para auxiliar na verificação das operações restantes, pra ser passado como parametro e verificar se existe algo que necessite de um bloqueio.
-						listaOperacoesAuxiliar = transacaoTemp.getListaOperacoes();
+						//ArrayList<Operacao> listaOperacoesAuxiliar = new ArrayList<Operacao>(); // Utilizada para auxiliar na verificação das operações restantes, pra ser passado como parametro e verificar se existe algo que necessite de um bloqueio.
+						//listaOperacoesAuxiliar = transacaoTemp.getListaOperacoes();
 						
 						conseguiuExecutar = executarOperacao(transacaoTemp, operacaoTemp); // Tenta executar a operacao
 						
 						//Se foi possivel de executar
 						if(conseguiuExecutar){
 							
-							listaOperacoesAuxiliar.remove(operacaoTemp);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+							this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+							ArrayList<Operacao> listaOperacoesAuxiliar = this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes();							
 							listaOperacoesFinal.add(operacaoTemp);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
 							posicaoOperacaoTransacao.set(posicaoTransacaoLista, (posicaoOperacaoTransacao.get(posicaoTransacaoLista)+1));//Passar para a proxima operacao dentro da lista de operacoes de uma tranasacao
 							quantidadeOperacoesRestantes = quantidadeOperacoesRestantes - 1;

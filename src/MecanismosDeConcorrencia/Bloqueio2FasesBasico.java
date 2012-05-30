@@ -47,10 +47,10 @@ public class Bloqueio2FasesBasico {
 	 * **/
 	public ArrayList<Operacao> executar(){
 		
-		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
-		int quantidadeOperacoesRestantes = quantidadeTotalOperacoes(this.listaTransacoesRecebida);
+		//int quantidadeTransacoes = this.listaTransacoesRecebida.size();
+		//int quantidadeOperacoesRestantes = quantidadeTotalOperacoes(this.listaTransacoesRecebida);
+		//ArrayList<Integer> posicaoOperacaoTransacao = criarPosicoesOperacao(this.listaTransacoesRecebida); // Para saber qual operacao será executada dentro da lista de operacoes de uma transacao, a posicao no array é equivalente a posicao da transacao na lista de transacoes.
 		int posicaoTransacaoLista=0;   // Para saber qual transacao está a ser executada no momento
-		ArrayList<Integer> posicaoOperacaoTransacao = criarPosicoesOperacao(this.listaTransacoesRecebida); // Para saber qual operacao será executada dentro da lista de operacoes de uma transacao, a posicao no array é equivalente a posicao da transacao na lista de transacoes.
 		boolean conseguiuExecutar = false;
 	
 		
@@ -61,48 +61,63 @@ public class Bloqueio2FasesBasico {
 				
 				
 				//Polling criado para ficar alternando entre as transacoes e realizando( se possível ) uma operacao de cada transacao por vez.
-				while(posicaoTransacaoLista <= quantidadeTransacoes){
+				while(!this.listaTransacoesRecebida.isEmpty()){					
 					
-					
-					// Porque se fossem iguais iria tentar acessar uma posicao no array que não existe.
-					if(posicaoTransacaoLista < quantidadeTransacoes){
 					 						
 						Transacao transacaoTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista); //Seleciona a transacao que está na vez.
-						Operacao operacaoTemp = transacaoTemp.getListaOperacoes().get(posicaoOperacaoTransacao.get(posicaoTransacaoLista));
+						Operacao operacaoTemp = transacaoTemp.getListaOperacoes().get(0);//Pega sempre a primeira posicao da lista de operacoes
 						
 						
-						ArrayList<Operacao> listaOperacoesAuxiliar = new ArrayList<Operacao>(); // Utilizada para auxiliar na verificação das operações restantes, pra ser passado como parametro e verificar se existe algo que necessite de um bloqueio.
-						listaOperacoesAuxiliar = transacaoTemp.getListaOperacoes();
-						
-						
-						conseguiuExecutar = executarOperacao(transacaoTemp, operacaoTemp); // Tenta executar a operacao
-						
-						
-						//Se foi possivel de executar
-						if(conseguiuExecutar){
+						if(!operacaoTemp.getNomeOperacao().equals("Commit") && !operacaoTemp.getNomeOperacao().equals("Begin")){
 							
-							listaOperacoesAuxiliar.remove(operacaoTemp);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
-							listaOperacoesFinal.add(operacaoTemp);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
-							posicaoOperacaoTransacao.set(posicaoTransacaoLista, (posicaoOperacaoTransacao.get(posicaoTransacaoLista)+1));//Passar para a proxima operacao dentro da lista de operacoes de uma tranasacao
-							quantidadeOperacoesRestantes = quantidadeOperacoesRestantes - 1;
 							
-							if((!existeBloqueiosFuturos(listaOperacoesAuxiliar)) && (!existeBloqueiosFuturosVariavelEspecifica(listaOperacoesAuxiliar)) ){
-								executarUnlock(transacaoTemp, operacaoTemp); //Se não existe bloqueios futuros é passado como parâmetro a mesma operação que foi executada, poisela contém a variável que já pode ser desbloqueada.
+							conseguiuExecutar = executarOperacao(transacaoTemp, operacaoTemp); // Tenta executar a operacao chamando o lockBinario.
+														
+							//Se foi possivel de executar
+							if(conseguiuExecutar){
 								
-							}							
+								listaOperacoesFinal.add(operacaoTemp);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+								this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp);;//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+								
+								
+								if((!existeBloqueiosFuturos(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes())) && (!existeLeiturasFuturasVariavelEspecifica(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes(), operacaoTemp)) ){
+									
+									executarUnlock(transacaoTemp, operacaoTemp); //Se não existe bloqueios futuros é passado como parâmetro a mesma operação que foi executada, poisela contém a variável que já pode ser desbloqueada.
+									
+								}							
+								
+							}	
 							
-						}															
+							
+						}else if(operacaoTemp.getNomeOperacao().equals("Begin")){
+							this.listaOperacoesFinal.add(operacaoTemp); // Adiciona begin a lista final
+							this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp); // remove a operacao da lista de operacoes.
+													
+						
+						// Ou seja, é Commit
+						}else{
+							this.listaOperacoesFinal.add(operacaoTemp); // Adiciona commit a lista final
+							this.listaTransacoesRecebida.remove(transacaoTemp); // Não precisa remover a operacao da lista de operacoes pois será mandado remover a transacao toda.
+							
+							
+						}		
+						
+						//Polling pra passar de uma transacao para outra
+						if(operacaoTemp.getNomeOperacao().equals("Commit")){
+							
+							if(posicaoTransacaoLista == (listaTransacoesRecebida.size())){
+								posicaoTransacaoLista = 0;
+							}// Não tem else pq a posicao tem que permanecer a mesma, afinal após remover um bojeto de uma lista, o seguinte ocupa seu lugar.
+							
+						}else{
+							if(posicaoTransacaoLista == (listaTransacoesRecebida.size()-1)){
+								posicaoTransacaoLista = 0; //Caso seja a ultima transacao, retorna para a primeira.
+							}else{
+								posicaoTransacaoLista++;
+							}
+							
+						}
 					
-					}					
-										
-					if(quantidadeOperacoesRestantes == 0){
-						posicaoTransacaoLista = (this.listaTransacoesRecebida.size() + 1); //Para encerrar o while e consequentemente o método.
-					}else if (posicaoTransacaoLista < quantidadeTransacoes){
-						posicaoTransacaoLista++; // Para executar a operação da próxima transação.
-					}else{
-						posicaoTransacaoLista = 0; // Para depois de executa a operacao da ultima transacao retornar para a primeira.
-					}
-				
 				
 				}
 				
@@ -116,48 +131,86 @@ public class Bloqueio2FasesBasico {
 		}else if(tipoDeLock.equals("lockMultiplo")){
 			if(tipoTratamentoDeadlock.equals(null)){
 					
-					while(posicaoTransacaoLista <= quantidadeTransacoes){
+				//Polling criado para ficar alternando entre as transacoes e realizando( se possível ) uma operacao de cada transacao por vez.
+				while(!this.listaTransacoesRecebida.isEmpty()){					
 					
-					
-					// Porque se fossem iguais iria tentar acessar uma posicao no array que não existe.
-					if(posicaoTransacaoLista < quantidadeTransacoes){
 					 						
 						Transacao transacaoTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista); //Seleciona a transacao que está na vez.
-						Operacao operacaoTemp = transacaoTemp.getListaOperacoes().get(posicaoOperacaoTransacao.get(posicaoTransacaoLista));
+						Operacao operacaoTemp = transacaoTemp.getListaOperacoes().get(0); // Pega sempre a primeira operacao da lista de operacoes
 						
 						
-						ArrayList<Operacao> listaOperacoesAuxiliar = new ArrayList<Operacao>(); // Utilizada para auxiliar na verificação das operações restantes, pra ser passado como parametro e verificar se existe algo que necessite de um bloqueio.
-						listaOperacoesAuxiliar = transacaoTemp.getListaOperacoes();
-						
-						
-						conseguiuExecutar = executarOperacao(transacaoTemp, operacaoTemp); // Tenta executar a operacao
-						
-						
-						//Se foi possivel de executar
-						if(conseguiuExecutar){
+						if(!operacaoTemp.getNomeOperacao().equals("Commit") && !operacaoTemp.getNomeOperacao().equals("Begin")){
 							
-							listaOperacoesAuxiliar.remove(operacaoTemp);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
-							listaOperacoesFinal.add(operacaoTemp);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
-							posicaoOperacaoTransacao.set(posicaoTransacaoLista, (posicaoOperacaoTransacao.get(posicaoTransacaoLista)+1));//Passar para a proxima operacao dentro da lista de operacoes de uma tranasacao
-							quantidadeOperacoesRestantes = quantidadeOperacoesRestantes - 1;
 							
-							if((!existeBloqueiosFuturos(listaOperacoesAuxiliar)) && (!existeBloqueiosFuturosVariavelEspecifica(listaOperacoesAuxiliar)) ){
-								executarUnlock(transacaoTemp, operacaoTemp); //Se não existe bloqueios futuros é passado como parâmetro a mesma operação que foi executada, poisela contém a variável que já pode ser desbloqueada.
+							conseguiuExecutar = executarOperacao(transacaoTemp, operacaoTemp); // Tenta executar a operacao chamando o lockBinario.
+														
+							//Se foi possivel de executar
+							if(conseguiuExecutar){
 								
-							}							
-							
-						}															
-					
-					}					
+																
+								listaOperacoesFinal.add(operacaoTemp);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+								this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp);;//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+								
+								if((!existeBloqueiosFuturos(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes())) && (!existePassagemReadWrite(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes()))){
+									
+									if(operacaoTemp.getNomeOperacao().equals("Write")){
 										
-					if(quantidadeOperacoesRestantes == 0){
-						posicaoTransacaoLista = (this.listaTransacoesRecebida.size() + 1); //Para encerrar o while e consequentemente o método.
-					}else if (posicaoTransacaoLista < quantidadeTransacoes){
-						posicaoTransacaoLista++; // Para executar a operação da próxima transação.
-					}else{
-						posicaoTransacaoLista = 0; // Para depois de executa a operacao da ultima transacao retornar para a primeira.
-					}
-				
+										if(existeLeiturasFuturasVariavelEspecifica(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes(), operacaoTemp)){
+											
+											if(existeWriteFuturo(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes(), operacaoTemp)){
+												//faz nada pq ja adicionou na lista final e n pode relaxar
+											}else{
+												mandarRelaxar(transacaoTemp, operacaoTemp);//afinal n vai ter mais write
+											}
+											
+										}else{
+											executarUnlock(transacaoTemp, operacaoTemp);//n tem mais nem read_x, nem write_x
+										}
+											
+										
+									}else{ // Ou seja, a operacao atual é Read
+										
+										if(!existeReadFuturo(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes(), operacaoTemp)){
+											executarUnlock(transacaoTemp, operacaoTemp);
+										}
+										
+									}												
+									
+								}												
+								
+							}	
+							
+							
+						}else if(operacaoTemp.getNomeOperacao().equals("Begin")){
+							this.listaOperacoesFinal.add(operacaoTemp); // Adiciona begin a lista final
+							this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp); // remove a operacao da lista de operacoes.
+													
+						
+						// Ou seja, é Commit
+						}else{
+							this.listaOperacoesFinal.add(operacaoTemp); // Adiciona commit a lista final
+							this.listaTransacoesRecebida.remove(transacaoTemp); // Não precisa remover a operacao da lista de operacoes pois será mandado remover a transacao toda.
+							
+							
+						}		
+						
+
+						//Polling pra passar de uma transacao para outra
+						if(operacaoTemp.getNomeOperacao().equals("Commit")){
+							
+							if(posicaoTransacaoLista == (listaTransacoesRecebida.size())){
+								posicaoTransacaoLista = 0;
+							}// Não tem else pq a posicao tem que permanecer a mesma, afinal após remover um bojeto de uma lista, o seguinte ocupa seu lugar.
+							
+						}else{
+							if(posicaoTransacaoLista == (listaTransacoesRecebida.size()-1)){
+								posicaoTransacaoLista = 0; //Caso seja a ultima transacao, retorna para a primeira.
+							}else{
+								posicaoTransacaoLista++;
+							}
+							
+						}
+					
 				
 				}
 				
@@ -172,8 +225,37 @@ public class Bloqueio2FasesBasico {
 		
 	}	
 	
-	private boolean existeBloqueiosFuturosVariavelEspecifica(
-			ArrayList<Operacao> listaOperacoesAuxiliar) {
+	private boolean existeReadFuturo(ArrayList<Operacao> listaOperacoes,
+			Operacao operacaoTemp) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private void mandarRelaxar(Transacao transacaoTemp, Operacao operacaoTemp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private boolean existeWriteFuturo(ArrayList<Operacao> listaOperacoes,
+			Operacao operacaoTemp) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean existeOperacaoIgualASerFeita(ArrayList<Operacao> listaOperacoes,
+			Operacao operacaoTemp) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	// Passagem de read para write de qualquer variável, auxilia para verificar se terminou a fase de crescimento
+	private boolean existePassagemReadWrite(ArrayList<Operacao> listaOperacoes) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean existeLeiturasFuturasVariavelEspecifica(
+			ArrayList<Operacao> listaOperacoesAuxiliar, Operacao operacaoTemp) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -192,6 +274,7 @@ public class Bloqueio2FasesBasico {
 		return existeBloqueioFuturo;
 	}
 	
+	/**
 	//Retorna a quantidade de operacoes totais a serem realizadas por todas as transacoes
 	private int quantidadeTotalOperacoes(ArrayList<Transacao> listaTransacoesRecebida2) {
 		// TODO Auto-generated method stub
@@ -209,7 +292,7 @@ public class Bloqueio2FasesBasico {
 		}
 		
 		return listaIndicesOperacao;
-	}
+	}**/
 	
 	private boolean executarOperacao(Transacao transacaoTemp, Operacao operacaoTemp) {
 		// TODO Auto-generated method stub
