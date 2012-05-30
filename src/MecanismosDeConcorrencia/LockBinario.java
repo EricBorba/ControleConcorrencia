@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import GerenciaDeDados.Operacao;
 import GerenciaDeDados.Repositorio;
+import GerenciaDeDados.Transacao;
 
 public class LockBinario {
 	Operacao operacao;
@@ -67,5 +68,11 @@ public class LockBinario {
 		return retorno;
 	}
 
+	/**remover transação da lista de bloqueios binario*/
+	public void unlockBinario(Transacao t, Operacao o){
+		
+		this.repositorio.removerBloqueioListaBinaria(t, o);
+		
+	}
 
 }

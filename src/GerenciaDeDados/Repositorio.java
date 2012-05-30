@@ -141,31 +141,31 @@ public class Repositorio {
 		this.listaDeBloqueioMultiplo = listaDeBloqueioMultiplo;
 	}
 
-	/**Remove um bloqueio dentro do arraylist de bloqueios ,o parametro tipobloqueio indica se o 
-	 * bloqueio vai ser do tipo lock binário (0), lock multiplo (1)**/
-	public void removerBloqueioLista(String nomeTransacao,Operacao operacao, int tipoBloqueio){
+	/**Remove um bloqueio dentro do arraylist de bloqueios binarios**/
+	public void removerBloqueioListaBinaria(Transacao t,Operacao operacao){
 
-		if(tipoBloqueio == 0){
-			int posicao = 0;
+				int posicao = 0;
 			for(int i = 0; i < this.listaDeBloqueiosBinario.size(); i++){
-				if(this.listaDeBloqueiosBinario.get(i).getIdTransacao().equals(nomeTransacao) == true && this.listaDeBloqueiosBinario.get(i).equals(operacao.getVariavel())== true){
+				if(this.listaDeBloqueiosBinario.get(i).getIdTransacao().equals(t.getnomeTransacao()) == true && this.listaDeBloqueiosBinario.get(i).equals(operacao.getVariavel())== true){
 					posicao = i;
 				}
 
 			}
 			this.listaDeBloqueiosBinario.remove(posicao);
 
-		}else if(tipoBloqueio == 1){
-			
+		}
+	/**Remove um bloqueio dentro do arraylist de bloqueios multiplo**/
+	public void removerBloqueioListaMultipla(Transacao t,Operacao operacao){
+
 			int posicao = 0;
 			for(int i = 0; i < this.listaDeBloqueioMultiplo.size(); i++){
-				if(this.listaDeBloqueioMultiplo.get(i).getNomeTransacao().equals(nomeTransacao) == true && this.listaDeBloqueioMultiplo.get(i).equals(operacao.getVariavel())== true){
+				if(this.listaDeBloqueioMultiplo.get(i).getNomeTransacao().equals(t.getnomeTransacao()) == true && this.listaDeBloqueioMultiplo.get(i).equals(operacao.getVariavel())== true){
 					posicao = i;
 				}
 
 			}
 			this.listaDeBloqueioMultiplo.remove(posicao);
-		}
+		
 	}
 
 	/**adiciona um bloqueio dentro do arraylist de bloqueios lockmultiplo*/

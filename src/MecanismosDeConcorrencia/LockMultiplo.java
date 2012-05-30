@@ -134,10 +134,10 @@ public class LockMultiplo {
 //	}
 
 	/**retornar o numero de reads de uma dada transacao*/
-	public int retornarNumerodeReads(Transacao t){
+	public int retornarNumerodeReads(Transacao t, Operacao o){
 		int numeroRetorno = 0;
 		for(int i = 0; i < this.repositorio.getListaDeBloqueioMultiplo().size();i++){
-			if(this.repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao())){
+			if(this.repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao()) && this.repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(o.getVariavel())){
 
 				numeroRetorno = this.repositorio.getListaDeBloqueioMultiplo().get(i).getNumeroDeLeituras();
 				i = this.repositorio.getListaDeBloqueioMultiplo().size();
@@ -151,7 +151,7 @@ public class LockMultiplo {
 
 	/**fazer decrescimo*/
 
-	public void realizarDecrescimo(Transacao t, Operacao o){
+	public void realizarRelaxamento(Transacao t, Operacao o){
 		
 		for(int i = 0; i < this.repositorio.getListaDeBloqueioMultiplo().size();i++){
 			
@@ -163,6 +163,13 @@ public class LockMultiplo {
 			
 		}
 
+	}
+	
+	/**remover transação da lista de bloqueios multiplo*/
+	public void unlockMultiplo(Transacao t, Operacao o){
+		
+		this.repositorio.removerBloqueioListaMultipla(t, o);
+		
 	}
 
 }
