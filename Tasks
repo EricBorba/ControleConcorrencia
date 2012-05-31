@@ -25,7 +25,7 @@ afim de não ser necessário criar um método dentro da classe Bloqueio2Fases para 
 método de acordo com o parâmetro passado.   ( Feito: Mas verificar futuramente se está correto e se será necessário )
 
 - implementar métodos: existeReadFuturo, mandarRelaxar, existePassagemReadWrite, executarOperacao, executarUnlock, bloquearTudo, existeBloqueiosFuturos e existeBloqueiosFuturosVariavelEspecifica dentro da classe bloqueio2fases.
-
+-teste...
 
 
 
