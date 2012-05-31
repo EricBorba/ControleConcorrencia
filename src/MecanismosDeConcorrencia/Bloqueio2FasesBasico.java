@@ -23,6 +23,7 @@ public class Bloqueio2FasesBasico {
 		
 	ArrayList<Transacao> listaTransacoesRecebida;
 	ArrayList<Operacao> listaOperacoesFinal;
+	
 		
 	/**
 	 * Parametros utilizados para dizer qual associacao sera feita.
@@ -36,6 +37,7 @@ public class Bloqueio2FasesBasico {
 		this.tipoDeLock = tipoDeLock;
 		this.tipoTratamentoDeadlock = tipoTratamentoDeadLock;
 		this.listaOperacoesFinal = new ArrayList<Operacao>();
+		
 	}
 	
 	/**
