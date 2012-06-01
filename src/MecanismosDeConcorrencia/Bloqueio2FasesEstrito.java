@@ -11,7 +11,8 @@ public class Bloqueio2FasesEstrito {
 	
 
 	ArrayList<Transacao> listaTransacoesRecebida;
-	ArrayList<Operacao> listaOperacoesFinal;
+	ArrayList<String> listaOperacoesFinal;
+	
 		
 	/**
 	 * Parametros utilizados para dizer qual associacao sera feita.
@@ -24,13 +25,14 @@ public class Bloqueio2FasesEstrito {
 		this.listaTransacoesRecebida = listaTransacoesRecebida;
 		this.tipoDeLock = tipoDeLock;
 		this.tipoTratamentoDeadlock = tipoTratamentoDeadLock;
-		this.listaOperacoesFinal = new ArrayList<Operacao>();
+		this.listaOperacoesFinal = new ArrayList<String>();
+		
 	}	
 	
 	/**
 	 * Caracterizado por liberar os bloqueios "exclusivos" apenas apos um commit ou abort.
 	 * **/
-	public ArrayList<Operacao> executar(Repositorio repositorio){
+	public ArrayList<String> executar(Repositorio repositorio){
 
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao está a ser executada no momento
@@ -53,7 +55,7 @@ public class Bloqueio2FasesEstrito {
 					//Se foi possivel de executar
 					if(conseguiuExecutar){
 						
-						RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+						RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
 						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
 						listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().add(operacaoTemp); // usada para se fazer comparacoes, afinal ela vai conter as operacoes que ja foram executadas
 						
@@ -83,13 +85,13 @@ public class Bloqueio2FasesEstrito {
 					
 					
 				}else if(operacaoTemp.getNomeOperacao().equals("Begin")){
-					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio); // Adiciona begin a lista final
+					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(),repositorio); // Adiciona begin a lista final
 					this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp); // remove a operacao da lista de operacoes.
 											
 				
 				// Ou seja, é Commit
 				}else{
-					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio); // Adiciona commit a lista final
+					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio); // Adiciona commit a lista final
 					this.listaTransacoesRecebida.remove(transacaoTemp); // Não precisa remover a operacao da lista de operacoes pois será mandado remover a transacao toda.
 					desbloquearTudo(transacaoTemp); // Método a ser criado no lock, desbloqueia todas as variáveis bloqueadas por determinada transacao
 					
@@ -117,10 +119,27 @@ public class Bloqueio2FasesEstrito {
 		return this.listaOperacoesFinal;
 	}
 	
-	public void RetornoOperaçãoString(Operacao operacaoTemp,
-			String getnomeTransacao, ArrayList<Operacao> listaOperacoesFinal2,
-			Repositorio repositorio) {
-		// TODO Auto-generated method stub
+	public void RetornoOperaçãoString(Operacao o, String nomeTransacao, Repositorio rep) {
+		String retorno= "";
+		int j = 0;		
+		int posicaoVariavel = 0;
+		
+		for(j = 0 ; j < rep.getListaVariaveis().size();j++){
+			 if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(o.getVariavel().getNomeVariavel())){
+				  posicaoVariavel = j;
+				  j = rep.getListaVariaveis().size();
+			 }
+		}
+		
+		// colocando a variavel a ser modificada na lista de variaveis antigas e substitui
+		//o valor antigo pelo novo na lista de variaveis atuais
+		if(o.getNomeOperacao().equals("Write")){
+			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
+			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
+		}
+		
+		retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+		this.listaOperacoesFinal.add(retorno);
 		
 	}
 
@@ -178,4 +197,5 @@ public class Bloqueio2FasesEstrito {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
