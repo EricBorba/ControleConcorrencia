@@ -39,7 +39,7 @@ public class Bloqueio2FasesEstrito {
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
 		boolean conseguiuExecutar = false;
-		ArrayList<Transacao> listaTransacaoAuxiliar = new ArrayList<Transacao>(quantidadeTransacoes); // Para auxiliar na verificação de bloqueios futuros
+		ArrayList<Transacao> listaTransacaoAuxiliar = new ArrayList<Transacao>(quantidadeTransacoes); // Para auxiliar na verificacao de bloqueios futuros
 		
 		//Polling criado para ficar alternando entre as transacoes e realizando( se possivel ) uma operacao de cada transacao por vez.
 		while(!this.listaTransacoesRecebida.isEmpty()){					
@@ -63,7 +63,7 @@ public class Bloqueio2FasesEstrito {
 						
 						if(!operacaoTemp.getNomeOperacao().equals("Write")){
 						
-							//Se não houver write ou read de alguma variavel que não foi bloqueada ainda || se não houver passagem de read para write de alguam variavel qualquer. || Se houver algum read dessa variavel em questao que esta dando read agora
+							//Se nao houver write ou read de alguma variavel que nao foi bloqueada ainda || se nao houver passagem de read para write de alguam variavel qualquer. || Se houver algum read dessa variavel em questao que esta dando read agora
 							if(!existeBloqueiosFuturos(listaTransacaoAuxiliar, posicaoTransacaoLista, operacaoTemp)){
 								
 								executarUnlock(transacaoTemp, operacaoTemp);
@@ -136,12 +136,25 @@ public class Bloqueio2FasesEstrito {
 		return this.listaOperacoesFinal;
 	}
 	
-	private void apagaTransacaoRollBackOficial() {
-		// TODO Auto-generated method stub
+	
+	/**Passa como parametro o nome da transacao e apaga todas as operacoes
+	 * referentes a ela da lista principal*/
+	private void apagaTransacaoRollBackOficial(String nomeTransacao) {
+				
+		for(int i = 0; i < listaOperacoesOficial.size(); i++){
+			
+			String [] temp = listaOperacoesOficial.get(i).split(" ");
+			if(temp[0].equals(nomeTransacao)){
+				
+				listaOperacoesOficial.remove(i);
+			}
+		}	
 		
 	}
 
-	public void RetornoOperacaoString(Operacao o, String nomeTransacao, Repositorio rep) {
+	
+	/**lembrar de acrescentar o numero de reads qndo acrecentar a variavel*/
+	public void RetornoOperacaoString(Operacao o, String nomeTransacao, Repositorio rep,int motivoDaEscrita) {
 		String retorno= "";
 		int j = 0;		
 		int posicaoVariavel = 0;
@@ -153,16 +166,47 @@ public class Bloqueio2FasesEstrito {
 			 }
 		}
 		
+		
+		
 		// colocando a variavel a ser modificada na lista de variaveis antigas e substitui
 		//o valor antigo pelo novo na lista de variaveis atuais
-		if(o.getNomeOperacao().equals("Write")){
+		if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 1){
 			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
 			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
-		}
-		
-		retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
-		this.listaOperacoesFinal.add(retorno); // Lista Suja
-		this.listaOperacoesOficial.add(retorno); // Lista Oficial
+			
+			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+		}else if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 3){
+			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
+			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
+			
+			retorno = nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+						
+		}else if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 2){
+			
+			///n„o foi feito a escrito pois j· existia alguem bloqueando faz algo?
+		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 1){
+			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 3){
+			retorno = nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+			
+		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 2){
+			
+			///n„o foi feito a leitura pois j· existia alguem bloqueando faz algo?
+			
+		}else if(o.getNomeOperacao().equals("Begin")||o.getNomeOperacao().equals("End")||o.getNomeOperacao().equals("Commit")){
+			retorno = nomeTransacao+" "+o.getNomeOperacao();  
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+			
+		}	
 		
 	}
 

@@ -14,14 +14,14 @@ public class Transacao {
 	
 	String nomeTransacao;
 	ArrayList<Operacao> listaOperacoes;
-	int tempoDeCriacao;
+	long tempoDeCriacao;
 	Time x;
 	
 	
 	public Transacao (String nomeTransacao){
 		this.listaOperacoes = new ArrayList<Operacao>();
 		this.nomeTransacao = nomeTransacao;
-		tempoDeCriacao = x.getMinutes() + x.getSeconds();
+		tempoDeCriacao = x.getTime();
 	}
 		
 	public ArrayList<Operacao> getListaOperacoes() {
@@ -62,11 +62,11 @@ public class Transacao {
 		return this.nomeTransacao;
 	}
 
-	public int getTempoDeCriacao() {
+	public long getTempoDeCriacao() {
 		return tempoDeCriacao;
 	}
 
-	public void setTempoDeCriacao(int tempoDeCriacao) {
-		this.tempoDeCriacao = tempoDeCriacao;
+	public long setTempoDeCriacao(long tempoDeCriacao) {
+		return this.tempoDeCriacao = tempoDeCriacao;
 	}
 }
