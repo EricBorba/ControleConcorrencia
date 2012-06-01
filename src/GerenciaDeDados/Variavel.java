@@ -18,7 +18,7 @@ public class Variavel {
 		this.valorVariavel = valor;		
 	}
 
-	public String getVariavel() {
+	public String getNomeVariavel() {
 		return nomeVariavel;
 	}
 
@@ -26,7 +26,7 @@ public class Variavel {
 		return valorVariavel;
 	}
 
-	public void setVariavel(String variavel) {
+	public void setNomeVariavel(String variavel) {
 		this.nomeVariavel = variavel;
 	}
 

@@ -325,7 +325,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 			
 			for(j = 0 ; j < rep.getListaVariaveis().size();j++){
 				
-				if(rep.getListaVariaveis().get(j).getVariavel().equals(jComboBox1.getSelectedItem().toString())){
+				if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
 					posicaoVariavel = j;
 					j = rep.getListaVariaveis().size();
 					
@@ -340,7 +340,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 				
 				for(j = 0 ; j < rep.getListaVariaveisAntigas().size();j++){
 					
-					if(rep.getListaVariaveisAntigas().get(j).getVariavel().equals(jComboBox1.getSelectedItem().toString())){
+					if(rep.getListaVariaveisAntigas().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
 						posicaoVariavelAntigo = j;
 						j = rep.getListaVariaveisAntigas().size();
 						
@@ -359,7 +359,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 			
 			for(j = 0 ; j < rep.getListaVariaveis().size();j++){
 				
-				if(rep.getListaVariaveis().get(j).getVariavel().equals(jComboBox1.getSelectedItem().toString())){
+				if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
 					posicaoVariavel = j;
 					j = rep.getListaVariaveis().size();
 					
@@ -374,7 +374,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		
 		rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().add(o);
 		
-		textArea1.setText((rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo());
+		textArea1.setText((rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo());
 	}
 
 	private void jButton3ActionPerformed(ActionEvent evt) {
