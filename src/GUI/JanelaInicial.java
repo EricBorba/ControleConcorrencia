@@ -111,6 +111,14 @@ public class JanelaInicial extends JFrame{
 		this.rep.getListaVariaveis().add(var5);
 		this.rep.getListaVariaveis().add(var6);
 		
+		this.rep.getListaVariaveisAntigas().add(var1);
+		this.rep.getListaVariaveisAntigas().add(var2);
+		this.rep.getListaVariaveisAntigas().add(var3);
+		this.rep.getListaVariaveisAntigas().add(var4);
+		this.rep.getListaVariaveisAntigas().add(var5);
+		this.rep.getListaVariaveisAntigas().add(var6);
+		
+		
 		Transacao t1 = new Transacao("T1");
 		Transacao t2 = new Transacao("T2");
 		Transacao t3 = new Transacao("T3");

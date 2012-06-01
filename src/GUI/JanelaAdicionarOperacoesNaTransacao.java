@@ -189,6 +189,11 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		textfield1.setBounds(370, 90, 80, 20);
 		textfield1.setEnabled(false);
 
+		jRadioButton1.setEnabled(false);
+		jRadioButton2.setEnabled(false);
+		jRadioButton4.setEnabled(false);
+		jRadioButton5.setEnabled(false);
+
 	}
 
 	public void addComponentes(){
@@ -228,6 +233,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		textfield1.setEnabled(false);
 		textfield1.setText("");
 
+
 	}
 
 	private void jRadioButton2ActionPerformed(ActionEvent evt) {
@@ -241,6 +247,8 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 
 			textfield1.setEnabled(false);
 		}
+
+
 
 	}
 
@@ -307,80 +315,126 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		int i = 0;
 		Operacao o = null;//se der trabalho verificar aqui
 		//pega a transação
-		
+
 		String transacao = this.nomeTransacao;
 		for(i = 0; i < rep.getTransacoes().size();i++){
 
 			if(rep.getTransacoes().get(i).equals(transacao)){	
 				posicaoTransacao = i;
 				i = rep.getTransacoes().size();
-				
+
 			}
 
 		}
+
+		////////////iniciando tudo/////////////
+
+
+		jRadioButton1.setEnabled(true);
+		jRadioButton2.setEnabled(true);
+		jRadioButton4.setEnabled(true);
+		jRadioButton5.setEnabled(true);
+		jRadioButton3.setEnabled(false);		
+
+
+
+		//////////////////////////////////////////
 
 		// se for write ou read cria a operacao
 		if(jRadioButton1.isSelected()||jRadioButton2.isSelected()){
 			int j = 0;
-			
+
 			for(j = 0 ; j < rep.getListaVariaveis().size();j++){
-				
+
 				if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
 					posicaoVariavel = j;
 					j = rep.getListaVariaveis().size();
-					
+
 				}
-				
+
 			}
-			
+
 			if(pegarRadioButtonSelecionado().toString().equals("Read")){
-			
-			o = new Operacao(pegarRadioButtonSelecionado(), Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavel).getValor()),Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavel).getValor()), rep.getListaVariaveis().get(posicaoVariavel));
+
+				o = new Operacao(pegarRadioButtonSelecionado(), Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavel).getValor()),Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavel).getValor()), rep.getListaVariaveis().get(posicaoVariavel));
 			}else if (pegarRadioButtonSelecionado().toString().equals("Write")){
-				
+
 				for(j = 0 ; j < rep.getListaVariaveisAntigas().size();j++){
-					
+
 					if(rep.getListaVariaveisAntigas().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
 						posicaoVariavelAntigo = j;
 						j = rep.getListaVariaveisAntigas().size();
-						
+
 					}
-					
+
 				}
-				
-				
+
 				o = new Operacao(pegarRadioButtonSelecionado(),Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavelAntigo).getValor()),Integer.parseInt(textfield1.getText()),rep.getListaVariaveis().get(posicaoVariavel));
-				//colocar caso de pegar write, criar operação nesse caso
+
 			}
 			//introduzir na transação
 		}else{
-			
+
 			int j = 0;
-			
+
 			for(j = 0 ; j < rep.getListaVariaveis().size();j++){
-				
+
 				if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
 					posicaoVariavel = j;
 					j = rep.getListaVariaveis().size();
-					
+
 				}
-				
+
 			}
-			
+
 			o = new Operacao(pegarRadioButtonSelecionado(),0,0,rep.getListaVariaveis().get(posicaoVariavel));
-			
+
 		}
-		
-		
+
+
 		rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().add(o);
-		
-		textArea1.setText((rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo());
+		String ConjuntoOperacoes = textArea1.getText();
+		if(ConjuntoOperacoes.equals("")){
+			ConjuntoOperacoes = (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();	
+		}else{
+			ConjuntoOperacoes = ConjuntoOperacoes + "\n" + (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();
+		}
+		textArea1.setText(ConjuntoOperacoes);
+
+
+
+		//verificando se finalizou a transacao
+
+
+
+
 	}
 
+	///esta dando problema se n tiver criado nenhuma operacao e tentar voltar p janela anterior
 	private void jButton3ActionPerformed(ActionEvent evt) {
-		this.janela.setVisible(true);
-		this.setVisible(false);
+		int i;
+		int posicaoTransacao = 0;
+		String transacao = this.nomeTransacao;
+	
+			for(i = 0; i < rep.getTransacoes().size();i++){
 
+				if(rep.getTransacoes().get(i).equals(transacao)){	
+					posicaoTransacao = i;
+					i = rep.getTransacoes().size();
+
+				}
+
+			}
+
+			if(!(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("End")){
+
+				System.out.print("FINALIZE A TRANSACAO!!!!");
+				//se der tempo fazer uma janela para isso
+			}else{		
+				this.janela.setVisible(true);
+				this.setVisible(false);
+			}
+		
 	}
 
 	//	public static void main(String[] args) {
