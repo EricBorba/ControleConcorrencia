@@ -14,15 +14,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import GerenciaDeDados.Operacao;
 import GerenciaDeDados.Repositorio;
 import GerenciaDeDados.Transacao;
 
 
-public class JanelaAdicionarTransacoes extends JFrame {
+public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 
 	JComboBox jComboBox1;
-	JComboBox jComboBox2;
-	JLabel label1;
+
 	JLabel label2;
 	JLabel label3;
 	JLabel label4;
@@ -32,18 +32,20 @@ public class JanelaAdicionarTransacoes extends JFrame {
 	JRadioButton jRadioButton3;
 	JRadioButton jRadioButton4;
 	JRadioButton jRadioButton5;
-	JButton jButton1;
+
 	JButton jButton2;
 	JButton jButton3;
 	JTextArea textArea1;
 	JScrollPane jScrollPane1;
 	JTextField textfield1;
 	Repositorio rep;
-	JanelaInicial janela;
+	JanelaEscolherTransacao janela;
+	String nomeTransacao;
 
-	public JanelaAdicionarTransacoes(Repositorio repNovo, JanelaInicial janelaNova){
+	public JanelaAdicionarOperacoesNaTransacao(String nomeTransacaoNova,Repositorio repNovo, JanelaEscolherTransacao janelaNova){
 		this.janela = janelaNova;
 		this.rep = repNovo;
+		this.nomeTransacao = nomeTransacaoNova;
 
 	}
 
@@ -56,7 +58,7 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		//muda a cor do fundo
 		//this.getContentPane().setBackground(Color.white);
 		//titulo
-		this.setTitle("Adicionar Operações");
+		this.setTitle("ADICIONAR OPERAÇÕES");
 		this.setFont(new Font("Comic Sans MS", 1, 11));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -69,7 +71,7 @@ public class JanelaAdicionarTransacoes extends JFrame {
 
 
 		this.jComboBox1 = new JComboBox();
-		this.jComboBox1.setBounds(150,50, 90, 20);
+		this.jComboBox1.setBounds(30,50, 150, 20);
 		this.jComboBox1.setBackground(Color.white);
 		this.jComboBox1.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarVariaveis(this.rep.getListaVariaveis())));
 		jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -79,23 +81,9 @@ public class JanelaAdicionarTransacoes extends JFrame {
 
 		});
 
-		this.jComboBox2 = new JComboBox();
-		this.jComboBox2.setBounds(30,50, 90, 20);
-		this.jComboBox2.setBackground(Color.white);
-		this.jComboBox2.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarTrasacoes(this.rep.getTransacoes())));
-		jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jComboBox2ActionPerformed(evt);
-			}
-
-		});
-
-		label1 = new JLabel("Transações");
-		label1.setBounds(30, 10, 100, 40);
-		label1.setFont(new Font("Comic Sans MS", 1, 18));
 
 		label2 = new JLabel("Variáveis");
-		label2.setBounds(150, 10, 100, 40);
+		label2.setBounds(30, 10, 100, 40);
 		label2.setFont(new Font("Comic Sans MS", 1, 18));
 
 		label3 = new JLabel("Operações");
@@ -159,16 +147,6 @@ public class JanelaAdicionarTransacoes extends JFrame {
 			}
 		});
 
-		this.jButton1 = new JButton("nova transação");
-		this.jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
-		this.jButton1.setBounds(30, 200, 220,40);
-
-		jButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton1ActionPerformed(evt);
-			}
-
-		});
 
 		this.jButton2 = new JButton("Adicionar nova operação");
 		this.jButton2.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
@@ -211,13 +189,16 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		textfield1.setBounds(370, 90, 80, 20);
 		textfield1.setEnabled(false);
 
+		jRadioButton1.setEnabled(false);
+		jRadioButton2.setEnabled(false);
+		jRadioButton4.setEnabled(false);
+		jRadioButton5.setEnabled(false);
+
 	}
 
 	public void addComponentes(){
 
 		this.add(jComboBox1);
-		this.add(jComboBox2);
-		this.add(label1);
 		this.add(label2);
 		this.add(label3);
 		this.add(label4);
@@ -227,7 +208,6 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		this.add(jRadioButton3);
 		this.add(jRadioButton4);
 		this.add(jRadioButton5);
-		this.add(jButton1);
 		this.add(jButton2);
 		this.add(jButton3);
 		this.add(jScrollPane1);
@@ -253,6 +233,7 @@ public class JanelaAdicionarTransacoes extends JFrame {
 		textfield1.setEnabled(false);
 		textfield1.setText("");
 
+
 	}
 
 	private void jRadioButton2ActionPerformed(ActionEvent evt) {
@@ -266,6 +247,8 @@ public class JanelaAdicionarTransacoes extends JFrame {
 
 			textfield1.setEnabled(false);
 		}
+
+
 
 	}
 
@@ -300,25 +283,158 @@ public class JanelaAdicionarTransacoes extends JFrame {
 
 	}
 
-	private void jButton1ActionPerformed(ActionEvent evt) {
-		LeitorDeListas buscaArquivo = new LeitorDeListas();
-		int proxima = (this.rep.getTransacoes().size())+ 1;
-		this.rep.adicionarTransacaoLista(this.rep.criarTransacao("T" + proxima));
-		this.jComboBox2.setModel(new DefaultComboBoxModel(buscaArquivo.RetornarTrasacoes(this.rep.getTransacoes())));
-		
-		
+	public String pegarRadioButtonSelecionado(){
+		String retorno = "";
+		if(jRadioButton1.isSelected()){
 
+			retorno = jRadioButton1.getText();
+		}
+		else if(jRadioButton2.isSelected()){
+
+			retorno = jRadioButton2.getText();
+		}else if(jRadioButton3.isSelected()){
+
+			retorno = jRadioButton3.getText();
+		}else if(jRadioButton4.isSelected()){
+
+			retorno = jRadioButton4.getText();
+		}else if(jRadioButton5.isSelected()){
+
+			retorno = jRadioButton5.getText();
+		}
+
+
+		return retorno;
 	}
 
+	/**qndo adiciona write dá erro verificar isso*/
 	private void jButton2ActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
+		int posicaoTransacao = 0;
+		int posicaoVariavel = 0;
+		int posicaoVariavelAntigo = 0;
+		int i = 0;
+		Operacao o = null;//se der trabalho verificar aqui
+		//pega a transação
+
+		String transacao = this.nomeTransacao;
+		for(i = 0; i < rep.getTransacoes().size();i++){
+
+			if(rep.getTransacoes().get(i).equals(transacao)){	
+				posicaoTransacao = i;
+				i = rep.getTransacoes().size();
+
+			}
+
+		}
+
+		////////////iniciando tudo/////////////
+
+
+		jRadioButton1.setEnabled(true);
+		jRadioButton2.setEnabled(true);
+		jRadioButton4.setEnabled(true);
+		jRadioButton5.setEnabled(true);
+		jRadioButton3.setEnabled(false);		
+
+
+
+		//////////////////////////////////////////
+
+		// se for write ou read cria a operacao
+		if(jRadioButton1.isSelected()||jRadioButton2.isSelected()){
+			int j = 0;
+
+			for(j = 0 ; j < rep.getListaVariaveis().size();j++){
+
+				if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
+					posicaoVariavel = j;
+					j = rep.getListaVariaveis().size();
+
+				}
+
+			}
+
+			if(pegarRadioButtonSelecionado().toString().equals("Read")){
+
+				o = new Operacao(pegarRadioButtonSelecionado(), Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavel).getValor()),Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavel).getValor()), rep.getListaVariaveis().get(posicaoVariavel));
+			}else if (pegarRadioButtonSelecionado().toString().equals("Write")){
+
+				for(j = 0 ; j < rep.getListaVariaveisAntigas().size();j++){
+
+					if(rep.getListaVariaveisAntigas().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
+						posicaoVariavelAntigo = j;
+						j = rep.getListaVariaveisAntigas().size();
+
+					}
+
+				}
+
+				o = new Operacao(pegarRadioButtonSelecionado(),Integer.parseInt(rep.getListaVariaveis().get(posicaoVariavelAntigo).getValor()),Integer.parseInt(textfield1.getText()),rep.getListaVariaveis().get(posicaoVariavel));
+
+			}
+			//introduzir na transação
+		}else{
+
+			int j = 0;
+
+			for(j = 0 ; j < rep.getListaVariaveis().size();j++){
+
+				if(rep.getListaVariaveis().get(j).getNomeVariavel().equals(jComboBox1.getSelectedItem().toString())){
+					posicaoVariavel = j;
+					j = rep.getListaVariaveis().size();
+
+				}
+
+			}
+
+			o = new Operacao(pegarRadioButtonSelecionado(),0,0,rep.getListaVariaveis().get(posicaoVariavel));
+
+		}
+
+
+		rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().add(o);
+		String ConjuntoOperacoes = textArea1.getText();
+		if(ConjuntoOperacoes.equals("")){
+			ConjuntoOperacoes = (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();	
+		}else{
+			ConjuntoOperacoes = ConjuntoOperacoes + "\n" + (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();
+		}
+		textArea1.setText(ConjuntoOperacoes);
+
+
+
+		//verificando se finalizou a transacao
+
+
+
 
 	}
 
+	///esta dando problema se n tiver criado nenhuma operacao e tentar voltar p janela anterior
 	private void jButton3ActionPerformed(ActionEvent evt) {
-		this.janela.setVisible(true);
-		this.setVisible(false);
+		int i;
+		int posicaoTransacao = 0;
+		String transacao = this.nomeTransacao;
+	
+			for(i = 0; i < rep.getTransacoes().size();i++){
 
+				if(rep.getTransacoes().get(i).equals(transacao)){	
+					posicaoTransacao = i;
+					i = rep.getTransacoes().size();
+
+				}
+
+			}
+
+			if(!(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("End")){
+
+				System.out.print("FINALIZE A TRANSACAO!!!!");
+				//se der tempo fazer uma janela para isso
+			}else{		
+				this.janela.setVisible(true);
+				this.setVisible(false);
+			}
+		
 	}
 
 	//	public static void main(String[] args) {

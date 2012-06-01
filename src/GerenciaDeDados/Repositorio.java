@@ -17,6 +17,7 @@ public class Repositorio {
 
 	ArrayList<Transacao> listaTransacoes;
 	ArrayList<Variavel> listaVariaveis;
+	ArrayList<Variavel> listaVariaveisAntigas;
 	ArrayList<BloqueioLockBinario> listaDeBloqueiosBinario;
 	ArrayList<BloqueioLockMultiplo> listaDeBloqueioMultiplo;
 
@@ -27,6 +28,7 @@ public class Repositorio {
 
 		this.listaTransacoes = new ArrayList<Transacao>();
 		this.listaVariaveis = new ArrayList<Variavel>();
+		this.listaVariaveisAntigas = new ArrayList<Variavel>();
 		this.listaDeBloqueiosBinario = new ArrayList<BloqueioLockBinario>();		
 	}
 
@@ -99,7 +101,7 @@ public class Repositorio {
 	public Operacao criarOperacao(String nomeOperacao, int valorAntigo, int valorNovo, Transacao transacao, Variavel variavel){
 
 		Operacao operacao;
-		operacao = new Operacao(nomeOperacao, valorAntigo, valorNovo, transacao, variavel);  
+		operacao = new Operacao(nomeOperacao, valorAntigo, valorNovo, variavel);  
 		return operacao;
 
 	}
@@ -159,7 +161,7 @@ public class Repositorio {
 
 			int posicao = 0;
 			for(int i = 0; i < this.listaDeBloqueioMultiplo.size(); i++){
-				if(this.listaDeBloqueioMultiplo.get(i).getNomeTransacao().equals(t.getnomeTransacao()) == true && this.listaDeBloqueioMultiplo.get(i).equals(operacao.getVariavel())== true){
+				if(this.listaDeBloqueioMultiplo.get(i).getNomeTransacao().equals(t.getnomeTransacao()) && this.listaDeBloqueioMultiplo.get(i).equals(operacao.getVariavel())){
 					posicao = i;
 				}
 
@@ -186,4 +188,20 @@ public class Repositorio {
 			this.listaDeBloqueiosBinario.add(novoBloqueio);
 
 	}
+	
+	/**guarda em um arraylist as a variavel imediatamente antes dela ser modificada*/
+	public void ValoresAntigosVariaveis(Variavel variavel){
+		
+		this.listaVariaveisAntigas.add(variavel);
+	}
+
+	public ArrayList<Variavel> getListaVariaveisAntigas() {
+		return listaVariaveisAntigas;
+	}
+
+	public void setListaVariaveisAntigas(ArrayList<Variavel> listaVariaveisAntigas) {
+		this.listaVariaveisAntigas = listaVariaveisAntigas;
+	}
+	
+	
 }

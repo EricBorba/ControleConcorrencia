@@ -19,7 +19,7 @@ public class Operacao {
 	//Transacao transacao;
 	Variavel variavel;
 	
-	public Operacao(String nomeOperacao,int valorAntigo, int valorNovo, Transacao transacao, Variavel variavel){
+	public Operacao(String nomeOperacao,int valorAntigo, int valorNovo, Variavel variavel){
 		
 		this.nomeOperacao = nomeOperacao;
 		this.valorAntigo = valorAntigo;
