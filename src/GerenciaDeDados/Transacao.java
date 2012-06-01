@@ -62,11 +62,11 @@ public class Transacao {
 		return this.nomeTransacao;
 	}
 
-	public int getTempoDeCriação() {
+	public int getTempoDeCriacao() {
 		return tempoDeCriacao;
 	}
 
-	public void setTempoDeCriação(int tempoDeCriacao) {
+	public void setTempoDeCriacao(int tempoDeCriacao) {
 		this.tempoDeCriacao = tempoDeCriacao;
 	}
 }
