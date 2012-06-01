@@ -26,7 +26,8 @@ método de acordo com o parâmetro passado.   ( Feito: Mas verificar futuramente s
 
 - Ver se o Time usado em Transacao está sendo usado corretamente...
 - Verificar se a criação do ArrayList de transacoes está sendo iniciado corretamente com relação ao tamanho dele...
-- Verificar na parte de lock multiplo se está cobrindo o caso de read_x ter outro read_x depois....
+- Verificar na parte de lock multiplo se está cobrindo o caso de read_x ter outro read_x depois.... ( feito )
+- Colocar o timeStamp das transacoes quando for dado Begin. Para isso fazer uso de um booleano senão quando for dado rollback ele pegará um timestamp novo.
 
 
 
