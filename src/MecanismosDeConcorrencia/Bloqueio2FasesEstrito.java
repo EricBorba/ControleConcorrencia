@@ -79,6 +79,8 @@ public class Bloqueio2FasesEstrito {
 						// Ou seja, a operacao da transacao n‹o foi executada e ela ainda por cima Ž mais nova que a transacao que lhe bloqueou.
 						if(transacaoTemp.getTempoDeCria‹o() > tempoDaTransacaoBloqueada){
 							
+							
+							
 						}
 						
 					}
