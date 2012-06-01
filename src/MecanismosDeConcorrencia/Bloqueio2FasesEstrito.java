@@ -55,7 +55,7 @@ public class Bloqueio2FasesEstrito {
 					//Se foi possivel de executar
 					if(conseguiuExecutar){
 						
-						RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
 						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
 						listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().add(operacaoTemp); // usada para se fazer comparacoes, afinal ela vai conter as operacoes que ja foram executadas
 						
@@ -85,13 +85,13 @@ public class Bloqueio2FasesEstrito {
 					
 					
 				}else if(operacaoTemp.getNomeOperacao().equals("Begin")){
-					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(),repositorio); // Adiciona begin a lista final
+					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(),repositorio); // Adiciona begin a lista final
 					this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp); // remove a operacao da lista de operacoes.
 											
 				
 				// Ou seja, é Commit
 				}else{
-					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio); // Adiciona commit a lista final
+					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio); // Adiciona commit a lista final
 					this.listaTransacoesRecebida.remove(transacaoTemp); // Não precisa remover a operacao da lista de operacoes pois será mandado remover a transacao toda.
 					desbloquearTudo(transacaoTemp); // Método a ser criado no lock, desbloqueia todas as variáveis bloqueadas por determinada transacao
 					
@@ -119,7 +119,7 @@ public class Bloqueio2FasesEstrito {
 		return this.listaOperacoesFinal;
 	}
 	
-	public void RetornoOperaçãoString(Operacao o, String nomeTransacao, Repositorio rep) {
+	public void RetornoOperacaoString(Operacao o, String nomeTransacao, Repositorio rep) {
 		String retorno= "";
 		int j = 0;		
 		int posicaoVariavel = 0;
