@@ -11,7 +11,7 @@ public class Bloqueio2FasesEstrito {
 	
 
 	ArrayList<Transacao> listaTransacoesRecebida;
-	ArrayList<Operacao> listaOperacoesFinal;
+	ArrayList<String> listaOperacoesFinal;
 		
 	/**
 	 * Parametros utilizados para dizer qual associacao sera feita.
@@ -24,13 +24,13 @@ public class Bloqueio2FasesEstrito {
 		this.listaTransacoesRecebida = listaTransacoesRecebida;
 		this.tipoDeLock = tipoDeLock;
 		this.tipoTratamentoDeadlock = tipoTratamentoDeadLock;
-		this.listaOperacoesFinal = new ArrayList<Operacao>();
+		this.listaOperacoesFinal = new ArrayList<String>();
 	}	
 	
 	/**
 	 * Caracterizado por liberar os bloqueios "exclusivos" apenas apos um commit ou abort.
 	 * **/
-	public ArrayList<Operacao> executar(Repositorio repositorio){
+	public ArrayList<String> executar(Repositorio repositorio){
 
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int quantidadeOperacoesRestantes = quantidadeTotalOperacoes(this.listaTransacoesRecebida);
@@ -64,7 +64,7 @@ public class Bloqueio2FasesEstrito {
 						
 						}
 						
-						RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
 						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp);;//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
 						
 					// Aqui entra o wait-die	
@@ -74,15 +74,15 @@ public class Bloqueio2FasesEstrito {
 					
 					
 				}else if(operacaoTemp.getNomeOperacao().equals("Begin")){
-					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio); // Adiciona begin a lista final
+					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio); // Adiciona begin a lista final
 					this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp); // remove a operacao da lista de operacoes.
 											
 				
-				// Ou seja, é Commit
+				// Ou seja,  Commit
 				}else{
-					RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio); // Adiciona commit a lista final
-					this.listaTransacoesRecebida.remove(transacaoTemp); // Não precisa remover a operacao da lista de operacoes pois será mandado remover a transacao toda.
-					desbloquearTudo(transacaoTemp); // Método a ser criado no lock, desbloqueia todas as variáveis bloqueadas por determinada transacao
+					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio); // Adiciona commit a lista final
+					this.listaTransacoesRecebida.remove(transacaoTemp); // Nao precisa remover a operacao da lista de operacoes pois será mandado remover a transacao toda.
+					desbloquearTudo(transacaoTemp); // Metodo a ser criado no lock, desbloqueia todas as variáveis bloqueadas por determinada transacao
 					
 				}		
 				
@@ -107,12 +107,34 @@ public class Bloqueio2FasesEstrito {
 		
 		return this.listaOperacoesFinal;
 	}
-	
-	private void RetornoOperaçãoString(Operacao operacaoTemp,
-			String getnomeTransacao, ArrayList<Operacao> listaOperacoesFinal2,
-			Repositorio repositorio) {
-		// TODO Auto-generated method stub
+	/**modifica a variavel e escreve na lista de log*/
+	public void RetornoOperacaoString(Operacao o,String nomeTransacao, ArrayList<String> listaOperacoesFinal2,Repositorio rep){
+		String retorno= "";
+		int j = 0;
+		int posicaoVariavel = 0;
 		
+		for(j = 0 ; j < rep.getListaVariaveis().size();j++){
+			
+			if(rep.getListaVariaveis().get(j).getVariavel().equals(o.getVariavel().getVariavel())){
+				posicaoVariavel = j;
+				j = rep.getListaVariaveis().size();
+				
+			}
+			
+		}
+		// colocando a variavel a ser modificada na lista de variaveis antigas e substitui
+		//o valor antigo pelo novo na lista de variaveis atuais
+		if(o.getNomeOperacao().equals("Write")){
+			
+			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
+			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
+			
+		}
+		
+		retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();	
+		listaOperacoesFinal2.add(retorno);
+		
+				
 	}
 
 	private void desbloquearTudo(Transacao transacaoTemp) {
