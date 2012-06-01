@@ -59,10 +59,11 @@ public class Bloqueio2FasesEstrito {
 						
 						if(!operacaoTemp.getNomeOperacao().equals("Write")){
 						
-							//Se houver ainda write de alguma variável que não foi bloqueada ainda e n tem read dessa variavel tb || se houver read de alguma variável que não foi bloqueada ainda
-							if(!existeBloqueiosFuturos(listaTransacaoAuxiliar, posicaoTransacaoLista)){
+							//Se não houver write ou read de alguma variável que não foi bloqueada ainda || se não houver passagem de read para write de alguam variável qualquer. || Se houver algum read dessa variavel em questao que esta dando read agora
+							if(!existeBloqueiosFuturos(listaTransacaoAuxiliar, posicaoTransacaoLista, operacaoTemp)){
 								
 								executarUnlock(transacaoTemp, operacaoTemp);
+								
 							}
 						
 						
@@ -72,6 +73,11 @@ public class Bloqueio2FasesEstrito {
 						
 					// Aqui entra o wait-die	
 					}else{
+						
+						// Ou seja, a operacao da transacao não foi executada e ela ainda por cima é mais nova que a transacao que lhe bloqueou.
+						if(transacaoTemp.getTempoDeCriação() > tempoDaTransacaoBloqueada){
+							
+						}
 						
 					}
 					
@@ -123,8 +129,8 @@ public class Bloqueio2FasesEstrito {
 		
 	}
 	
-	//Se houver ainda writ ou read de alguma variável que não foi bloqueada ainda || se houver write de alguma variável que só deu read(ou seja, ainda terá uma promoção)
-	public boolean existeBloqueiosFuturos(ArrayList<Transacao> listaTransacaoAuxiliar, int posicaoTransacaoLista) {
+	// Verifica se existirá algum bloqueio que impede o unlock da operação que está dando Read no momento atual na variável em questão.
+	public boolean existeBloqueiosFuturos(ArrayList<Transacao> listaTransacaoAuxiliar, int posicaoTransacaoLista, Operacao operacaoTemp) {
 		
 		boolean existeBloqueioFuturo = false;		
 		ArrayList<Operacao> listaOperacoesRecebidaTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes(); //Operacoes Futuras
@@ -133,9 +139,11 @@ public class Bloqueio2FasesEstrito {
 			
 			for(int j=0; j < listaTransacaoAuxiliar.size(); j++){
 				
+				// Se houver ainda write ou read de alguma variável que não foi bloqueada ainda 
 				if(!listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getVariavel().getNomeVariavel().equals(listaOperacoesRecebidaTemp.get(i).getVariavel().getNomeVariavel())){
 					existeBloqueioFuturo = true;
 				}else{
+					//Se houver write de alguma variável que só deu read(ou seja, ainda terá uma promoção)
 					if(listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getNomeOperacao().equals("Read") && listaOperacoesRecebidaTemp.get(i).getNomeOperacao().equals("Write")){
 						existeBloqueioFuturo = true;
 					}
@@ -143,6 +151,19 @@ public class Bloqueio2FasesEstrito {
 				
 			}
 						
+		}
+		
+		// Se houver algum read dessa variavel em questao que esta dando read agora
+		for(int z=0; z < listaOperacoesRecebidaTemp.size(); z++){
+			
+			if(listaOperacoesRecebidaTemp.get(z).getVariavel().getNomeVariavel().equals(operacaoTemp.getVariavel().getNomeVariavel())){
+				
+				if(listaOperacoesRecebidaTemp.get(z).getNomeOperacao().equals("Read")){
+					existeBloqueioFuturo = true;
+				}
+				
+			}
+			
 		}
 		
 		return existeBloqueioFuturo;

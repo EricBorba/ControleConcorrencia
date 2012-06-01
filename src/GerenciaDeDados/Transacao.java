@@ -1,4 +1,5 @@
 package GerenciaDeDados;
+import java.sql.Time;
 import java.util.ArrayList;
 
 /** 
@@ -13,10 +14,14 @@ public class Transacao {
 	
 	String nomeTransacao;
 	ArrayList<Operacao> listaOperacoes;
+	int tempoDeCriação;
+	Time x;
+	
 	
 	public Transacao (String nomeTransacao){
 		this.listaOperacoes = new ArrayList<Operacao>();
 		this.nomeTransacao = nomeTransacao;
+		tempoDeCriação = x.getMinutes() + x.getSeconds();
 	}
 		
 	public ArrayList<Operacao> getListaOperacoes() {
@@ -55,5 +60,13 @@ public class Transacao {
 	/**retorna o nome da transacao*/
 	public String getnomeTransacao() {
 		return this.nomeTransacao;
+	}
+
+	public int getTempoDeCriação() {
+		return tempoDeCriação;
+	}
+
+	public void setTempoDeCriação(int tempoDeCriação) {
+		this.tempoDeCriação = tempoDeCriação;
 	}
 }
