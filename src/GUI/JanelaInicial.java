@@ -285,7 +285,7 @@ public class JanelaInicial extends JFrame{
 		int i = 0;
 		while(i < this.rep.getListaVariaveis().size()){
 
-			modelo.addRow(new Object[] {this.rep.getListaVariaveis().get(i).getVariavel(), this.rep.getListaVariaveis().get(i).getValor()});
+			modelo.addRow(new Object[] {this.rep.getListaVariaveis().get(i).getNomeVariavel(), this.rep.getListaVariaveis().get(i).getValor()});
 			i++;
 
 		}

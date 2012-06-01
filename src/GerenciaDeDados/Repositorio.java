@@ -172,7 +172,7 @@ public class Repositorio {
 	public void adicionarBloqueioListaLockMultiplo(String nomeTransacao, Operacao operacao, int numeroDeleituras){
 
 			
-			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getVariavel(), operacao.getNomeOperacao()+"_lock",numeroDeleituras);
+			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getNomeVariavel(), operacao.getNomeOperacao()+"_lock",numeroDeleituras);
 			this.listaDeBloqueioMultiplo.add(novoBloqueio);
 		
 
@@ -182,7 +182,7 @@ public class Repositorio {
 	/**adiciona um bloqueio dentro do arraylist de bloqueios lockbinario*/
 	public void adicionarBloqueioListaLockBinario(String nomeTransacao, Operacao operacao){
 
-			BloqueioLockBinario novoBloqueio = new BloqueioLockBinario(nomeTransacao, operacao.getVariavel().getVariavel());
+			BloqueioLockBinario novoBloqueio = new BloqueioLockBinario(nomeTransacao, operacao.getVariavel().getNomeVariavel());
 			this.listaDeBloqueiosBinario.add(novoBloqueio);
 
 	}
