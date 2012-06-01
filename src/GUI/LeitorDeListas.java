@@ -18,7 +18,7 @@ public class LeitorDeListas {
 		int i =0;
 		
 		while(i < var.size()){
-			variaveis.add(var.get(i).getVariavel());
+			variaveis.add(var.get(i).getNomeVariavel());
 			i++;
 		}
 		return variaveis;

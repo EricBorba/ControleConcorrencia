@@ -33,10 +33,9 @@ public class Bloqueio2FasesEstrito {
 	public ArrayList<Operacao> executar(Repositorio repositorio){
 
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
-		int quantidadeOperacoesRestantes = quantidadeTotalOperacoes(this.listaTransacoesRecebida);
 		int posicaoTransacaoLista=0;   // Para saber qual transacao está a ser executada no momento
-		ArrayList<Integer> posicaoOperacaoTransacao = criarPosicoesOperacao(this.listaTransacoesRecebida); // Para saber qual operacao será executada dentro da lista de operacoes de uma transacao, a posicao no array é equivalente a posicao da transacao na lista de transacoes.
 		boolean conseguiuExecutar = false;
+		ArrayList<Transacao> listaTransacaoAuxiliar = new ArrayList<Transacao>(quantidadeTransacoes); // Para auxiliar na verificação de bloqueios futuros
 		
 		//Polling criado para ficar alternando entre as transacoes e realizando( se possível ) uma operacao de cada transacao por vez.
 		while(!this.listaTransacoesRecebida.isEmpty()){					
@@ -54,18 +53,22 @@ public class Bloqueio2FasesEstrito {
 					//Se foi possivel de executar
 					if(conseguiuExecutar){
 						
+						RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+						listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().add(operacaoTemp); // usada para se fazer comparacoes, afinal ela vai conter as operacoes que ja foram executadas
+						
 						if(!operacaoTemp.getNomeOperacao().equals("Write")){
 						
-							if(!condicao){
-								//Se houver write de alguma variável que não deu read ainda || se houver read de alguma variável que não deu read ainda
+							//Se houver ainda write de alguma variável que não foi bloqueada ainda e n tem read dessa variavel tb || se houver read de alguma variável que não foi bloqueada ainda
+							if(!existeBloqueiosFuturos(listaTransacaoAuxiliar, posicaoTransacaoLista)){
+								
 								executarUnlock(transacaoTemp, operacaoTemp);
 							}
 						
 						
 						}
 						
-						RetornoOperaçãoString(operacaoTemp,transacaoTemp.getnomeTransacao(), this.listaOperacoesFinal, repositorio);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
-						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(operacaoTemp);;//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+						
 						
 					// Aqui entra o wait-die	
 					}else{
@@ -108,7 +111,7 @@ public class Bloqueio2FasesEstrito {
 		return this.listaOperacoesFinal;
 	}
 	
-	private void RetornoOperaçãoString(Operacao operacaoTemp,
+	public void RetornoOperaçãoString(Operacao operacaoTemp,
 			String getnomeTransacao, ArrayList<Operacao> listaOperacoesFinal2,
 			Repositorio repositorio) {
 		// TODO Auto-generated method stub
@@ -119,50 +122,38 @@ public class Bloqueio2FasesEstrito {
 		// TODO Auto-generated method stub
 		
 	}
-
-	private boolean existeBloqueiosFuturosVariavelEspecifica(
-			ArrayList<Operacao> listaOperacoesAuxiliar) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	private boolean existeBloqueiosFuturos(ArrayList<Operacao> listaOperacoes) {
-		boolean existeBloqueioFuturo = false;
-		for(int i=0; i<listaOperacoes.size();i++){
+	
+	//Se houver ainda write ou read de alguma variável que não foi bloqueada ainda || se houver write de alguma variável que só deu read(ou seja, ainda terá uma promoção)
+	public boolean existeBloqueiosFuturos(ArrayList<Transacao> listaTransacaoAuxiliar, int posicaoTransacaoLista) {
+		
+		boolean existeBloqueioFuturo = false;		
+		ArrayList<Operacao> listaOperacoesRecebidaTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes(); //Operacoes Futuras
+		
+		for(int i=0; i < listaOperacoesRecebidaTemp.size(); i++){
 			
-			if(listaOperacoes.get(i).getNomeOperacao().equals("Read") || listaOperacoes.get(i).getNomeOperacao().equals("Write")){
-				existeBloqueioFuturo = true;
+			for(int j=0; j < listaTransacaoAuxiliar.size(); j++){
+				
+				if(!listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getVariavel().getNomeVariavel().equals(listaOperacoesRecebidaTemp.get(i).getVariavel().getNomeVariavel())){
+					existeBloqueioFuturo = true;
+				}else{
+					if(listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getNomeOperacao().equals("Read") && listaOperacoesRecebidaTemp.get(i).getNomeOperacao().equals("Write")){
+						existeBloqueioFuturo = true;
+					}
+				}
+				
 			}
+						
 		}
 		
 		return existeBloqueioFuturo;
 	}
-
-	//Retorna a quantidade de operacoes totais a serem realizadas por todas as transacoes
-	private int quantidadeTotalOperacoes(ArrayList<Transacao> listaTransacoesRecebida2) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
-	//Retorna uma lista de inteiros que será utilizada para sabermos o indice atual de uma lista de operacoes.
-	//Recebe como parâmetro a lista de transacoes apenas para saber quantos índices serão necessários, afinal a quantidade
-	//de transacoes é a mesma quantidade de listas de operacoes existentes.
-	private ArrayList<Integer> criarPosicoesOperacao(ArrayList<Transacao> listaTransacoesRecebida2) {
-		ArrayList<Integer> listaIndicesOperacao = new ArrayList<Integer>();
-		
-		for(int i=0; i < listaTransacoesRecebida2.size(); i++){
-			listaIndicesOperacao.add(i, 0);			
-		}
-		
-		return listaIndicesOperacao;
-	}
-	
-	private boolean executarOperacao(Transacao transacaoTemp, Operacao operacaoTemp) {
+	public boolean executarOperacao(Transacao transacaoTemp, Operacao operacaoTemp) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
-	private void executarUnlock(Transacao transacaoTemp, Operacao operacaoTemp) {
+	public void executarUnlock(Transacao transacaoTemp, Operacao operacaoTemp) {
 		// TODO Auto-generated method stub
 		
 	}
