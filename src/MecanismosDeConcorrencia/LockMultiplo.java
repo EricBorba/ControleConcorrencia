@@ -18,7 +18,7 @@ public class LockMultiplo {
 	 * variavel estava sendo bloqueada por outra transacao retorna 2, se não bloqueou pq estava sendo bloqueada
 	 * pela mesma transacao retorna 3*/
 
-	public int construindoLockMultiplo(Repositorio repositorio,Transacao transacao,Operacao operacao,int numeroDeLeituras){
+	public int construindoLockMultiplo(Repositorio repositorio,Transacao transacao,Operacao operacao){
 
 		//boolean retorno = true;
 		int caso = 0;
@@ -67,7 +67,7 @@ public class LockMultiplo {
 			if(caso == 1 || caso == 0){
 
 				//modificarNumerodeReadsNaTabeladeBloqueio();				
-				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao,(numeroDeLeituras - 1));
+				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
 
 			}
 
@@ -105,7 +105,7 @@ public class LockMultiplo {
 				repositorio.getListaDeBloqueioMultiplo().get(posicaoCrescerBloqueio).setModoBloqueio("Write_lock");
 			}else if(caso == 0 && existeOutroBloqueio == 0){
 							
-				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao,numeroDeLeituras);
+				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
 			}
 
 		}else{
@@ -136,21 +136,21 @@ public class LockMultiplo {
 	//
 	//	}
 
-	/**retornar o numero de reads de uma dada transacao*/
-	public int retornarNumerodeReads(Transacao t, Operacao o,Repositorio repositorio){
-		int numeroRetorno = 0;
-		for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size();i++){
-			if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao()) && repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(o.getVariavel())){
-
-				numeroRetorno = repositorio.getListaDeBloqueioMultiplo().get(i).getNumeroDeLeituras();
-				i = repositorio.getListaDeBloqueioMultiplo().size();
-			}
-
-		}
-
-		return numeroRetorno;
-
-	}
+//	/**retornar o numero de reads de uma dada transacao*/
+//	public int retornarNumerodeReads(Transacao t, Operacao o,Repositorio repositorio){
+//		int numeroRetorno = 0;
+//		for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size();i++){
+//			if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao()) && repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(o.getVariavel())){
+//
+//				numeroRetorno = repositorio.getListaDeBloqueioMultiplo().get(i).getNumeroDeLeituras();
+//				i = repositorio.getListaDeBloqueioMultiplo().size();
+//			}
+//
+//		}
+//
+//		return numeroRetorno;
+//
+//	}
 
 	/**fazer decrescimo*/
 
@@ -175,7 +175,7 @@ public class LockMultiplo {
 
 	}
 
-	/**remove todas as operacoes de uma dada transacao na lista de bloqueiosbinarios*/
+	/**remove todas as operacoes de uma dada transacao na lista de bloqueios*/
 	public void unlockTodasAsOperacoesdaTransacao(Transacao t,Repositorio repositorio){
 
 		for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size(); i++){

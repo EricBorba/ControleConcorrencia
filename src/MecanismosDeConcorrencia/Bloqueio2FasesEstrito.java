@@ -45,7 +45,7 @@ public class Bloqueio2FasesEstrito {
 				if(!operacaoTemp.getNomeOperacao().equals("Commit") && !operacaoTemp.getNomeOperacao().equals("Begin")){
 					
 					
-					conseguiuExecutar = lock.construindoLockMultiplo(repositorio, transacaoTemp, operacaoTemp, numeroDeLeituras); // Tenta executar a operacao chamando o lockMultiplo.
+					conseguiuExecutar = lock.construindoLockMultiplo(repositorio, transacaoTemp, operacaoTemp); // Tenta executar a operacao chamando o lockMultiplo.
 												
 					//Se foi possivel de executar
 					if(conseguiuExecutar != 2){
@@ -240,6 +240,22 @@ public class Bloqueio2FasesEstrito {
 		}
 		
 		return existeBloqueioFuturo;
+	}
+
+	public ArrayList<String> getListaOperacoesFinal() {
+		return listaOperacoesFinal;
+	}
+
+	public void setListaOperacoesFinal(ArrayList<String> listaOperacoesFinal) {
+		this.listaOperacoesFinal = listaOperacoesFinal;
+	}
+
+	public ArrayList<String> getListaOperacoesOficial() {
+		return listaOperacoesOficial;
+	}
+
+	public void setListaOperacoesOficial(ArrayList<String> listaOperacoesOficial) {
+		this.listaOperacoesOficial = listaOperacoesOficial;
 	}
 	
 	

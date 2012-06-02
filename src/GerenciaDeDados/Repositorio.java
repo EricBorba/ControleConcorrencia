@@ -171,10 +171,10 @@ public class Repositorio {
 	}
 
 	/**adiciona um bloqueio dentro do arraylist de bloqueios lockmultiplo*/
-	public void adicionarBloqueioListaLockMultiplo(String nomeTransacao, Operacao operacao, int numeroDeleituras){
+	public void adicionarBloqueioListaLockMultiplo(String nomeTransacao, Operacao operacao){
 
 			
-			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getNomeVariavel(), operacao.getNomeOperacao()+"_lock",numeroDeleituras);
+			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getNomeVariavel(), operacao.getNomeOperacao()+"_lock");
 			this.listaDeBloqueioMultiplo.add(novoBloqueio);
 		
 
