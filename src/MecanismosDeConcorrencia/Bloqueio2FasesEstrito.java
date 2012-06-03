@@ -58,14 +58,14 @@ public class Bloqueio2FasesEstrito {
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
 		int conseguiuExecutar = 0;
 		Operacao operacaoTemp;
-		ArrayList<Transacao> listaTransacaoAuxiliar = this.listaTransacoesRecebida; // Para auxiliar na verificacao de bloqueios futuros
+		ArrayList<Transacao> listaTransacaoAuxiliar = new ArrayList<Transacao>(); // Para auxiliar na verificacao de bloqueios futuros
 		
-		for(int a=0; a < listaTransacaoAuxiliar.size(); a++){
-			
-			listaTransacaoAuxiliar.get(a).getListaOperacoes().clear();
-			
-		}	
 		
+		for(int a=0; a < listaTransacoesRecebida.size(); a++){
+			Transacao transacaoAuxiliar = new Transacao(listaTransacoesRecebida.get(a).getnomeTransacao());
+			listaTransacaoAuxiliar.add(a, transacaoAuxiliar);
+			
+		}
 		
 		//Polling criado para ficar alternando entre as transacoes e realizando( se possivel ) uma operacao de cada transacao por vez.
 		while(!this.listaTransacoesRecebida.isEmpty()){					
