@@ -59,7 +59,11 @@ public class Bloqueio2FasesEstrito {
 		int conseguiuExecutar = 0;
 		Operacao operacaoTemp;
 		ArrayList<Transacao> listaTransacaoAuxiliar = new ArrayList<Transacao>(quantidadeTransacoes); // Para auxiliar na verificacao de bloqueios futuros
-
+		
+		
+		
+		
+		
 		//Polling criado para ficar alternando entre as transacoes e realizando( se possivel ) uma operacao de cada transacao por vez.
 		while(!this.listaTransacoesRecebida.isEmpty()){					
 

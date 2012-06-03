@@ -29,7 +29,8 @@ public class Repositorio {
 		this.listaTransacoes = new ArrayList<Transacao>();
 		this.listaVariaveis = new ArrayList<Variavel>();
 		this.listaVariaveisAntigas = new ArrayList<Variavel>();
-		this.listaDeBloqueiosBinario = new ArrayList<BloqueioLockBinario>();		
+		this.listaDeBloqueiosBinario = new ArrayList<BloqueioLockBinario>();
+		this.listaDeBloqueioMultiplo = new ArrayList<BloqueioLockMultiplo>();
 	}
 
 	/**

@@ -26,7 +26,8 @@ public class LockMultiplo {
 		int existeOutroBloqueio = 0;//verificar se existe outro read_lock com a mesma variavel
 
 		if(operacao.getNomeOperacao() == "Read"){
-			for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size(); i++){
+			int teste = repositorio.getListaDeBloqueioMultiplo().size();
+			for(int i = 0; i < teste; i++){
 				if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(operacao.getVariavel())){
 					if(!repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(transacao.getnomeTransacao())){
 						if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio() == "Read_lock"){
