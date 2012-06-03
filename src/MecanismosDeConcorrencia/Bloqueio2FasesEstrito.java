@@ -64,104 +64,106 @@ public class Bloqueio2FasesEstrito {
 		while(!this.listaTransacoesRecebida.isEmpty()){					
 
 			lock.setTempoDaTransacaoBloqueada(0); //Para zerar e evitar problemas
-			
-			if(this.listaTransacoesRecebida.get(posicaoTransacaoLista) != null){
-			
-			Transacao transacaoTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista); //Seleciona a transacao que esta na vez.
 
-			if(transacaoTemp.getListaOperacoes().size() != 0){ 
+			if(posicaoTransacaoLista < quantidadeTransacoes){
 
-				operacaoTemp = transacaoTemp.getListaOperacoes().get(0);//Pega sempre a primeira posicao da lista de operacoes
+				Transacao transacaoTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista); //Seleciona a transacao que esta na vez.
 
+				if(transacaoTemp.getListaOperacoes().size() != 0){ 
 
-				if(!operacaoTemp.getNomeOperacao().equals("Commit") && !operacaoTemp.getNomeOperacao().equals("Begin") && !operacaoTemp.getNomeOperacao().equals("End")){
+					operacaoTemp = transacaoTemp.getListaOperacoes().get(0);//Pega sempre a primeira posicao da lista de operacoes
 
 
-					conseguiuExecutar = lock.construindoLockMultiplo(repositorio, transacaoTemp, operacaoTemp); // Tenta executar a operacao chamando o lockMultiplo.
-
-					//Se foi possivel de executar
-					if(conseguiuExecutar != 2){
-
-						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio, conseguiuExecutar);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
-						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
-						listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().add(operacaoTemp); // usada para se fazer comparacoes, afinal ela vai conter as operacoes que ja foram executadas
-
-						if(!operacaoTemp.getNomeOperacao().equals("Write")){
-
-							//Se nao houver write ou read de alguma variavel que nao foi bloqueada ainda || se nao houver passagem de read para write de alguam variavel qualquer. || Se houver algum read dessa variavel em questao que esta dando read agora
-							if(!existeBloqueiosFuturos(listaTransacaoAuxiliar, posicaoTransacaoLista, operacaoTemp)){
-
-								lock.unlockMultiplo(transacaoTemp, operacaoTemp, repositorio);
-
-							}
+					if(!operacaoTemp.getNomeOperacao().equals("Commit") && !operacaoTemp.getNomeOperacao().equals("Begin") && !operacaoTemp.getNomeOperacao().equals("End")){
 
 
-						}
+						conseguiuExecutar = lock.construindoLockMultiplo(repositorio, transacaoTemp, operacaoTemp); // Tenta executar a operacao chamando o lockMultiplo.
 
+						//Se foi possivel de executar
+						if(conseguiuExecutar != 2){
 
+							RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio, conseguiuExecutar);//Adiciona a operacao atual em uma lista que sera o retorno do metodo todo, ou seja, uma lista com a ordem correta de execucao.
+							this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0);//Remove a operacao que foi realizada com sucesso, ou seja, fica apenas com as restantes.
+							listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().add(operacaoTemp); // usada para se fazer comparacoes, afinal ela vai conter as operacoes que ja foram executadas
 
-						// Aqui entra o wait-die	
-					}else{
+							if(!operacaoTemp.getNomeOperacao().equals("Write")){
 
-						// Ou seja, a operacao da transacao nao foi executada e ela eh mais nova que a transacao que lhe bloqueou.
-						if(transacaoTemp.getTempoDeCriacao() > lock.getTempoDaTransacaoBloqueada()){
+								//Se nao houver write ou read de alguma variavel que nao foi bloqueada ainda || se nao houver passagem de read para write de alguam variavel qualquer. || Se houver algum read dessa variavel em questao que esta dando read agora
+								if(!existeBloqueiosFuturos(listaTransacaoAuxiliar, posicaoTransacaoLista, operacaoTemp)){
 
-							for(int i=0; i < repositorio.getTransacoes().size() ; i++){
-
-								// a transacao em execucao por ser mais nova sera dado rollback ou seja, fazemos uso do repositorio como um backup pra que todas as suas operacoes voltem ao estado original. E o timestamp da mesma continua sendo o original.
-								if(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getnomeTransacao().equals(repositorio.getTransacoes().get(i).getnomeTransacao())){
-
-									this.listaTransacoesRecebida.get(posicaoTransacaoLista).setListaOperacoes(repositorio.getTransacoes().get(i).getListaOperacoes());
+									lock.unlockMultiplo(transacaoTemp, operacaoTemp, repositorio);
 
 								}
 
+
 							}
 
 
-							apagaTransacaoRollBackOficial(transacaoTemp.getnomeTransacao());
 
+							// Aqui entra o wait-die	
+						}else{
+
+							// Ou seja, a operacao da transacao nao foi executada e ela eh mais nova que a transacao que lhe bloqueou.
+							if(transacaoTemp.getTempoDeCriacao() > lock.getTempoDaTransacaoBloqueada()){
+
+								for(int i=0; i < repositorio.getTransacoes().size() ; i++){
+
+									// a transacao em execucao por ser mais nova sera dado rollback ou seja, fazemos uso do repositorio como um backup pra que todas as suas operacoes voltem ao estado original. E o timestamp da mesma continua sendo o original.
+									if(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getnomeTransacao().equals(repositorio.getTransacoes().get(i).getnomeTransacao())){
+
+										this.listaTransacoesRecebida.get(posicaoTransacaoLista).setListaOperacoes(repositorio.getTransacoes().get(i).getListaOperacoes());
+
+									}
+
+								}
+
+
+								apagaTransacaoRollBackOficial(transacaoTemp.getnomeTransacao());
+
+
+							}
 
 						}
 
+
+					}else if(operacaoTemp.getNomeOperacao().equals("Begin") || operacaoTemp.getNomeOperacao().equals("End")){
+						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(),repositorio, conseguiuExecutar); // Adiciona begin a lista final
+						this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0); // remove a operacao da lista de operacoes.
+
+
+						// Ou seja, eh Commit
+					}else{
+						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio, conseguiuExecutar); // Adiciona commit a lista final
+						this.listaTransacoesRecebida.remove(posicaoTransacaoLista); // Nao precisa remover a operacao da lista de operacoes pois sera mandado remover a transacao toda.
+						lock.unlockTodasAsOperacoesdaTransacao(transacaoTemp, repositorio); // Metodo a ser criado no lock, desbloqueia todas as variaveis bloqueadas por determinada transacao
 					}
 
 
-				}else if(operacaoTemp.getNomeOperacao().equals("Begin") || operacaoTemp.getNomeOperacao().equals("End")){
-					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(),repositorio, conseguiuExecutar); // Adiciona begin a lista final
-					this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0); // remove a operacao da lista de operacoes.
+					//Polling pra passar de uma transacao para outra
+					if(operacaoTemp.getNomeOperacao().equals("Commit")){
 
+						if(posicaoTransacaoLista == (listaTransacoesRecebida.size())){
+							posicaoTransacaoLista = 0;
+						}// Nao tem else pq a posicao tem que permanecer a mesma, afinal apos remover um objeto de uma lista, o seguinte ocupa seu lugar.
 
-					// Ou seja, eh Commit
+					}else{
+						if(posicaoTransacaoLista == (listaTransacoesRecebida.size()-1)){
+							posicaoTransacaoLista = 0; //Caso seja a ultima transacao, retorna para a primeira.
+						}else{
+							posicaoTransacaoLista++;
+						}
+
+					}	
+
 				}else{
-					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio, conseguiuExecutar); // Adiciona commit a lista final
-					this.listaTransacoesRecebida.remove(posicaoTransacaoLista); // Nao precisa remover a operacao da lista de operacoes pois sera mandado remover a transacao toda.
-					lock.unlockTodasAsOperacoesdaTransacao(transacaoTemp, repositorio); // Metodo a ser criado no lock, desbloqueia todas as variaveis bloqueadas por determinada transacao
+					posicaoTransacaoLista = 0 ;
 				}
 
-
-				//Polling pra passar de uma transacao para outra
-				if(operacaoTemp.getNomeOperacao().equals("Commit")){
-
-					if(posicaoTransacaoLista == (listaTransacoesRecebida.size())){
-						posicaoTransacaoLista = 0;
-					}// Nao tem else pq a posicao tem que permanecer a mesma, afinal apos remover um objeto de uma lista, o seguinte ocupa seu lugar.
-
-				}else{
-					if(posicaoTransacaoLista == (listaTransacoesRecebida.size()-1)){
-						posicaoTransacaoLista = 0; //Caso seja a ultima transacao, retorna para a primeira.
-					}else{
-						posicaoTransacaoLista++;
-					}
-
-				}	
-
 			}else{
-				posicaoTransacaoLista++;
+				posicaoTransacaoLista = 0;
 			}
 			
-			}else{
-				posicaoTransacaoLista++;
-			}
+			quantidadeTransacoes = this.listaTransacoesRecebida.size();
 
 		}
 
