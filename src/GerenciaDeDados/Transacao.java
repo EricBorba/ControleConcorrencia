@@ -1,6 +1,10 @@
 package GerenciaDeDados;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.crypto.Data;
 
 /** 
  * Classe transacoes composta pelo nome que identifica a mesma e um ArrayList o qual contem as operacoes a serem realizadas pela transacoes.
@@ -15,14 +19,17 @@ public class Transacao {
 	String nomeTransacao;
 	ArrayList<Operacao> listaOperacoes;
 	long tempoDeCriacao;
-	Time x;
-	
+	GregorianCalendar calendar;
+	Date data;
 	
 	public Transacao (String nomeTransacao){
 		this.listaOperacoes = new ArrayList<Operacao>();
 		this.nomeTransacao = nomeTransacao;
-		tempoDeCriacao = x.getTime();
-	}
+		calendar = new GregorianCalendar();  
+		data = new Date();
+		calendar.setTime(data);
+		tempoDeCriacao = calendar.getTimeInMillis();
+		}
 		
 	public ArrayList<Operacao> getListaOperacoes() {
 		return listaOperacoes;

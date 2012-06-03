@@ -5,31 +5,17 @@ public class BloqueioLockMultiplo {
 	String NomeTransacao;
 	String NomeVariavel;
 	String modoBloqueio;
-	int numeroDeLeituras;
-
+	
 	public BloqueioLockMultiplo(String NomeTransacaoNova,String NomeVariavelNova,String modoBloqueioNovo){
 
 		this.NomeTransacao = NomeTransacaoNova;
 		this.NomeVariavel = NomeVariavelNova;
+		this.modoBloqueio = modoBloqueioNovo;		
 		this.modoBloqueio = modoBloqueioNovo;
 		
-
 	}
 
 	
-	
-	public int getNumeroDeLeituras() {
-		return numeroDeLeituras;
-	}
-
-
-
-	public void setNumeroDeLeituras(int numeroDeLeituras) {
-		this.numeroDeLeituras = numeroDeLeituras;
-	}
-
-
-
 	public String getNomeTransacao() {
 		return NomeTransacao;
 	}

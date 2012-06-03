@@ -27,6 +27,7 @@ import javax.swing.BoxLayout;
 import GerenciaDeDados.Repositorio;
 import GerenciaDeDados.Transacao;
 import GerenciaDeDados.Variavel;
+import MecanismosDeConcorrencia.Bloqueio2FasesEstrito;
 
 
 
@@ -70,12 +71,12 @@ public class JanelaInicial extends JFrame{
 
 	public JanelaInicial(Repositorio repNovo){
 		this.rep = repNovo;
-		
+
 
 	}
 
 	public void criarRepositorio(){
-		
+
 		rep = new Repositorio();
 	}
 
@@ -110,25 +111,29 @@ public class JanelaInicial extends JFrame{
 		this.rep.getListaVariaveis().add(var4);
 		this.rep.getListaVariaveis().add(var5);
 		this.rep.getListaVariaveis().add(var6);
-		
+
 		this.rep.getListaVariaveisAntigas().add(var1);
 		this.rep.getListaVariaveisAntigas().add(var2);
 		this.rep.getListaVariaveisAntigas().add(var3);
 		this.rep.getListaVariaveisAntigas().add(var4);
 		this.rep.getListaVariaveisAntigas().add(var5);
 		this.rep.getListaVariaveisAntigas().add(var6);
-		
-		
+
+
 		Transacao t1 = new Transacao("T1");
+		System.out.println("T1: "+ t1.getTempoDeCriacao());
 		Transacao t2 = new Transacao("T2");
+		System.out.println("T2: "+ t2.getTempoDeCriacao());
 		Transacao t3 = new Transacao("T3");
+		System.out.println("T3: "+ t3.getTempoDeCriacao());
 		Transacao t4 = new Transacao("T4");
-		
+		System.out.println("T4: "+ t4.getTempoDeCriacao());
+
 		this.rep.getTransacoes().add(t1);
 		this.rep.getTransacoes().add(t2);
 		this.rep.getTransacoes().add(t3);
 		this.rep.getTransacoes().add(t4);
-		
+
 
 		label1 = new JLabel("Estado do Disco");		
 		label1.setBounds(500, 20, 200, 40);
@@ -141,11 +146,11 @@ public class JanelaInicial extends JFrame{
 		label3 = new JLabel("LOG");		
 		label3.setBounds(22, 340, 250, 40);
 		label3.setFont(new Font("Comic Sans MS", 1, 15));
-		
+
 		label4 = new JLabel("Tabela de Bloqueios");		
 		label4.setBounds(434, 340, 250, 40);
 		label4.setFont(new Font("Comic Sans MS", 1, 15));
-		
+
 		label8 = new JLabel("Tabela da Professora");		
 		label8.setBounds(846, 340, 250, 40);
 		label8.setFont(new Font("Comic Sans MS", 1, 15));
@@ -162,7 +167,7 @@ public class JanelaInicial extends JFrame{
 		textArea3 = new JTextArea(40, 40);
 		jScrollPane3 = new JScrollPane(textArea3);
 		jScrollPane3.setBounds(434, 370, 390, 250);
-		
+
 		/// Tabela da professora
 		textArea4 = new JTextArea(40, 40);
 		jScrollPane4 = new JScrollPane(textArea4);
@@ -172,19 +177,19 @@ public class JanelaInicial extends JFrame{
 		label5.setBounds(960, 20, 250, 40);
 		label5.setFont(new Font("Comic Sans MS", 1, 15));
 
-//		radio1Selecionado = false;
-//		this.jRadioButton1 = new JRadioButton();
-//		this.jRadioButton1.setBounds(660, 50,300,30);
-//		this.jRadioButton1.setText("Bloqueio de 2 fases Básico");
-//		this.jRadioButton1.setFont(new Font("Comic Sans MS", 1, 18));
-//
-//		jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//				jRadioButton1ActionPerformed(evt);
-//			}
-//		});
-//		
-		
+		//		radio1Selecionado = false;
+		//		this.jRadioButton1 = new JRadioButton();
+		//		this.jRadioButton1.setBounds(660, 50,300,30);
+		//		this.jRadioButton1.setText("Bloqueio de 2 fases Básico");
+		//		this.jRadioButton1.setFont(new Font("Comic Sans MS", 1, 18));
+		//
+		//		jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		//				jRadioButton1ActionPerformed(evt);
+		//			}
+		//		});
+		//		
+
 		radio2Selecionado = false;
 		this.jRadioButton2 = new JRadioButton();
 		this.jRadioButton2.setBounds(960, 50,300,30);
@@ -196,34 +201,34 @@ public class JanelaInicial extends JFrame{
 				jRadioButton2ActionPerformed(evt);
 			}
 		});
-//
-//		radio1Selecionado = false;
-//		this.jRadioButton3 = new JRadioButton();
-//		this.jRadioButton3.setBounds(660, 110,350,30);
-//		this.jRadioButton3.setText("Bloqueio de 2 fases Conservador");
-//		this.jRadioButton3.setFont(new Font("Comic Sans MS", 1, 18));
-//
-//		jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//				jRadioButton3ActionPerformed(evt);
-//			}
-//		});
-		
+		//
+		//		radio1Selecionado = false;
+		//		this.jRadioButton3 = new JRadioButton();
+		//		this.jRadioButton3.setBounds(660, 110,350,30);
+		//		this.jRadioButton3.setText("Bloqueio de 2 fases Conservador");
+		//		this.jRadioButton3.setFont(new Font("Comic Sans MS", 1, 18));
+		//
+		//		jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		//				jRadioButton3ActionPerformed(evt);
+		//			}
+		//		});
+
 		label6 = new JLabel("TIPO DE BLOQUEIO");		
 		label6.setBounds(960, 80, 250, 40);
 		label6.setFont(new Font("Comic Sans MS", 1, 15));
 
-//		this.jRadioButton4 = new JRadioButton();
-//		this.jRadioButton4.setBounds(660, 165,320,30);
-//		this.jRadioButton4.setText("Lock Binário");
-//		this.jRadioButton4.setFont(new Font("Comic Sans MS", 1, 18));
-//		this.jRadioButton4.setEnabled(false);
-//
-//		jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//				jRadioButton4ActionPerformed(evt);
-//			}
-//		});
+		//		this.jRadioButton4 = new JRadioButton();
+		//		this.jRadioButton4.setBounds(660, 165,320,30);
+		//		this.jRadioButton4.setText("Lock Binário");
+		//		this.jRadioButton4.setFont(new Font("Comic Sans MS", 1, 18));
+		//		this.jRadioButton4.setEnabled(false);
+		//
+		//		jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		//				jRadioButton4ActionPerformed(evt);
+		//			}
+		//		});
 
 		this.jRadioButton5 = new JRadioButton();
 		this.jRadioButton5.setBounds(960, 110,300,30);
@@ -236,7 +241,7 @@ public class JanelaInicial extends JFrame{
 				jRadioButton5ActionPerformed(evt);
 			}
 		});
-		
+
 		label7 = new JLabel("TRATAMENTO");		
 		label7.setBounds(960, 140, 250, 40);
 		label7.setFont(new Font("Comic Sans MS", 1, 15));
@@ -253,17 +258,17 @@ public class JanelaInicial extends JFrame{
 			}
 		});
 
-//		this.jRadioButton7 = new JRadioButton();
-//		this.jRadioButton7.setBounds(660, 280,300,30);
-//		this.jRadioButton7.setText("Time Stamping Wound-Wait");
-//		this.jRadioButton7.setFont(new Font("Comic Sans MS", 1, 18));
-//		this.jRadioButton7.setEnabled(false);
-//
-//		jRadioButton7.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//				jRadioButton7ActionPerformed(evt);
-//			}
-//		});
+		//		this.jRadioButton7 = new JRadioButton();
+		//		this.jRadioButton7.setBounds(660, 280,300,30);
+		//		this.jRadioButton7.setText("Time Stamping Wound-Wait");
+		//		this.jRadioButton7.setFont(new Font("Comic Sans MS", 1, 18));
+		//		this.jRadioButton7.setEnabled(false);
+		//
+		//		jRadioButton7.addActionListener(new java.awt.event.ActionListener() {
+		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		//				jRadioButton7ActionPerformed(evt);
+		//			}
+		//		});
 
 		this.jButton1 = new JButton("Adicionar Transação");
 		this.jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
@@ -301,9 +306,9 @@ public class JanelaInicial extends JFrame{
 	// tabela do estado atual do disco
 	public void setEstadoAtual(){
 
-	
+
 		DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Variável", "Valor"});
-		
+
 		int i = 0;
 		while(i < this.rep.getListaVariaveis().size()){
 
@@ -311,33 +316,53 @@ public class JanelaInicial extends JFrame{
 			i++;
 
 		}
-		
-		
+
+
 
 		this.EstadoDisco = new JTable(modelo);  
 		this.scrollDisco = new JScrollPane(EstadoDisco);
 		scrollDisco.setBounds(500, 50, 400, 250);
 		scrollDisco.setBackground(Color.white);
-	
+
 
 
 	}
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		
+
 		JanelaEscolherTransacao janela = new JanelaEscolherTransacao(this.rep,this);
 		janela.SetJanelaEscolherTransacao();
 		janela.setComponentes();
 		janela.addComponentes();
 		janela.setVisible(true);
 		this.setVisible(false);
-	
-		
-		
+
+
+
 	}
 
+	//// criar erro p qndo não houver operacoes criadas nas transacoes da lista
+	/// nao teria q separar p fazer com o lock e sem o lock, e com o time stamping ou sem?
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-		//ação radiobutton1  	
+
+		if(jRadioButton2.isSelected() == true){
+			Bloqueio2FasesEstrito bloqueio = new Bloqueio2FasesEstrito(rep.getTransacoes());
+			bloqueio.executar(rep);
+			//printando lista de operacoes oficial
+			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
+				textArea1.setText(bloqueio.getListaOperacoesOficial().get(i));
+			}
+
+			//printando lista suja de operacoes
+			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
+				textArea4.setText(bloqueio.getListaOperacoesFinal().get(i));
+			}
+
+		}else{
+
+			System.out.println("Bloqueio nao selecionado");
+
+		}
 
 	}
 
@@ -351,13 +376,13 @@ public class JanelaInicial extends JFrame{
 		jRadioButton2.setSelected(false);
 		//jRadioButton3.setSelected(false);
 		if(radio1Selecionado == false){
-		//jRadioButton4.setEnabled(true);
-		jRadioButton5.setEnabled(true);
-		jRadioButton6.setEnabled(true);
-		//jRadioButton7.setEnabled(true);
-		radio1Selecionado = true;
-		radio3Selecionado = false;
-		radio2Selecionado = false;
+			//jRadioButton4.setEnabled(true);
+			jRadioButton5.setEnabled(true);
+			jRadioButton6.setEnabled(true);
+			//jRadioButton7.setEnabled(true);
+			radio1Selecionado = true;
+			radio3Selecionado = false;
+			radio2Selecionado = false;
 		}else{
 			//jRadioButton4.setEnabled(false);
 			jRadioButton5.setEnabled(false);
@@ -369,9 +394,9 @@ public class JanelaInicial extends JFrame{
 	}
 
 	private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-//		jRadioButton1.setSelected(false);
-//		jRadioButton3.setSelected(false);
-		
+		//		jRadioButton1.setSelected(false);
+		//		jRadioButton3.setSelected(false);
+
 		if(radio2Selecionado == false){
 			//jRadioButton4.setEnabled(true);
 			jRadioButton5.setEnabled(true);
@@ -380,18 +405,18 @@ public class JanelaInicial extends JFrame{
 			radio2Selecionado = true;
 			radio1Selecionado = false;
 			radio3Selecionado = false;
-			}else{
-				//jRadioButton4.setEnabled(false);
-				jRadioButton5.setEnabled(false);
-				jRadioButton6.setEnabled(false);
-				//jRadioButton7.setEnabled(false);
-				radio2Selecionado = false;
-			}
+		}else{
+			//jRadioButton4.setEnabled(false);
+			jRadioButton5.setEnabled(false);
+			jRadioButton6.setEnabled(false);
+			//jRadioButton7.setEnabled(false);
+			radio2Selecionado = false;
+		}
 
 	}
 
 	private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-//		jRadioButton1.setSelected(false);
+		//		jRadioButton1.setSelected(false);
 		jRadioButton2.setSelected(false);
 		if(radio3Selecionado == false){
 			//jRadioButton4.setEnabled(true);
@@ -401,13 +426,13 @@ public class JanelaInicial extends JFrame{
 			radio3Selecionado = true;
 			radio1Selecionado = false;
 			radio2Selecionado = false;
-			}else{
-				//jRadioButton4.setEnabled(false);
-				jRadioButton5.setEnabled(false);
-				jRadioButton6.setEnabled(false);
-				//jRadioButton7.setEnabled(false);
-				radio3Selecionado = false;
-			}
+		}else{
+			//jRadioButton4.setEnabled(false);
+			jRadioButton5.setEnabled(false);
+			jRadioButton6.setEnabled(false);
+			//jRadioButton7.setEnabled(false);
+			radio3Selecionado = false;
+		}
 	}
 
 	private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -453,9 +478,9 @@ public class JanelaInicial extends JFrame{
 		this.add(this.jScrollPane2);
 		this.add(this.jScrollPane3);
 		this.add(this.jScrollPane4);
-//		this.add(this.jRadioButton1);
+		//		this.add(this.jRadioButton1);
 		this.add(this.jRadioButton2);
-//		this.add(this.jRadioButton3);
+		//		this.add(this.jRadioButton3);
 		//this.add(this.jRadioButton4);
 		this.add(this.jRadioButton5);
 		this.add(this.jRadioButton6);
