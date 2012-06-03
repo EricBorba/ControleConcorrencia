@@ -18,7 +18,7 @@ public class LockMultiplo {
 	 * variavel estava sendo bloqueada por outra transacao retorna 2, se não bloqueou pq estava sendo bloqueada
 	 * pela mesma transacao retorna 3*/
 
-	public int construindoLockMultiplo(Repositorio repositorio,Transacao transacao,Operacao operacao,int numeroDeLeituras){
+	public int construindoLockMultiplo(Repositorio repositorio,Transacao transacao,Operacao operacao){
 
 		//boolean retorno = true;
 		int caso = 0;
@@ -67,7 +67,7 @@ public class LockMultiplo {
 			if(caso == 1 || caso == 0){
 
 				//modificarNumerodeReadsNaTabeladeBloqueio();				
-				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao,(numeroDeLeituras - 1));
+				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
 
 			}
 
@@ -105,7 +105,7 @@ public class LockMultiplo {
 				repositorio.getListaDeBloqueioMultiplo().get(posicaoCrescerBloqueio).setModoBloqueio("Write_lock");
 			}else if(caso == 0 && existeOutroBloqueio == 0){
 							
-				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao,numeroDeLeituras);
+				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
 			}
 
 		}else{

@@ -7,12 +7,12 @@ public class BloqueioLockMultiplo {
 	String modoBloqueio;
 	int numeroDeLeituras;
 
-	public BloqueioLockMultiplo(String NomeTransacaoNova,String NomeVariavelNova,String modoBloqueioNovo,int numeroDeleiturasNovo){
+	public BloqueioLockMultiplo(String NomeTransacaoNova,String NomeVariavelNova,String modoBloqueioNovo){
 
 		this.NomeTransacao = NomeTransacaoNova;
 		this.NomeVariavel = NomeVariavelNova;
 		this.modoBloqueio = modoBloqueioNovo;
-		this.numeroDeLeituras = numeroDeleiturasNovo;
+		
 
 	}
 

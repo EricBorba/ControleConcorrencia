@@ -28,7 +28,7 @@ public class Bloqueio2FasesEstrito {
 	 * Caracterizado por liberar os bloqueios "exclusivos" apenas apos um commit ou abort.
 	 * **/
 	public ArrayList<String> executar(Repositorio repositorio){
-
+		
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
 		int conseguiuExecutar = 0;
@@ -45,7 +45,7 @@ public class Bloqueio2FasesEstrito {
 				if(!operacaoTemp.getNomeOperacao().equals("Commit") && !operacaoTemp.getNomeOperacao().equals("Begin")){
 					
 					
-					conseguiuExecutar = lock.construindoLockMultiplo(repositorio, transacaoTemp, operacaoTemp, numeroDeLeituras); // Tenta executar a operacao chamando o lockMultiplo.
+					conseguiuExecutar = lock.construindoLockMultiplo(repositorio, transacaoTemp, operacaoTemp); // Tenta executar a operacao chamando o lockMultiplo.
 												
 					//Se foi possivel de executar
 					if(conseguiuExecutar != 2){
