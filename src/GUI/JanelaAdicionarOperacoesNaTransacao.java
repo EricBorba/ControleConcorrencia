@@ -426,9 +426,9 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 
 			}
 
-			if(!(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("End")){
+			if(!((rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("Commit")&&(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-2)).getNomeOperacao().equals("End"))){
 
-				System.out.print("FINALIZE A TRANSACAO!!!!");
+				System.out.print("FINALIZE A TRANSACAO CORRETAMENTE!!!!");
 				//se der tempo fazer uma janela para isso
 			}else{		
 				this.janela.setVisible(true);

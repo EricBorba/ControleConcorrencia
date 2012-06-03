@@ -29,6 +29,31 @@ public class Bloqueio2FasesEstrito {
 	 * **/
 	public ArrayList<String> executar(Repositorio repositorio){
 		
+		
+		///////////////////////////////////////////////////////////
+		
+
+		for(int i = 0; i < this.getListaTransacoesRecebida().size();i++){
+			for(int j = 0; j < this.getListaTransacoesRecebida().get(i).getListaOperacoes().size();j++){
+
+				if(this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
+				
+					System.out.println(this.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+				
+				
+				}else{
+
+					System.out.println(this.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+
+				}
+
+			}
+		}
+		
+		
+		//////////////////////////////////////////////////////////
+		
+		
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
 		int conseguiuExecutar = 0;

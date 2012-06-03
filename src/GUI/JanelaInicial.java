@@ -346,6 +346,7 @@ public class JanelaInicial extends JFrame{
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 
 		if(jRadioButton2.isSelected() == true){
+						
 			Bloqueio2FasesEstrito bloqueio = new Bloqueio2FasesEstrito(rep.getTransacoes());
 			bloqueio.executar(rep);
 

@@ -111,9 +111,19 @@ public class JanelaEscolherTransacao extends JFrame{
 
 	private void jButton1ActionPerformed(ActionEvent evt) {
 		
-		Transacao transacao = new Transacao(jComboBox1.getSelectedItem().toString());
+		Transacao transacao = new Transacao(" ");
+		
+		for(int i = 0; i < rep.getTransacoes().size();i++){
+			
+			if(rep.getTransacoes().get(i).getnomeTransacao().equals(jComboBox1.getSelectedItem().toString())){
+				
+				transacao = rep.getTransacoes().get(i);
+			}
+			
+		}
+		
 		//fachada.CriarRepositorio(rep).adicionarTransacaoLista(transacao);
-		rep.adicionarTransacaoLista(transacao);
+		//rep.adicionarTransacaoLista(transacao);
 		JanelaAdicionarOperacoesNaTransacao janela = new JanelaAdicionarOperacoesNaTransacao(jComboBox1.getSelectedItem().toString(),this.rep,this);
 		System.out.println(jComboBox1.getSelectedItem().toString());
 		System.out.println(jComboBox1.getSelectedItem().toString()+":"+ transacao.getTempoDeCriacao());
