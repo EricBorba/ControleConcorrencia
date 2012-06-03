@@ -179,7 +179,7 @@ public class Bloqueio2FasesEstrito {
 						
 		}else if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 2){
 			
-			///nao foi feito a escrito pois ja existia alguem bloqueando faz algo?
+			///nao foi feito a escrito pois ja existia alguem bloqueando faz algo
 		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 1){
 			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
 			this.listaOperacoesFinal.add(retorno); // Lista Suja
@@ -191,7 +191,7 @@ public class Bloqueio2FasesEstrito {
 			
 		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 2){
 			
-			///nao foi feito a leitura pois ja existia alguem bloqueando faz algo?
+			///nao foi feito a leitura pois ja existia alguem bloqueando faz algo
 			
 		}else if(o.getNomeOperacao().equals("Begin")||o.getNomeOperacao().equals("End")||o.getNomeOperacao().equals("Commit")){
 			retorno = nomeTransacao+" "+o.getNomeOperacao();  
