@@ -257,6 +257,16 @@ public class Bloqueio2FasesEstrito {
 	public void setListaOperacoesOficial(ArrayList<String> listaOperacoesOficial) {
 		this.listaOperacoesOficial = listaOperacoesOficial;
 	}
+
+	public ArrayList<Transacao> getListaTransacoesRecebida() {
+		return listaTransacoesRecebida;
+	}
+
+	public void setListaTransacoesRecebida(
+			ArrayList<Transacao> listaTransacoesRecebida) {
+		this.listaTransacoesRecebida = listaTransacoesRecebida;
+	}
+	
 	
 	
 }

@@ -348,13 +348,32 @@ public class JanelaInicial extends JFrame{
 		if(jRadioButton2.isSelected() == true){
 			Bloqueio2FasesEstrito bloqueio = new Bloqueio2FasesEstrito(rep.getTransacoes());
 			bloqueio.executar(rep);
+
+			//printando lista de operacoes a serem executadas
+			for(int i = 0; i < bloqueio.getListaTransacoesRecebida().size();i++){
+				for(int j = 0; j < bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().size();j++){
+
+					if(bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
+					
+						textArea1.setText(bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+					
+					
+					}else{
+
+						textArea1.setText(bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+
+					}
+
+				}
+			}
+
 			//printando lista de operacoes oficial
 			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
 				textArea2.setText(bloqueio.getListaOperacoesOficial().get(i));
 			}
 
 			//printando lista suja de operacoes
-			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
+			for(int i = 0; i < bloqueio.getListaOperacoesFinal().size();i++){
 				textArea4.setText(bloqueio.getListaOperacoesFinal().get(i));
 			}
 			//printando lista bloqueio
