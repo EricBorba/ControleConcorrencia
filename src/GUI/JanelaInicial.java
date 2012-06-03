@@ -120,19 +120,19 @@ public class JanelaInicial extends JFrame{
 		this.rep.getListaVariaveisAntigas().add(var6);
 
 
-		Transacao t1 = new Transacao("T1");
-		System.out.println("T1: "+ t1.getTempoDeCriacao());
-		Transacao t2 = new Transacao("T2");
-		System.out.println("T2: "+ t2.getTempoDeCriacao());
-		Transacao t3 = new Transacao("T3");
-		System.out.println("T3: "+ t3.getTempoDeCriacao());
-		Transacao t4 = new Transacao("T4");
-		System.out.println("T4: "+ t4.getTempoDeCriacao());
-
-		this.rep.getTransacoes().add(t1);
-		this.rep.getTransacoes().add(t2);
-		this.rep.getTransacoes().add(t3);
-		this.rep.getTransacoes().add(t4);
+//		Transacao t1 = new Transacao("T1");
+//		System.out.println("T1: "+ t1.getTempoDeCriacao());
+//		Transacao t2 = new Transacao("T2");
+//		System.out.println("T2: "+ t2.getTempoDeCriacao());
+//		Transacao t3 = new Transacao("T3");
+//		System.out.println("T3: "+ t3.getTempoDeCriacao());
+//		Transacao t4 = new Transacao("T4");
+//		System.out.println("T4: "+ t4.getTempoDeCriacao());
+//
+//		this.rep.getTransacoes().add(t1);
+//		this.rep.getTransacoes().add(t2);
+//		this.rep.getTransacoes().add(t3);
+//		this.rep.getTransacoes().add(t4);
 
 
 		label1 = new JLabel("Estado do Disco");		
