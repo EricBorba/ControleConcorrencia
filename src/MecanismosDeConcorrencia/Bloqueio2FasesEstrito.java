@@ -64,6 +64,9 @@ public class Bloqueio2FasesEstrito {
 		while(!this.listaTransacoesRecebida.isEmpty()){					
 
 			lock.setTempoDaTransacaoBloqueada(0); //Para zerar e evitar problemas
+			
+			if(this.listaTransacoesRecebida.get(posicaoTransacaoLista) != null){
+			
 			Transacao transacaoTemp = this.listaTransacoesRecebida.get(posicaoTransacaoLista); //Seleciona a transacao que esta na vez.
 
 			if(transacaoTemp.getListaOperacoes().size() != 0){ 
@@ -152,6 +155,10 @@ public class Bloqueio2FasesEstrito {
 
 				}	
 
+			}else{
+				posicaoTransacaoLista++;
+			}
+			
 			}else{
 				posicaoTransacaoLista++;
 			}
