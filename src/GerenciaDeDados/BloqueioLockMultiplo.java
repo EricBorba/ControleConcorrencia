@@ -10,8 +10,7 @@ public class BloqueioLockMultiplo {
 
 		this.NomeTransacao = NomeTransacaoNova;
 		this.NomeVariavel = NomeVariavelNova;
-		this.modoBloqueio = modoBloqueioNovo;		
-		this.modoBloqueio = modoBloqueioNovo;
+		this.modoBloqueio = modoBloqueioNovo;	
 		
 	}
 

@@ -24,10 +24,10 @@ retornar a transacao e a variavel. ( Feito: Passando como parâmetro para a busca
 afim de não ser necessário criar um método dentro da classe Bloqueio2Fases para cada situacao, ou seja, todas as possibilidades serão analisadas dentro de um mesmo
 método de acordo com o parâmetro passado.   ( Feito: Mas verificar futuramente se está correto e se será necessário )
 
-- Ver se o Time usado em Transacao está sendo usado corretamente...
+- Ver se o Time usado em Transacao está sendo usado corretamente... ( feito )
 - Verificar se a criação do ArrayList de transacoes está sendo iniciado corretamente com relação ao tamanho dele...
 - Verificar na parte de lock multiplo se está cobrindo o caso de read_x ter outro read_x depois.... ( feito )
-- Colocar o timeStamp das transacoes quando for dado Begin. Para isso fazer uso de um booleano senão quando for dado rollback ele pegará um timestamp novo.
+- Colocar o timeStamp das transacoes quando for dado Begin. Para isso fazer uso de um booleano senão quando for dado rollback ele pegará um timestamp novo. ( feito de outra forma )
 
 
 

@@ -94,7 +94,7 @@ public class Bloqueio2FasesEstrito {
 					}
 					
 					
-				}else if(operacaoTemp.getNomeOperacao().equals("Begin")){
+				}else if(operacaoTemp.getNomeOperacao().equals("Begin") || operacaoTemp.getNomeOperacao().equals("End")){
 					RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(),repositorio, conseguiuExecutar); // Adiciona begin a lista final
 					this.listaTransacoesRecebida.get(posicaoTransacaoLista).getListaOperacoes().remove(0); // remove a operacao da lista de operacoes.
 									
