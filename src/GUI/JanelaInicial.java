@@ -350,12 +350,16 @@ public class JanelaInicial extends JFrame{
 			bloqueio.executar(rep);
 			//printando lista de operacoes oficial
 			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
-				textArea1.setText(bloqueio.getListaOperacoesOficial().get(i));
+				textArea2.setText(bloqueio.getListaOperacoesOficial().get(i));
 			}
 
 			//printando lista suja de operacoes
 			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
 				textArea4.setText(bloqueio.getListaOperacoesFinal().get(i));
+			}
+			//printando lista bloqueio
+			for(int i = 0; i < rep.getListaDeBloqueioMultiplo().size();i++){
+				textArea3.setText(rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
 			}
 
 		}else{
