@@ -316,7 +316,10 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		Operacao o = null;//se der trabalho verificar aqui
 		//pega a transação
 
+
 		String transacao = this.nomeTransacao;
+
+
 		for(i = 0; i < rep.getTransacoes().size();i++){
 
 			if(rep.getTransacoes().get(i).equals(transacao)){	
@@ -324,6 +327,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 				i = rep.getTransacoes().size();
 
 			}
+
 
 		}
 
@@ -395,9 +399,24 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().add(o);
 		String ConjuntoOperacoes = textArea1.getText();
 		if(ConjuntoOperacoes.equals("")){
-			ConjuntoOperacoes = (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();	
+			if((rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("Read")||(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("Write")){
+			
+				ConjuntoOperacoes = (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();	
+		
+			}else{
+				
+				ConjuntoOperacoes = (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao();
+		
+			}
+			
 		}else{
-			ConjuntoOperacoes = ConjuntoOperacoes + "\n" + (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();
+			if((rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("Read")||(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("Write")){
+
+				ConjuntoOperacoes = ConjuntoOperacoes + "\n" + (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao()+"_item "+ (rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getVariavel().getNomeVariavel()+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getValorNovo();
+
+			}else{
+				ConjuntoOperacoes = ConjuntoOperacoes + "\n" + (rep.getTransacoes().get(posicaoTransacao).getnomeTransacao())+" "+(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao();
+			}
 		}
 		textArea1.setText(ConjuntoOperacoes);
 
@@ -415,17 +434,17 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		int i;
 		int posicaoTransacao = 0;
 		String transacao = this.nomeTransacao;
-	
-			for(i = 0; i < rep.getTransacoes().size();i++){
 
-				if(rep.getTransacoes().get(i).equals(transacao)){	
-					posicaoTransacao = i;
-					i = rep.getTransacoes().size();
+		for(i = 0; i < rep.getTransacoes().size();i++){
 
-				}
+			if(rep.getTransacoes().get(i).equals(transacao)){	
+				posicaoTransacao = i;
+				i = rep.getTransacoes().size();
 
 			}
 
+		}
+		if(!(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size() <= 0)){
 			if(!((rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-1)).getNomeOperacao().equals("Commit")&&(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().get(rep.getTransacoes().get(posicaoTransacao).getListaOperacoes().size()-2)).getNomeOperacao().equals("End"))){
 
 				System.out.print("FINALIZE A TRANSACAO CORRETAMENTE!!!!");
@@ -434,7 +453,10 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 				this.janela.setVisible(true);
 				this.setVisible(false);
 			}
-		
+		}else{
+
+			System.out.println("TRANSACAO SEM OPERACOES");
+		}
 	}
 
 	//	public static void main(String[] args) {

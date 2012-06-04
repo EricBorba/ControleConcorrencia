@@ -25,15 +25,15 @@ public class LockMultiplo {
 		int posicaoCrescerBloqueio = 0;
 		int existeOutroBloqueio = 0;//verificar se existe outro read_lock com a mesma variavel
 
-		if(operacao.getNomeOperacao() == "Read"){
+		if(operacao.getNomeOperacao().equals("Read")){
 			int teste = repositorio.getListaDeBloqueioMultiplo().size();
 			for(int i = 0; i < teste; i++){
-				if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(operacao.getVariavel())){
+				if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(operacao.getVariavel().getNomeVariavel())){
 					if(!repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(transacao.getnomeTransacao())){
-						if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio() == "Read_lock"){
+						if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio().equals("Read_lock")){
 							caso = 1;
 
-						}else if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio() == "Write_lock"){
+						}else if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio().equals("Write_lock")){
 							
 							/////bloqueada por outra com write_lock
 							caso = 2;
@@ -73,11 +73,11 @@ public class LockMultiplo {
 			}
 
 
-		}else if(operacao.getNomeOperacao() == "Write"){
+		}else if(operacao.getNomeOperacao().equals("Write")){
 
 			for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size(); i++){
 
-				if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(operacao.getVariavel())){
+				if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(operacao.getVariavel().getNomeVariavel())){
 					existeOutroBloqueio =  existeOutroBloqueio + 1;
 					if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(transacao.getnomeTransacao())){
 						if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio().equals("Read_lock")&& existeOutroBloqueio < 2){

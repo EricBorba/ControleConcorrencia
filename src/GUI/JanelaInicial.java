@@ -353,33 +353,67 @@ public class JanelaInicial extends JFrame{
 			//printando lista de operacoes a serem executadas
 			for(int i = 0; i < bloqueio.getListaTransacoesRecebida().size();i++){
 				for(int j = 0; j < bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().size();j++){
-
+					String ConjuntoOperacoes = textArea1.getText();
 					if(bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
-					
-						textArea1.setText(bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
-					
+						if(ConjuntoOperacoes.equals("")){	
+						ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+						}else{
+							
+							ConjuntoOperacoes = ConjuntoOperacoes + (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+						}
 					
 					}else{
-
-						textArea1.setText(bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
-
+						if(ConjuntoOperacoes.equals("")){	
+							ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+						}else{
+						
+							ConjuntoOperacoes = ConjuntoOperacoes + (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+							
+						}
 					}
-
+					textArea1.setText(ConjuntoOperacoes);
 				}
+				
 			}
 
 			//printando lista de operacoes oficial
 			for(int i = 0; i < bloqueio.getListaOperacoesOficial().size();i++){
-				textArea2.setText(bloqueio.getListaOperacoesOficial().get(i));
+				String ConjuntoOperacoes = textArea2.getText();
+				if(ConjuntoOperacoes.equals("")){
+					ConjuntoOperacoes = (bloqueio.getListaOperacoesOficial().get(i));
+				
+				}else{
+					
+					ConjuntoOperacoes = ConjuntoOperacoes + (bloqueio.getListaOperacoesOficial().get(i));
+				}
+				
+				textArea2.setText(ConjuntoOperacoes);
 			}
 
 			//printando lista suja de operacoes
 			for(int i = 0; i < bloqueio.getListaOperacoesFinal().size();i++){
-				textArea4.setText(bloqueio.getListaOperacoesFinal().get(i));
+				
+				String ConjuntoOperacoes = textArea4.getText();
+				if(ConjuntoOperacoes.equals("")){
+					ConjuntoOperacoes = (bloqueio.getListaOperacoesFinal().get(i));
+				
+				}else{
+					
+					ConjuntoOperacoes = ConjuntoOperacoes+(bloqueio.getListaOperacoesFinal().get(i));
+				}
+				
+				textArea4.setText(ConjuntoOperacoes);
 			}
 			//printando lista bloqueio
 			for(int i = 0; i < rep.getListaDeBloqueioMultiplo().size();i++){
-				textArea3.setText(rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+				String ConjuntoOperacoes = textArea3.getText();
+				if(ConjuntoOperacoes.equals("")){
+				 	ConjuntoOperacoes = (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+				}else{
+					
+					ConjuntoOperacoes = ConjuntoOperacoes + (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+				}
+				textArea3.setText(ConjuntoOperacoes);
 			}
 
 		}else{

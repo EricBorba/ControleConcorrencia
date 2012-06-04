@@ -29,31 +29,6 @@ public class Bloqueio2FasesEstrito {
 	 * **/
 	public ArrayList<String> executar(Repositorio repositorio){
 
-
-		///////////////////////////////////////////////////////////
-
-
-		for(int i = 0; i < this.getListaTransacoesRecebida().size();i++){
-			for(int j = 0; j < this.getListaTransacoesRecebida().get(i).getListaOperacoes().size();j++){
-
-				if(this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
-
-					System.out.println(this.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
-
-
-				}else{
-
-					System.out.println(this.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+this.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
-
-				}
-
-			}
-		}
-
-
-		//////////////////////////////////////////////////////////
-
-
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
 		int conseguiuExecutar = 0;
@@ -215,7 +190,7 @@ public class Bloqueio2FasesEstrito {
 			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
 			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
 
-			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"_lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
 			this.listaOperacoesFinal.add(retorno); // Lista Suja
 			this.listaOperacoesOficial.add(retorno); // Lista Oficial
 		}else if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 3){
@@ -230,7 +205,7 @@ public class Bloqueio2FasesEstrito {
 
 			///nao foi feito a escrito pois ja existia alguem bloqueando faz algo
 		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 1){
-			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"_lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
 			this.listaOperacoesFinal.add(retorno); // Lista Suja
 			this.listaOperacoesOficial.add(retorno); // Lista Oficial
 		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 3){
