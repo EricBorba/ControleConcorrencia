@@ -68,6 +68,9 @@ public class JanelaInicial extends JFrame{
 	boolean radio1Selecionado;
 	boolean radio2Selecionado;
 	boolean radio3Selecionado;
+	DefaultTableModel modelo;
+	boolean inicioModelo;
+
 
 	public JanelaInicial(Repositorio repNovo){
 		this.rep = repNovo;
@@ -82,6 +85,8 @@ public class JanelaInicial extends JFrame{
 
 	// construindo janela
 	public void setJanelaInicial(){
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Variável", "Valor"});
+		inicioModelo = true;
 		//seta tamanho e posicao
 		this.setBounds(10, 10, 1260, 700);
 		//Layout null eh pra eu poder colocar componentes onde eu quiser
@@ -120,19 +125,19 @@ public class JanelaInicial extends JFrame{
 		this.rep.getListaVariaveisAntigas().add(var6);
 
 
-//		Transacao t1 = new Transacao("T1");
-//		System.out.println("T1: "+ t1.getTempoDeCriacao());
-//		Transacao t2 = new Transacao("T2");
-//		System.out.println("T2: "+ t2.getTempoDeCriacao());
-//		Transacao t3 = new Transacao("T3");
-//		System.out.println("T3: "+ t3.getTempoDeCriacao());
-//		Transacao t4 = new Transacao("T4");
-//		System.out.println("T4: "+ t4.getTempoDeCriacao());
-//
-//		this.rep.getTransacoes().add(t1);
-//		this.rep.getTransacoes().add(t2);
-//		this.rep.getTransacoes().add(t3);
-//		this.rep.getTransacoes().add(t4);
+		//		Transacao t1 = new Transacao("T1");
+		//		System.out.println("T1: "+ t1.getTempoDeCriacao());
+		//		Transacao t2 = new Transacao("T2");
+		//		System.out.println("T2: "+ t2.getTempoDeCriacao());
+		//		Transacao t3 = new Transacao("T3");
+		//		System.out.println("T3: "+ t3.getTempoDeCriacao());
+		//		Transacao t4 = new Transacao("T4");
+		//		System.out.println("T4: "+ t4.getTempoDeCriacao());
+		//
+		//		this.rep.getTransacoes().add(t1);
+		//		this.rep.getTransacoes().add(t2);
+		//		this.rep.getTransacoes().add(t3);
+		//		this.rep.getTransacoes().add(t4);
 
 
 		label1 = new JLabel("Estado do Disco");		
@@ -306,17 +311,29 @@ public class JanelaInicial extends JFrame{
 	// tabela do estado atual do disco
 	public void setEstadoAtual(){
 
-
-		DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Variável", "Valor"});
-
 		int i = 0;
-		while(i < this.rep.getListaVariaveis().size()){
+		if(inicioModelo == true){
+			while(i < this.rep.getListaVariaveis().size()){
+				System.out.println(this.rep.getListaVariaveis().get(i).getNomeVariavel()+"   "+this.rep.getListaVariaveis().get(i).getValor());
+				this.modelo.addRow(new Object[] {this.rep.getListaVariaveis().get(i).getNomeVariavel(), this.rep.getListaVariaveis().get(i).getValor()});
+				i++;
 
-			modelo.addRow(new Object[] {this.rep.getListaVariaveis().get(i).getNomeVariavel(), this.rep.getListaVariaveis().get(i).getValor()});
-			i++;
+			}
+			inicioModelo = false;
+		}else{
+			
+			while(i < this.rep.getListaVariaveis().size()){
+				System.out.println(this.rep.getListaVariaveis().get(i).getNomeVariavel()+"   "+this.rep.getListaVariaveis().get(i).getValor());
+				//this.modelo.insertRow(i,(new Object[] {this.rep.getListaVariaveis().get(i).getNomeVariavel(), this.rep.getListaVariaveis().get(i).getValor()}));
+				this.modelo.setValueAt(this.rep.getListaVariaveis().get(i).getNomeVariavel(), i, 0);
+				this.modelo.setValueAt(this.rep.getListaVariaveis().get(i).getValor(), i, 1);
+				i++;
+
+			}
+			
 
 		}
-
+		System.out.println("passou");
 
 
 		this.EstadoDisco = new JTable(modelo);  
@@ -346,7 +363,7 @@ public class JanelaInicial extends JFrame{
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 
 		if(jRadioButton2.isSelected() == true){
-						
+
 			Bloqueio2FasesEstrito bloqueio = new Bloqueio2FasesEstrito(rep.getTransacoes());
 			bloqueio.executar(rep);
 
@@ -356,24 +373,25 @@ public class JanelaInicial extends JFrame{
 					String ConjuntoOperacoes = textArea1.getText();
 					if(bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
 						if(ConjuntoOperacoes.equals("")){	
-						ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+							ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
 						}else{
-							
-							ConjuntoOperacoes = ConjuntoOperacoes + (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+
+							ConjuntoOperacoes = ConjuntoOperacoes +"\n"+(bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
 						}
-					
+						textArea1.setText(ConjuntoOperacoes);
 					}else{
 						if(ConjuntoOperacoes.equals("")){	
 							ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
 						}else{
-						
-							ConjuntoOperacoes = ConjuntoOperacoes + (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
-							
+
+							ConjuntoOperacoes = ConjuntoOperacoes +"\n"+ (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+
 						}
+						textArea1.setText(ConjuntoOperacoes);
 					}
-					textArea1.setText(ConjuntoOperacoes);
+
 				}
-				
+
 			}
 
 			//printando lista de operacoes oficial
@@ -381,37 +399,37 @@ public class JanelaInicial extends JFrame{
 				String ConjuntoOperacoes = textArea2.getText();
 				if(ConjuntoOperacoes.equals("")){
 					ConjuntoOperacoes = (bloqueio.getListaOperacoesOficial().get(i));
-				
+
 				}else{
-					
-					ConjuntoOperacoes = ConjuntoOperacoes + (bloqueio.getListaOperacoesOficial().get(i));
+
+					ConjuntoOperacoes = ConjuntoOperacoes+"\n" + (bloqueio.getListaOperacoesOficial().get(i));
 				}
-				
+
 				textArea2.setText(ConjuntoOperacoes);
 			}
 
 			//printando lista suja de operacoes
 			for(int i = 0; i < bloqueio.getListaOperacoesFinal().size();i++){
-				
+
 				String ConjuntoOperacoes = textArea4.getText();
 				if(ConjuntoOperacoes.equals("")){
 					ConjuntoOperacoes = (bloqueio.getListaOperacoesFinal().get(i));
-				
+
 				}else{
-					
-					ConjuntoOperacoes = ConjuntoOperacoes+(bloqueio.getListaOperacoesFinal().get(i));
+
+					ConjuntoOperacoes = ConjuntoOperacoes+"\n"+(bloqueio.getListaOperacoesFinal().get(i));
 				}
-				
+
 				textArea4.setText(ConjuntoOperacoes);
 			}
 			//printando lista bloqueio
 			for(int i = 0; i < rep.getListaDeBloqueioMultiplo().size();i++){
 				String ConjuntoOperacoes = textArea3.getText();
 				if(ConjuntoOperacoes.equals("")){
-				 	ConjuntoOperacoes = (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+					ConjuntoOperacoes = (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
 				}else{
-					
-					ConjuntoOperacoes = ConjuntoOperacoes + (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+
+					ConjuntoOperacoes = ConjuntoOperacoes +"\n"+ (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
 				}
 				textArea3.setText(ConjuntoOperacoes);
 			}
@@ -421,6 +439,9 @@ public class JanelaInicial extends JFrame{
 			System.out.println("Bloqueio nao selecionado");
 
 		}
+		System.out.println(this.rep.getListaVariaveis().get(0).getValor());
+		this.setEstadoAtual();
+		this.add(this.scrollDisco);
 
 	}
 

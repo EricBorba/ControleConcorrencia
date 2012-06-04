@@ -17,7 +17,7 @@ public class Bloqueio2FasesEstrito {
 	LockMultiplo lock;	
 
 	public Bloqueio2FasesEstrito(ArrayList<Transacao> listaTransacoesRecebida){
-		this.listaTransacoesRecebida = listaTransacoesRecebida;
+		this.listaTransacoesRecebida = new ArrayList<Transacao>();
 		this.listaOperacoesFinal = new ArrayList<String>();
 		this.listaOperacoesOficial = new ArrayList<String>();
 		this.lock = new LockMultiplo();
@@ -29,19 +29,40 @@ public class Bloqueio2FasesEstrito {
 	 * **/
 	public ArrayList<String> executar(Repositorio repositorio){
 
+
+
+		// Fazendo um copia da lista de transacoes do repositorio para que o mesmo permaneca inalterado.
+		for(int j=0; j < repositorio.getTransacoes().size(); j++){
+
+
+			Transacao transacaoRecebidaTemp = new Transacao(repositorio.getTransacoes().get(j).getnomeTransacao());
+			ArrayList<Operacao> operacaoRecebidaTemp = new ArrayList<Operacao>();
+
+			for(int z=0; z < repositorio.getTransacoes().get(j).getListaOperacoes().size(); z++){
+
+				operacaoRecebidaTemp.add(repositorio.getTransacoes().get(j).getListaOperacoes().get(z));
+
+			}
+
+			transacaoRecebidaTemp.setListaOperacoes(operacaoRecebidaTemp);
+			this.listaTransacoesRecebida.add(transacaoRecebidaTemp);
+
+
+		}
+
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
 		int conseguiuExecutar = 0;
 		Operacao operacaoTemp;
 		ArrayList<Transacao> listaTransacaoAuxiliar = new ArrayList<Transacao>(); // Para auxiliar na verificacao de bloqueios futuros
-		
-		
+
+
 		for(int a=0; a < listaTransacoesRecebida.size(); a++){
 			Transacao transacaoAuxiliar = new Transacao(listaTransacoesRecebida.get(a).getnomeTransacao());
 			listaTransacaoAuxiliar.add(a, transacaoAuxiliar);
-			
+
 		}
-		
+
 		//Polling criado para ficar alternando entre as transacoes e realizando( se possivel ) uma operacao de cada transacao por vez.
 		while(!this.listaTransacoesRecebida.isEmpty()){					
 
@@ -83,7 +104,7 @@ public class Bloqueio2FasesEstrito {
 
 
 							// Aqui entra o wait-die	
-						}else{
+						}/**else{
 
 							// Ou seja, a operacao da transacao nao foi executada e ela eh mais nova que a transacao que lhe bloqueou.
 							if(transacaoTemp.getTempoDeCriacao() > lock.getTempoDaTransacaoBloqueada()){
@@ -100,12 +121,12 @@ public class Bloqueio2FasesEstrito {
 								}
 
 
-								apagaTransacaoRollBackOficial(transacaoTemp.getnomeTransacao());
+								apagaTransacaoRollBackOficial(transacaoTemp.getnomeTransacao(), listaTransacaoAuxiliar, repositorio);
 
 
 							}
 
-						}
+						}**/
 
 
 					}else if(operacaoTemp.getNomeOperacao().equals("Begin") || operacaoTemp.getNomeOperacao().equals("End")){
@@ -117,6 +138,7 @@ public class Bloqueio2FasesEstrito {
 					}else{
 						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio, conseguiuExecutar); // Adiciona commit a lista final
 						this.listaTransacoesRecebida.remove(posicaoTransacaoLista); // Nao precisa remover a operacao da lista de operacoes pois sera mandado remover a transacao toda.
+						listaTransacaoAuxiliar.remove(posicaoTransacaoLista);
 						lock.unlockTodasAsOperacoesdaTransacao(transacaoTemp, repositorio); // Metodo a ser criado no lock, desbloqueia todas as variaveis bloqueadas por determinada transacao
 					}
 
@@ -144,7 +166,7 @@ public class Bloqueio2FasesEstrito {
 			}else{
 				posicaoTransacaoLista = 0;
 			}
-			
+
 			quantidadeTransacoes = this.listaTransacoesRecebida.size();
 
 		}
@@ -154,8 +176,9 @@ public class Bloqueio2FasesEstrito {
 
 
 	/**Passa como parametro o nome da transacao e apaga todas as operacoes
-	 * referentes a ela da lista principal*/
-	private void apagaTransacaoRollBackOficial(String nomeTransacao) {
+	 * referentes a ela da lista principal
+	 * @param listaTransacaoAuxiliar */
+	private void apagaTransacaoRollBackOficial(String nomeTransacao, ArrayList<Transacao> listaTransacaoAuxiliar, Repositorio repositorio) {
 
 		for(int i = 0; i < listaOperacoesOficial.size(); i++){
 
@@ -163,8 +186,28 @@ public class Bloqueio2FasesEstrito {
 			if(temp[0].equals(nomeTransacao)){
 
 				listaOperacoesOficial.remove(i);
+
 			}
 		}	
+
+		for(int j = 0; j < listaTransacaoAuxiliar.size(); j++){
+
+
+			if(listaTransacaoAuxiliar.get(j).getnomeTransacao().equals(nomeTransacao)){
+
+				listaTransacaoAuxiliar.get(j).getListaOperacoes().clear();
+
+			}
+		}	
+
+		for(int g =0 ; g < repositorio.getListaDeBloqueioMultiplo().size(); g++){
+
+			if(repositorio.getListaDeBloqueioMultiplo().get(g).getNomeTransacao().equals(nomeTransacao)){
+
+				repositorio.getListaDeBloqueioMultiplo().remove(g);
+			}
+
+		}
 
 	}
 
@@ -190,10 +233,19 @@ public class Bloqueio2FasesEstrito {
 			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
 			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
 
-			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"_lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"_lock "+o.getVariavel().getNomeVariavel();
+
 			this.listaOperacoesFinal.add(retorno); // Lista Suja
 			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+
+			retorno = nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo(); 
+
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+
+
 		}else if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 3){
+
 			rep.ValoresAntigosVariaveis(rep.getListaVariaveis().get(posicaoVariavel));
 			rep.getListaVariaveis().get(posicaoVariavel).setValor(""+o.getValorNovo());
 
@@ -204,10 +256,19 @@ public class Bloqueio2FasesEstrito {
 		}else if(o.getNomeOperacao().equals("Write")&& motivoDaEscrita == 2){
 
 			///nao foi feito a escrito pois ja existia alguem bloqueando faz algo
+
 		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 1){
-			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"_lock "+o.getVariavel().getNomeVariavel()+"\n"+nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
+
+			retorno =  nomeTransacao+" "+o.getNomeOperacao()+"_lock "+o.getVariavel().getNomeVariavel(); 
 			this.listaOperacoesFinal.add(retorno); // Lista Suja
 			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+
+			retorno = nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo(); 
+
+			this.listaOperacoesFinal.add(retorno); // Lista Suja
+			this.listaOperacoesOficial.add(retorno); // Lista Oficial
+
+
 		}else if(o.getNomeOperacao().equals("Read")&& motivoDaEscrita == 3){
 			retorno = nomeTransacao+" "+o.getNomeOperacao()+"_item "+o.getVariavel().getNomeVariavel()+" "+o.getValorAntigo()+" "+o.getValorNovo();  
 			this.listaOperacoesFinal.add(retorno); // Lista Suja
@@ -234,16 +295,22 @@ public class Bloqueio2FasesEstrito {
 
 		for(int i=0; i < listaOperacoesRecebidaTemp.size(); i++){
 
+
 			for(int j=0; j < listaTransacaoAuxiliar.size(); j++){
 
-				// Se houver ainda write ou read de alguma variavel que nao foi bloqueada ainda 
-				if(!listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getVariavel().getNomeVariavel().equals(listaOperacoesRecebidaTemp.get(i).getVariavel().getNomeVariavel())){
-					existeBloqueioFuturo = true;
-				}else{
-					//Se houver write de alguma variavel que soh deu read(ou seja, ainda tera uma promocao)
-					if(listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getNomeOperacao().equals("Read") && listaOperacoesRecebidaTemp.get(i).getNomeOperacao().equals("Write")){
+
+				if(j < listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().size()){
+					// Se houver ainda write ou read de alguma variavel que nao foi bloqueada ainda 
+					if(!listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getVariavel().getNomeVariavel().equals(listaOperacoesRecebidaTemp.get(i).getVariavel().getNomeVariavel())){
 						existeBloqueioFuturo = true;
+					}else{
+						//Se houver write de alguma variavel que soh deu read(ou seja, ainda tera uma promocao)
+						if(listaTransacaoAuxiliar.get(posicaoTransacaoLista).getListaOperacoes().get(j).getNomeOperacao().equals("Read") && listaOperacoesRecebidaTemp.get(i).getNomeOperacao().equals("Write")){
+							existeBloqueioFuturo = true;
+						}
+
 					}
+
 				}
 
 			}

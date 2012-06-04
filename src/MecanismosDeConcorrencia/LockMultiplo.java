@@ -3,13 +3,14 @@ package MecanismosDeConcorrencia;
 import GerenciaDeDados.Operacao;
 import GerenciaDeDados.Repositorio;
 import GerenciaDeDados.Transacao;
+import GerenciaDeDados.Variavel;
 
 public class LockMultiplo {
 
 	long tempoDaTransacaoBloqueada;
 
 	public LockMultiplo(){
-		
+
 
 	}
 
@@ -34,10 +35,10 @@ public class LockMultiplo {
 							caso = 1;
 
 						}else if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio().equals("Write_lock")){
-							
+
 							/////bloqueada por outra com write_lock
 							caso = 2;
-								
+
 							/// localizando transacao que bloqueiou na lista de transacoes do repositorio
 							///para retornar seu timestamping
 							int posBloqueio = 0;
@@ -49,7 +50,7 @@ public class LockMultiplo {
 								}
 
 							}
-							
+
 							tempoDaTransacaoBloqueada = repositorio.getTransacoes().get(posBloqueio).getTempoDeCriacao();
 							i = repositorio.getListaDeBloqueioMultiplo().size();
 						}else{
@@ -59,13 +60,13 @@ public class LockMultiplo {
 					}else{
 						///mesma transação ou com read ou com write
 						caso = 3;
-						
+
 					}
 				}
 
 			}
-
-			if(caso == 1 || caso == 0){
+			if(caso == 0) caso = 1;
+			if(caso == 1 ){
 
 				//modificarNumerodeReadsNaTabeladeBloqueio();				
 				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
@@ -86,7 +87,7 @@ public class LockMultiplo {
 						}else if(existeOutroBloqueio > 2){
 							caso = 2;
 						}else{
-							
+
 							caso = 3;
 						}
 					}
@@ -96,17 +97,63 @@ public class LockMultiplo {
 			}
 
 			if(existeOutroBloqueio >= 2){
-				
+
 				caso = 2;
 			}else if(caso == 0 && existeOutroBloqueio == 1){
-				
+
 				caso = 2;
 			}else if (caso == 1 && existeOutroBloqueio < 2){
-				
+
 				repositorio.getListaDeBloqueioMultiplo().get(posicaoCrescerBloqueio).setModoBloqueio("Write_lock");
+
+				repositorio.getListaVariaveisAntigas().clear();
+
+				//fazer uma copia da lista de variaveis atuais para as antigas
+				for(int i = 0; i< repositorio.getListaVariaveis().size();i++){
+					Variavel v = new Variavel(repositorio.getListaVariaveis().get(i).getNomeVariavel(),repositorio.getListaVariaveis().get(i).getValor());
+
+					repositorio.getListaVariaveisAntigas().add(v);
+
+				}
+
+
+				for(int i = 0; i<repositorio.getListaVariaveis().size();i++){
+
+					if(repositorio.getListaVariaveis().get(i).getNomeVariavel().equals(operacao.getVariavel().getNomeVariavel())){
+
+						repositorio.getListaVariaveis().get(i).setValor(operacao.getValorNovo()+"");
+
+					}
+
+				}
+
 			}else if(caso == 0 && existeOutroBloqueio == 0){
-							
+
 				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
+
+				repositorio.getListaVariaveisAntigas().clear();
+
+				//fazer uma copia da lista de variaveis atuais para as antigas
+				for(int i = 0; i< repositorio.getListaVariaveis().size();i++){
+					Variavel v = new Variavel(repositorio.getListaVariaveis().get(i).getNomeVariavel(),repositorio.getListaVariaveis().get(i).getValor());
+
+					repositorio.getListaVariaveisAntigas().add(v);
+
+				}
+
+
+				for(int i = 0; i<repositorio.getListaVariaveis().size();i++){
+
+					if(repositorio.getListaVariaveis().get(i).getNomeVariavel().equals(operacao.getVariavel().getNomeVariavel())){
+
+						repositorio.getListaVariaveis().get(i).setValor(operacao.getValorNovo()+"");
+
+					}
+
+				}
+				
+				caso = 1;
+
 			}
 
 		}else{
@@ -137,21 +184,21 @@ public class LockMultiplo {
 	//
 	//	}
 
-//	/**retornar o numero de reads de uma dada transacao*/
-//	public int retornarNumerodeReads(Transacao t, Operacao o,Repositorio repositorio){
-//		int numeroRetorno = 0;
-//		for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size();i++){
-//			if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao()) && repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(o.getVariavel())){
-//
-//				numeroRetorno = repositorio.getListaDeBloqueioMultiplo().get(i).getNumeroDeLeituras();
-//				i = repositorio.getListaDeBloqueioMultiplo().size();
-//			}
-//
-//		}
-//
-//		return numeroRetorno;
-//
-//	}
+	//	/**retornar o numero de reads de uma dada transacao*/
+	//	public int retornarNumerodeReads(Transacao t, Operacao o,Repositorio repositorio){
+	//		int numeroRetorno = 0;
+	//		for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size();i++){
+	//			if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao()) && repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel().equals(o.getVariavel())){
+	//
+	//				numeroRetorno = repositorio.getListaDeBloqueioMultiplo().get(i).getNumeroDeLeituras();
+	//				i = repositorio.getListaDeBloqueioMultiplo().size();
+	//			}
+	//
+	//		}
+	//
+	//		return numeroRetorno;
+	//
+	//	}
 
 	/**fazer decrescimo*/
 
@@ -199,9 +246,9 @@ public class LockMultiplo {
 	public void setTempoDaTransacaoBloqueada(int tempoDaTransacaoBloqueada) {
 		this.tempoDaTransacaoBloqueada = tempoDaTransacaoBloqueada;
 	}
-	
 
-	
-	
+
+
+
 
 }
