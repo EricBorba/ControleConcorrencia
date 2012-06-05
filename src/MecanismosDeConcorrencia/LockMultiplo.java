@@ -70,6 +70,7 @@ public class LockMultiplo {
 
 				//modificarNumerodeReadsNaTabeladeBloqueio();				
 				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
+				repositorio.adicionarBloqueioListaLockMultiploLixo(transacao.getnomeTransacao(),operacao);
 
 			}
 
@@ -105,6 +106,8 @@ public class LockMultiplo {
 			}else if (caso == 1 && existeOutroBloqueio < 2){
 
 				repositorio.getListaDeBloqueioMultiplo().get(posicaoCrescerBloqueio).setModoBloqueio("Write_lock");
+				//repositorio.getListaDeBloqueioMultiploLixo().get(posicaoCrescerBloqueio).setModoBloqueio("Write_lock");
+				repositorio.adicionarBloqueioListaLockMultiploLixo(transacao.getnomeTransacao(),operacao);
 
 				repositorio.getListaVariaveisAntigas().clear();
 
@@ -130,6 +133,7 @@ public class LockMultiplo {
 			}else if(caso == 0 && existeOutroBloqueio == 0){
 
 				repositorio.adicionarBloqueioListaLockMultiplo(transacao.getnomeTransacao(),operacao);
+				repositorio.adicionarBloqueioListaLockMultiploLixo(transacao.getnomeTransacao(),operacao);
 
 				repositorio.getListaVariaveisAntigas().clear();
 

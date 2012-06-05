@@ -27,7 +27,7 @@ public class Bloqueio2FasesEstrito {
 	/**
 	 * Caracterizado por liberar os bloqueios "exclusivos" apenas apos um commit ou abort.
 	 * **/
-	public ArrayList<String> executar(Repositorio repositorio){
+	public ArrayList<String> executar(Repositorio repositorio, boolean wait){
 
 
 
@@ -107,22 +107,36 @@ public class Bloqueio2FasesEstrito {
 							// Aqui entra o wait-die	
 						}else{
 
-							// Ou seja, a operacao da transacao nao foi executada e ela eh mais nova que a transacao que lhe bloqueou.
-							if(transacaoTemp.getTempoDeCriacao() > lock.getTempoDaTransacaoBloqueada()){
+							if(wait==true){
+								// Ou seja, a operacao da transacao nao foi executada e ela eh mais nova que a transacao que lhe bloqueou.
+								if(transacaoTemp.getTempoDeCriacao() > lock.getTempoDaTransacaoBloqueada()){
 
-								for(int i=0; i < repositorio.getTransacoes().size() ; i++){
+									for(int i=0; i < repositorio.getTransacoes().size() ; i++){
 
-									// a transacao em execucao por ser mais nova sera dado rollback ou seja, fazemos uso do repositorio como um backup pra que todas as suas operacoes voltem ao estado original. E o timestamp da mesma continua sendo o original.
-									if(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getnomeTransacao().equals(repositorio.getTransacoes().get(i).getnomeTransacao())){
+										// a transacao em execucao por ser mais nova sera dado rollback ou seja, fazemos uso do repositorio como um backup pra que todas as suas operacoes voltem ao estado original. E o timestamp da mesma continua sendo o original.
+										if(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getnomeTransacao().equals(repositorio.getTransacoes().get(i).getnomeTransacao())){
 
-										this.listaTransacoesRecebida.get(posicaoTransacaoLista).setListaOperacoes(repositorio.getTransacoes().get(i).getListaOperacoes());
+
+
+											ArrayList<Operacao> operacaoRecebidaTemp2 = new ArrayList<Operacao>();
+
+											for(int z=0; z < repositorio.getTransacoes().get(posicaoTransacaoLista).getListaOperacoes().size(); z++){
+
+												operacaoRecebidaTemp2.add(repositorio.getTransacoes().get(posicaoTransacaoLista).getListaOperacoes().get(z));
+
+											}
+
+											this.listaTransacoesRecebida.get(posicaoTransacaoLista).setListaOperacoes(operacaoRecebidaTemp2);
+
+
+
+										}
 
 									}
 
+
+									apagaTransacaoRollBackOficial(transacaoTemp.getnomeTransacao(), listaTransacaoAuxiliar, repositorio);
 								}
-
-
-								apagaTransacaoRollBackOficial(transacaoTemp.getnomeTransacao(), listaTransacaoAuxiliar, repositorio);
 
 
 							}
@@ -140,7 +154,7 @@ public class Bloqueio2FasesEstrito {
 						RetornoOperacaoString(operacaoTemp,transacaoTemp.getnomeTransacao(), repositorio, conseguiuExecutar); // Adiciona commit a lista final
 						this.listaTransacoesRecebida.remove(posicaoTransacaoLista); // Nao precisa remover a operacao da lista de operacoes pois sera mandado remover a transacao toda.
 						listaTransacaoAuxiliar.remove(posicaoTransacaoLista);
-						repositorio.getTransacoes().remove(posicaoTransacaoLista);
+						//repositorio.getTransacoes().remove(posicaoTransacaoLista);
 						lock.unlockTodasAsOperacoesdaTransacao(transacaoTemp, repositorio); // Metodo a ser criado no lock, desbloqueia todas as variaveis bloqueadas por determinada transacao
 					}
 
@@ -186,11 +200,11 @@ public class Bloqueio2FasesEstrito {
 
 			String [] temp = listaOperacoesOficial.get(i).split(" ");
 			if(temp[0].equals(nomeTransacao)){
-				
-				if(!(temp[1].equals("Begin")||temp[1].equals("End")||temp[1].equals("Commit"))){
-				
-				listaOperacoesOficial.remove(i);
-				
+
+				if(!(temp[1].equals("End")||temp[1].equals("Commit"))){
+
+					listaOperacoesOficial.remove(i);
+
 				}
 
 			}
@@ -215,26 +229,26 @@ public class Bloqueio2FasesEstrito {
 			}
 
 		}**/
-		
-		 int i = 0;
-		    boolean entrou = false;
-		    
-				while( i < repositorio.getListaDeBloqueioMultiplo().size()){
-					
-					if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(nomeTransacao)){
-						repositorio.getListaDeBloqueioMultiplo().remove(i);
-						i = 0;
-						entrou = true;
-					}
-					if(entrou == false){
-						
-						i++;
-					}else{
-						
-						entrou = false;
-					}
 
-				}
+		int i = 0;
+		boolean entrou = false;
+
+		while( i < repositorio.getListaDeBloqueioMultiplo().size()){
+
+			if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(nomeTransacao)){
+				repositorio.getListaDeBloqueioMultiplo().remove(i);
+				i = 0;
+				entrou = true;
+			}
+			if(entrou == false){
+
+				i++;
+			}else{
+
+				entrou = false;
+			}
+
+		}
 
 	}
 

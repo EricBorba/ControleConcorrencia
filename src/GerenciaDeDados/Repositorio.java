@@ -20,6 +20,7 @@ public class Repositorio {
 	ArrayList<Variavel> listaVariaveisAntigas;
 	ArrayList<BloqueioLockBinario> listaDeBloqueiosBinario;
 	ArrayList<BloqueioLockMultiplo> listaDeBloqueioMultiplo;
+	ArrayList<BloqueioLockMultiplo> listaDeBloqueioMultiploLixo;
 
 	/**
 	 * 
@@ -31,6 +32,7 @@ public class Repositorio {
 		this.listaVariaveisAntigas = new ArrayList<Variavel>();
 		this.listaDeBloqueiosBinario = new ArrayList<BloqueioLockBinario>();
 		this.listaDeBloqueioMultiplo = new ArrayList<BloqueioLockMultiplo>();
+		this.listaDeBloqueioMultiploLixo = new ArrayList<BloqueioLockMultiplo>();
 	}
 
 	/**
@@ -202,6 +204,40 @@ public class Repositorio {
 
 	public void setListaVariaveisAntigas(ArrayList<Variavel> listaVariaveisAntigas) {
 		this.listaVariaveisAntigas = listaVariaveisAntigas;
+	}
+
+	public ArrayList<BloqueioLockMultiplo> getListaDeBloqueioMultiploLixo() {
+		return listaDeBloqueioMultiploLixo;
+	}
+
+	public void setListaDeBloqueioMultiploLixo(
+			ArrayList<BloqueioLockMultiplo> listaDeBloqueioMultiploLixo) {
+		this.listaDeBloqueioMultiploLixo = listaDeBloqueioMultiploLixo;
+	}
+	
+	/**Remove um bloqueio dentro do arraylist de bloqueios multiplo**/
+	public void removerBloqueioListaMultiplaLixo(Transacao t,Operacao operacao){
+
+			int posicao = 0;
+			for(int i = 0; i < this.listaDeBloqueioMultiploLixo.size(); i++){
+				if(this.listaDeBloqueioMultiploLixo.get(i).getNomeTransacao().equals(t.getnomeTransacao()) && this.listaDeBloqueioMultiploLixo.get(i).equals(operacao.getVariavel())){
+					posicao = i;
+				}
+
+			}
+			this.listaDeBloqueioMultiploLixo.remove(posicao);
+		
+	}
+
+	/**adiciona um bloqueio dentro do arraylist de bloqueios lockmultiplo*/
+	public void adicionarBloqueioListaLockMultiploLixo(String nomeTransacao, Operacao operacao){
+
+			
+			BloqueioLockMultiplo novoBloqueio = new BloqueioLockMultiplo(nomeTransacao, operacao.getVariavel().getNomeVariavel(), operacao.getNomeOperacao()+"_lock");
+			this.listaDeBloqueioMultiploLixo.add(novoBloqueio);
+		
+
+
 	}
 	
 	

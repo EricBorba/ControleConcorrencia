@@ -40,7 +40,7 @@ public class JanelaEscolherTransacao extends JFrame{
 		//muda a cor do fundo
 		//this.getContentPane().setBackground(Color.white);
 		//titulo
-		this.setTitle("ESCOLHER TRANSA«√O");
+		this.setTitle("ESCOLHER TRANSAÇÃO");
 		this.setFont(new Font("Comic Sans MS", 1, 11));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -61,7 +61,7 @@ public class JanelaEscolherTransacao extends JFrame{
 			}
 		});
 		
-		this.jButton1 = new JButton("Adicionar as operaÁıes");
+		this.jButton1 = new JButton("Adicionar as operações");
 		this.jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton1.setBounds(150, 100, 250,40);
 
@@ -85,7 +85,7 @@ public class JanelaEscolherTransacao extends JFrame{
 
 		});
 		
-		this.jButton3 = new JButton("nova transaÁ„o");
+		this.jButton3 = new JButton("nova transação");
 		this.jButton3.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton3.setBounds(150, 50, 250,40);
 
@@ -97,7 +97,7 @@ public class JanelaEscolherTransacao extends JFrame{
 
 		});
 		
-		label1 = new JLabel("Escolha a TransaÁ„o");
+		label1 = new JLabel("Escolha a transação");
 		label1.setBounds(10, 10, 200, 40);
 		label1.setFont(new Font("Comic Sans MS", 1, 15));
 	}

@@ -85,7 +85,7 @@ public class JanelaInicial extends JFrame{
 
 	// construindo janela
 	public void setJanelaInicial(){
-		modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Vari·vel", "Valor"});
+		modelo = new DefaultTableModel(new Object[][] {}, new String[] {"Variável", "Valor"});
 		inicioModelo = true;
 		//seta tamanho e posicao
 		this.setBounds(10, 10, 1260, 700);
@@ -94,7 +94,7 @@ public class JanelaInicial extends JFrame{
 		//muda a cor do fundo
 		//this.getContentPane().setBackground(Color.white);
 		//titulo
-		this.setTitle("GERADOR DE CONCORR NCIA");
+		this.setTitle("GERADOR DE CONCORRÊNCIA");
 		this.setFont(new Font("Comic Sans MS", 1, 11));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -125,26 +125,11 @@ public class JanelaInicial extends JFrame{
 		this.rep.getListaVariaveisAntigas().add(var6);
 
 
-		//		Transacao t1 = new Transacao("T1");
-		//		System.out.println("T1: "+ t1.getTempoDeCriacao());
-		//		Transacao t2 = new Transacao("T2");
-		//		System.out.println("T2: "+ t2.getTempoDeCriacao());
-		//		Transacao t3 = new Transacao("T3");
-		//		System.out.println("T3: "+ t3.getTempoDeCriacao());
-		//		Transacao t4 = new Transacao("T4");
-		//		System.out.println("T4: "+ t4.getTempoDeCriacao());
-		//
-		//		this.rep.getTransacoes().add(t1);
-		//		this.rep.getTransacoes().add(t2);
-		//		this.rep.getTransacoes().add(t3);
-		//		this.rep.getTransacoes().add(t4);
-
-
 		label1 = new JLabel("Estado do Disco");		
 		label1.setBounds(500, 20, 200, 40);
 		label1.setFont(new Font("Comic Sans MS", 1, 15));
 
-		label2 = new JLabel("OperaÁıes a serem Executadas");		
+		label2 = new JLabel("Operações a serem Executadas");		
 		label2.setBounds(40, 20, 300, 40);
 		label2.setFont(new Font("Comic Sans MS", 1, 15));
 
@@ -156,7 +141,7 @@ public class JanelaInicial extends JFrame{
 		label4.setBounds(434, 340, 250, 40);
 		label4.setFont(new Font("Comic Sans MS", 1, 15));
 
-		label8 = new JLabel("Tabela da Professora");		
+		label8 = new JLabel("Lista Suja");		
 		label8.setBounds(846, 340, 250, 40);
 		label8.setFont(new Font("Comic Sans MS", 1, 15));
 
@@ -177,75 +162,42 @@ public class JanelaInicial extends JFrame{
 		textArea4 = new JTextArea(40, 40);
 		jScrollPane4 = new JScrollPane(textArea4);
 		jScrollPane4.setBounds(846, 370, 390, 250);
-
-		label5 = new JLabel("BLOQUEIO");		
-		label5.setBounds(960, 20, 250, 40);
-		label5.setFont(new Font("Comic Sans MS", 1, 15));
-
-		//		radio1Selecionado = false;
-		//		this.jRadioButton1 = new JRadioButton();
-		//		this.jRadioButton1.setBounds(660, 50,300,30);
-		//		this.jRadioButton1.setText("Bloqueio de 2 fases B·sico");
-		//		this.jRadioButton1.setFont(new Font("Comic Sans MS", 1, 18));
-		//
-		//		jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
-		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-		//				jRadioButton1ActionPerformed(evt);
-		//			}
-		//		});
-		//		
-
-		radio2Selecionado = false;
-		this.jRadioButton2 = new JRadioButton();
-		this.jRadioButton2.setBounds(960, 50,300,30);
-		this.jRadioButton2.setText("Bloqueio de 2 fases Estrito");
-		this.jRadioButton2.setFont(new Font("Comic Sans MS", 1, 18));
-
-		jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jRadioButton2ActionPerformed(evt);
-			}
-		});
-		//
-		//		radio1Selecionado = false;
-		//		this.jRadioButton3 = new JRadioButton();
-		//		this.jRadioButton3.setBounds(660, 110,350,30);
-		//		this.jRadioButton3.setText("Bloqueio de 2 fases Conservador");
-		//		this.jRadioButton3.setFont(new Font("Comic Sans MS", 1, 18));
-		//
-		//		jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-		//				jRadioButton3ActionPerformed(evt);
-		//			}
-		//		});
-
-		label6 = new JLabel("TIPO DE BLOQUEIO");		
-		label6.setBounds(960, 80, 250, 40);
-		label6.setFont(new Font("Comic Sans MS", 1, 15));
-
-		//		this.jRadioButton4 = new JRadioButton();
-		//		this.jRadioButton4.setBounds(660, 165,320,30);
-		//		this.jRadioButton4.setText("Lock Bin·rio");
-		//		this.jRadioButton4.setFont(new Font("Comic Sans MS", 1, 18));
-		//		this.jRadioButton4.setEnabled(false);
-		//
-		//		jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
-		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-		//				jRadioButton4ActionPerformed(evt);
-		//			}
-		//		});
-
-		this.jRadioButton5 = new JRadioButton();
-		this.jRadioButton5.setBounds(960, 110,300,30);
-		this.jRadioButton5.setText("Lock Multiplo");
-		this.jRadioButton5.setFont(new Font("Comic Sans MS", 1, 18));
-		this.jRadioButton5.setEnabled(false);
-
-		jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jRadioButton5ActionPerformed(evt);
-			}
-		});
+//
+//		label5 = new JLabel("BLOQUEIO");		
+//		label5.setBounds(960, 20, 250, 40);
+//		label5.setFont(new Font("Comic Sans MS", 1, 15));
+//
+//	
+//
+//		radio2Selecionado = false;
+//		this.jRadioButton2 = new JRadioButton();
+//		this.jRadioButton2.setBounds(960, 50,300,30);
+//		this.jRadioButton2.setText("Bloqueio de 2 fases Estrito");
+//		this.jRadioButton2.setFont(new Font("Comic Sans MS", 1, 18));
+//
+//		jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				jRadioButton2ActionPerformed(evt);
+//			}
+//		});
+//		
+//
+//		label6 = new JLabel("TIPO DE BLOQUEIO");		
+//		label6.setBounds(960, 80, 250, 40);
+//		label6.setFont(new Font("Comic Sans MS", 1, 15));
+//
+//
+//		this.jRadioButton5 = new JRadioButton();
+//		this.jRadioButton5.setBounds(960, 110,300,30);
+//		this.jRadioButton5.setText("Lock Multiplo");
+//		this.jRadioButton5.setFont(new Font("Comic Sans MS", 1, 18));
+//		this.jRadioButton5.setEnabled(false);
+//
+//		jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				jRadioButton5ActionPerformed(evt);
+//			}
+//		});
 
 		label7 = new JLabel("TRATAMENTO");		
 		label7.setBounds(960, 140, 250, 40);
@@ -255,7 +207,7 @@ public class JanelaInicial extends JFrame{
 		this.jRadioButton6.setBounds(960, 170,300,30);
 		this.jRadioButton6.setText("Time Stamping Wait-Die");
 		this.jRadioButton6.setFont(new Font("Comic Sans MS", 1, 18));
-		this.jRadioButton6.setEnabled(false);
+		this.jRadioButton6.setEnabled(true);
 
 		jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,19 +215,9 @@ public class JanelaInicial extends JFrame{
 			}
 		});
 
-		//		this.jRadioButton7 = new JRadioButton();
-		//		this.jRadioButton7.setBounds(660, 280,300,30);
-		//		this.jRadioButton7.setText("Time Stamping Wound-Wait");
-		//		this.jRadioButton7.setFont(new Font("Comic Sans MS", 1, 18));
-		//		this.jRadioButton7.setEnabled(false);
-		//
-		//		jRadioButton7.addActionListener(new java.awt.event.ActionListener() {
-		//			public void actionPerformed(java.awt.event.ActionEvent evt) {
-		//				jRadioButton7ActionPerformed(evt);
-		//			}
-		//		});
+		
 
-		this.jButton1 = new JButton("Adicionar TransaÁ„o");
+		this.jButton1 = new JButton("Adicionar Transação");
 		this.jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton1.setBounds(960, 200, 250,40);
 
@@ -285,7 +227,7 @@ public class JanelaInicial extends JFrame{
 			}
 		});
 
-		this.jButton2 = new JButton("Executar TransaÁıes");
+		this.jButton2 = new JButton("Executar Transação");
 		this.jButton2.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton2.setBounds(960, 250, 250,40);
 
@@ -362,35 +304,36 @@ public class JanelaInicial extends JFrame{
 	/// nao teria q separar p fazer com o lock e sem o lock, e com o time stamping ou sem?
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 
-		if(jRadioButton2.isSelected() == true){
 
 			Bloqueio2FasesEstrito bloqueio = new Bloqueio2FasesEstrito(rep.getTransacoes());
-			bloqueio.executar(rep);
+			bloqueio.executar(rep,jRadioButton6.isSelected());
 
 			//printando lista de operacoes a serem executadas
-			for(int i = 0; i < bloqueio.getListaTransacoesRecebida().size();i++){
-				for(int j = 0; j < bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().size();j++){
-					String ConjuntoOperacoes = textArea1.getText();
-					if(bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
+			for(int i = 0; i < rep.getTransacoes().size();i++){
+				String ConjuntoOperacoes = textArea1.getText();
+				for(int j = 0; j < rep.getTransacoes().get(i).getListaOperacoes().size();j++){
+					
+					if(rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("End")||rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Begin")||rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao().equals("Commit")){
 						if(ConjuntoOperacoes.equals("")){	
-							ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+							ConjuntoOperacoes = (rep.getTransacoes().get(i).getnomeTransacao()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao());
 						}else{
 
-							ConjuntoOperacoes = ConjuntoOperacoes +"\n"+(bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao());
+							ConjuntoOperacoes = ConjuntoOperacoes +"\n"+(rep.getTransacoes().get(i).getnomeTransacao()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao());
 						}
 						textArea1.setText(ConjuntoOperacoes);
 					}else{
 						if(ConjuntoOperacoes.equals("")){	
-							ConjuntoOperacoes = (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+							ConjuntoOperacoes = (rep.getTransacoes().get(i).getnomeTransacao()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getValorNovo()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getVariavel().getNomeVariavel());
 						}else{
 
-							ConjuntoOperacoes = ConjuntoOperacoes +"\n"+ (bloqueio.getListaTransacoesRecebida().get(i).getnomeTransacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getValorNovo()+" "+bloqueio.getListaTransacoesRecebida().get(i).getListaOperacoes().get(j).getVariavel());
+							ConjuntoOperacoes = ConjuntoOperacoes +"\n"+ (rep.getTransacoes().get(i).getnomeTransacao()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getNomeOperacao()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getValorAntigo()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getValorNovo()+" "+rep.getTransacoes().get(i).getListaOperacoes().get(j).getVariavel().getNomeVariavel());
 
 						}
-						textArea1.setText(ConjuntoOperacoes);
+						
 					}
 
 				}
+				textArea1.setText(ConjuntoOperacoes+"\n"+"\n");
 
 			}
 
@@ -423,22 +366,18 @@ public class JanelaInicial extends JFrame{
 				textArea4.setText(ConjuntoOperacoes);
 			}
 			//printando lista bloqueio
-			for(int i = 0; i < rep.getListaDeBloqueioMultiplo().size();i++){
+			for(int i = 0; i < rep.getListaDeBloqueioMultiploLixo().size();i++){
 				String ConjuntoOperacoes = textArea3.getText();
 				if(ConjuntoOperacoes.equals("")){
-					ConjuntoOperacoes = (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+					ConjuntoOperacoes = (rep.getListaDeBloqueioMultiploLixo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiploLixo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiploLixo().get(i).getNomeVariavel());
 				}else{
 
-					ConjuntoOperacoes = ConjuntoOperacoes +"\n"+ (rep.getListaDeBloqueioMultiplo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiplo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiplo().get(i).getNomeVariavel());
+					ConjuntoOperacoes = ConjuntoOperacoes +"\n"+ (rep.getListaDeBloqueioMultiploLixo().get(i).getNomeTransacao()+" "+rep.getListaDeBloqueioMultiploLixo().get(i).getModoBloqueio()+" "+ rep.getListaDeBloqueioMultiploLixo().get(i).getNomeVariavel());
 				}
 				textArea3.setText(ConjuntoOperacoes);
 			}
 
-		}else{
-
-			System.out.println("Bloqueio nao selecionado");
-
-		}
+		
 		System.out.println(this.rep.getListaVariaveis().get(0).getValor());
 		this.setEstadoAtual();
 		this.add(this.scrollDisco);
@@ -548,8 +487,8 @@ public class JanelaInicial extends JFrame{
 		this.add(this.label2);
 		this.add(this.label3);
 		this.add(this.label4);
-		this.add(this.label5);
-		this.add(this.label6);
+		//this.add(this.label5);
+		//this.add(this.label6);
 		this.add(this.label7);
 		this.add(this.label8);
 		this.add(this.scrollDisco);
@@ -558,10 +497,10 @@ public class JanelaInicial extends JFrame{
 		this.add(this.jScrollPane3);
 		this.add(this.jScrollPane4);
 		//		this.add(this.jRadioButton1);
-		this.add(this.jRadioButton2);
+		//this.add(this.jRadioButton2);
 		//		this.add(this.jRadioButton3);
 		//this.add(this.jRadioButton4);
-		this.add(this.jRadioButton5);
+		//this.add(this.jRadioButton5);
 		this.add(this.jRadioButton6);
 		//this.add(this.jRadioButton7);
 		this.add(this.jButton1);

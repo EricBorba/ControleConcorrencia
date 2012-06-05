@@ -58,7 +58,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		//muda a cor do fundo
 		//this.getContentPane().setBackground(Color.white);
 		//titulo
-		this.setTitle("ADICIONAR OPERA«’ES");
+		this.setTitle("ADICIONAR OPERAÇÕES");
 		this.setFont(new Font("Comic Sans MS", 1, 11));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -82,11 +82,11 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		});
 
 
-		label2 = new JLabel("Vari·veis");
+		label2 = new JLabel("Variáveis");
 		label2.setBounds(30, 10, 100, 40);
 		label2.setFont(new Font("Comic Sans MS", 1, 18));
 
-		label3 = new JLabel("OperaÁıes");
+		label3 = new JLabel("Operações");
 		label3.setBounds(260, 10, 100, 40);
 		label3.setFont(new Font("Comic Sans MS", 1, 18));
 
@@ -148,7 +148,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 		});
 
 
-		this.jButton2 = new JButton("Adicionar nova operaÁ„o");
+		this.jButton2 = new JButton("Adicionar nova operação");
 		this.jButton2.setFont(new java.awt.Font("Comic Sans MS", 1, 15));
 		this.jButton2.setBounds(370, 150, 220,40);
 
@@ -172,7 +172,7 @@ public class JanelaAdicionarOperacoesNaTransacao extends JFrame {
 
 		});
 
-		label4 = new JLabel("OperaÁıes adicionadas");
+		label4 = new JLabel("Operações adicionadas");
 		label4.setBounds(600, 10, 300, 40);
 		label4.setFont(new Font("Comic Sans MS", 1, 18));
 
