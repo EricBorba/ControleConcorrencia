@@ -84,7 +84,7 @@ public class LockMultiplo {
 						if(repositorio.getListaDeBloqueioMultiplo().get(i).getModoBloqueio().equals("Read_lock")&& existeOutroBloqueio < 2){
 							posicaoCrescerBloqueio = i;
 							caso = 1;
-						}else if(existeOutroBloqueio > 2){
+						}else if(existeOutroBloqueio >= 2){
 							caso = 2;
 						}else{
 
@@ -155,6 +155,55 @@ public class LockMultiplo {
 				caso = 1;
 
 			}
+			
+			if (caso == 2){
+				
+				boolean achou = false;
+				long tempoTemp = transacao.getTempoDeCriacao();
+				long tempoParaRetorno = transacao.getTempoDeCriacao();
+				
+				for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size();i++){
+					
+					if(operacao.getVariavel().getNomeVariavel().equals(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeVariavel())){
+						
+						for(int j = 0; j <repositorio.getTransacoes().size();j++){
+							
+							if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(repositorio.getTransacoes().get(j).getnomeTransacao())){
+								
+								tempoTemp = repositorio.getTransacoes().get(j).getTempoDeCriacao();
+								
+							}
+							
+							if(tempoTemp < tempoParaRetorno){
+								
+								tempoParaRetorno = tempoTemp;
+								
+							}
+							
+						}
+						
+						//if(transacao.getTempoDeCriacao() > tempoTemp){
+							
+							//achou = true;
+						//	tempoDaTransacaoBloqueada = tempoTemp;
+					//	}
+						
+					}
+					
+					
+				}
+				
+				//if(achou == false){
+					
+					// tempoDaTransacaoBloqueada = transacao.getTempoDeCriacao();
+					
+				//}
+				tempoDaTransacaoBloqueada = tempoParaRetorno;
+				
+			}
+			
+			
+			
 
 		}else{
 
@@ -225,11 +274,22 @@ public class LockMultiplo {
 
 	/**remove todas as operacoes de uma dada transacao na lista de bloqueios*/
 	public void unlockTodasAsOperacoesdaTransacao(Transacao t,Repositorio repositorio){
-
-		for(int i = 0; i < repositorio.getListaDeBloqueioMultiplo().size(); i++){
+    int i = 0;
+    boolean entrou = false;
+    
+		while( i < repositorio.getListaDeBloqueioMultiplo().size()){
+			
 			if(repositorio.getListaDeBloqueioMultiplo().get(i).getNomeTransacao().equals(t.getnomeTransacao())){
 				repositorio.getListaDeBloqueioMultiplo().remove(i);
 				i = 0;
+				entrou = true;
+			}
+			if(entrou == false){
+				
+				i++;
+			}else{
+				
+				entrou = false;
 			}
 
 		}
