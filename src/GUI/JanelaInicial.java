@@ -306,7 +306,7 @@ public class JanelaInicial extends JFrame{
 
 
 			Bloqueio2FasesEstrito bloqueio = new Bloqueio2FasesEstrito(rep.getTransacoes());
-			bloqueio.executar(rep,jRadioButton6.isSelected());
+			bloqueio.executar(rep, jRadioButton6.isSelected());
 
 			//printando lista de operacoes a serem executadas
 			for(int i = 0; i < rep.getTransacoes().size();i++){

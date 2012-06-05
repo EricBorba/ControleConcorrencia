@@ -11,6 +11,7 @@ public class Bloqueio2FasesEstrito {
 
 
 	ArrayList<Transacao> listaTransacoesRecebida;
+	ArrayList<Transacao> listaTransacoesRecebidaBackup;
 	ArrayList<String> listaOperacoesFinal;
 	ArrayList<String> listaOperacoesOficial;
 
@@ -18,6 +19,7 @@ public class Bloqueio2FasesEstrito {
 
 	public Bloqueio2FasesEstrito(ArrayList<Transacao> listaTransacoesRecebida){
 		this.listaTransacoesRecebida = new ArrayList<Transacao>();
+		this.listaTransacoesRecebidaBackup = new ArrayList<Transacao>();
 		this.listaOperacoesFinal = new ArrayList<String>();
 		this.listaOperacoesOficial = new ArrayList<String>();
 		this.lock = new LockMultiplo();
@@ -50,6 +52,28 @@ public class Bloqueio2FasesEstrito {
 
 
 		}
+		
+		// Fazendo outra copia da lista de transacoes do repositorio para que o mesmo permaneca inalterado.
+		for(int j=0; j < repositorio.getTransacoes().size(); j++){
+
+
+			Transacao transacaoRecebidaTemp = new Transacao(repositorio.getTransacoes().get(j).getnomeTransacao());
+			transacaoRecebidaTemp.setTempoDeCriacao(repositorio.getTransacoes().get(j).getTempoDeCriacao());
+			ArrayList<Operacao> operacaoRecebidaTemp = new ArrayList<Operacao>();
+
+			for(int z=0; z < repositorio.getTransacoes().get(j).getListaOperacoes().size(); z++){
+
+				operacaoRecebidaTemp.add(repositorio.getTransacoes().get(j).getListaOperacoes().get(z));
+
+			}
+
+			transacaoRecebidaTemp.setListaOperacoes(operacaoRecebidaTemp);
+			this.listaTransacoesRecebidaBackup.add(transacaoRecebidaTemp);
+
+
+		}
+		
+		
 
 		int quantidadeTransacoes = this.listaTransacoesRecebida.size();
 		int posicaoTransacaoLista=0;   // Para saber qual transacao esta a ser executada no momento
@@ -111,18 +135,18 @@ public class Bloqueio2FasesEstrito {
 								// Ou seja, a operacao da transacao nao foi executada e ela eh mais nova que a transacao que lhe bloqueou.
 								if(transacaoTemp.getTempoDeCriacao() > lock.getTempoDaTransacaoBloqueada()){
 
-									for(int i=0; i < repositorio.getTransacoes().size() ; i++){
+									for(int i=0; i < listaTransacoesRecebidaBackup.size() ; i++){
 
 										// a transacao em execucao por ser mais nova sera dado rollback ou seja, fazemos uso do repositorio como um backup pra que todas as suas operacoes voltem ao estado original. E o timestamp da mesma continua sendo o original.
-										if(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getnomeTransacao().equals(repositorio.getTransacoes().get(i).getnomeTransacao())){
+										if(this.listaTransacoesRecebida.get(posicaoTransacaoLista).getnomeTransacao().equals(listaTransacoesRecebidaBackup.get(i).getnomeTransacao())){
 
 
 
 											ArrayList<Operacao> operacaoRecebidaTemp2 = new ArrayList<Operacao>();
 
-											for(int z=0; z < repositorio.getTransacoes().get(posicaoTransacaoLista).getListaOperacoes().size(); z++){
+											for(int z=0; z < listaTransacoesRecebidaBackup.get(posicaoTransacaoLista).getListaOperacoes().size(); z++){
 
-												operacaoRecebidaTemp2.add(repositorio.getTransacoes().get(posicaoTransacaoLista).getListaOperacoes().get(z));
+												operacaoRecebidaTemp2.add(listaTransacoesRecebidaBackup.get(posicaoTransacaoLista).getListaOperacoes().get(z));
 
 											}
 
@@ -155,6 +179,7 @@ public class Bloqueio2FasesEstrito {
 						this.listaTransacoesRecebida.remove(posicaoTransacaoLista); // Nao precisa remover a operacao da lista de operacoes pois sera mandado remover a transacao toda.
 						listaTransacaoAuxiliar.remove(posicaoTransacaoLista);
 						//repositorio.getTransacoes().remove(posicaoTransacaoLista);
+						this.listaTransacoesRecebidaBackup.remove(posicaoTransacaoLista);
 						lock.unlockTodasAsOperacoesdaTransacao(transacaoTemp, repositorio); // Metodo a ser criado no lock, desbloqueia todas as variaveis bloqueadas por determinada transacao
 					}
 
