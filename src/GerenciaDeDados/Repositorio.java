@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 
 /**
-	Classe que armazena a camada de dados. Possui uma lista de todas as transacoes e vari‡veis criadas.
+	Classe que armazena a camada de dados. Possui uma lista de todas as transacoes e variâ€¡veis criadas.
  * 
  */
 
 /**
- * @author ERB & FAD
+ *  @author ERB & FAD
  *
  */
 public class Repositorio {
@@ -98,7 +98,7 @@ public class Repositorio {
 	}
 
 	/**
-	 * SETOR DE CRIA‚ÌO DAS ESTRUTURAS MAIS PRIMITIVAS ---- TALVEZ NÌO TENHA NECESSIDADE
+	 * SETOR DE CRIAâ€šÃŒO DAS ESTRUTURAS MAIS PRIMITIVAS ---- TALVEZ NÃŒO TENHA NECESSIDADE
 	 * **/
 
 	public Operacao criarOperacao(String nomeOperacao, int valorAntigo, int valorNovo, Transacao transacao, Variavel variavel){
